@@ -3,6 +3,7 @@ using CollegeAppDotnetWebApi.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using MySqlConnector;
 
 namespace CollegeAppDotnetWebApi;
@@ -34,7 +35,11 @@ public class UserManagementController : ControllerBase
         RegisterRequestDTO registerRequestDTO
     )
     {
-        RegisterResponseDTO registerResponseDTO = new();
+        RegisterResponseDTO successRegisterResponseDTO = new();
+
+        RegisterResponseDTO errorRegisterResponseDTO =
+            new() { StatusCode = StatusCodes.Status400BadRequest, Message = "Error Occured." };
+
         if (ModelState.IsValid)
         {
             TejiloUser tejiloUser = _mapper.Map<TejiloUser>(registerRequestDTO);
@@ -47,32 +52,62 @@ public class UserManagementController : ControllerBase
                 );
                 if (isCreated.Succeeded)
                 {
-                    return Ok(registerResponseDTO);
+                    return Ok(successRegisterResponseDTO);
                 }
                 else
                 {
-                    registerResponseDTO.StatusCode = StatusCodes.Status400BadRequest;
-                    registerResponseDTO.Message = "Error Occured.";
-                    registerResponseDTO.Errors = isCreated.Errors;
-                    return BadRequest(registerResponseDTO);
+                    errorRegisterResponseDTO.Errors = isCreated.Errors;
+                    return BadRequest(errorRegisterResponseDTO);
                 }
             }
             catch (DbUpdateException e)
             {
-                return BadRequest(e.InnerException?.Message);
+                if (
+                    (e.InnerException?.Message.Contains("Duplicate")) == true
+                    && (
+                        e.InnerException?.Message.Contains("AspNetUsers.IX_AspNetUsers_PhoneNumber")
+                    ) == true
+                )
+                {
+                    errorRegisterResponseDTO.Errors = new List<IdentityError>()
+                    {
+                        new()
+                        {
+                            Code = "Duplicate Phone Number",
+                            Description = "Phone Number entered is already in use"
+                        }
+                    };
+                    return BadRequest(errorRegisterResponseDTO);
+                }
+                else
+                {
+                    errorRegisterResponseDTO.Errors = new List<IdentityError>()
+                    {
+                        new()
+                        {
+                            Code = e.InnerException?.Message ?? "Error Occured",
+                            Description = e.InnerException?.Message ?? "Error Occured"
+                        }
+                    };
+                    return BadRequest(errorRegisterResponseDTO);
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.InnerException?.Message);
+                errorRegisterResponseDTO.Errors = new List<IdentityError>()
+                {
+                    new()
+                    {
+                        Code = ex.InnerException?.Message ?? "Error Occured",
+                        Description = ex.InnerException?.Message ?? "Error Occured"
+                    }
+                };
+                return BadRequest(errorRegisterResponseDTO);
             }
         }
         else
         {
-            registerResponseDTO.StatusCode = StatusCodes.Status400BadRequest;
-            registerResponseDTO.Message = "Something went wring with your request.";
-            registerResponseDTO.Data = null;
-
-            return BadRequest(registerResponseDTO);
+            return BadRequest(errorRegisterResponseDTO);
         }
     }
 }
