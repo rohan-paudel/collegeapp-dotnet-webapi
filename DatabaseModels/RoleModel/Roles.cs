@@ -2,11 +2,11 @@
 
 public static class Roles
 {
-    public static string User = "User";
-    public static string CollegeAdmin = "CollegeAdmin";
-    public static string TejiloSuperAdmin = "TejiloSuperAdmin";
-    public static string TejiloAdmin = "TejiloAdmin";
-    public static string TejiloSubAdmin = "TejiloSubAdmin";
-    public static string TejiloCustomerCare = "TejiloCustomerCare";
-    public static string TejiloMarketing = "TejiloMarketing";
+    public const string User = "User";
+    public const string CollegeAdmin = "CollegeAdmin";
+    public const string TejiloSuperAdmin = "TejiloSuperAdmin";
+    public const string TejiloAdmin = "TejiloAdmin";
+    public const string TejiloSubAdmin = "TejiloSubAdmin";
+    public const string TejiloCustomerCare = "TejiloCustomerCare";
+    public const string TejiloMarketing = "TejiloMarketing";
 }
