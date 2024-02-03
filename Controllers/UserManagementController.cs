@@ -31,6 +31,9 @@ public class UserManagementController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(RegisterResponseDTO))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RegisterResponseDTO))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
     public async Task<ActionResult<RegisterResponseDTO>> RegisterUser(
         RegisterRequestDTO registerRequestDTO
     )
