@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualBasic;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -26,5 +27,5 @@ public class RegisterRequestDTO
     public string? Gender { get; set; }
 
     [Required]
-    public DateOnly DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
 }

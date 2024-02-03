@@ -17,7 +17,7 @@ public class TejiloUser : IdentityUser
     public string? Gender { get; set; }
 
     [Required]
-    public DateOnly DateOfBirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
 
     public string? Address { get; set; }
 }

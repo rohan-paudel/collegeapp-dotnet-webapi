@@ -2,6 +2,8 @@
 using CollegeAppDotnetWebApi.Controllers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -37,14 +39,31 @@ public class UserManagementController : ControllerBase
         {
             TejiloUser tejiloUser = _mapper.Map<TejiloUser>(registerRequestDTO);
 
-            var isCreated = await _userManager.CreateAsync(tejiloUser, registerRequestDTO.Password);
-            if (isCreated.Succeeded)
+            try
             {
-                return Ok(registerResponseDTO);
+                var isCreated = await _userManager.CreateAsync(
+                    tejiloUser,
+                    registerRequestDTO.Password
+                );
+                if (isCreated.Succeeded)
+                {
+                    return Ok(registerResponseDTO);
+                }
+                else
+                {
+                    registerResponseDTO.StatusCode = StatusCodes.Status400BadRequest;
+                    registerResponseDTO.Message = "Error Occured.";
+                    registerResponseDTO.Errors = isCreated.Errors;
+                    return BadRequest(registerResponseDTO);
+                }
             }
-            else
+            catch (DbUpdateException e)
             {
-                return BadRequest(isCreated.Errors);
+                return BadRequest(e.InnerException?.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.InnerException?.Message);
             }
         }
         else
