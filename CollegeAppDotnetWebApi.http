@@ -1,0 +1,6 @@
+@CollegeAppDotnetWebApi_HostAddress = http://localhost:5058
+
+GET {{CollegeAppDotnetWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
