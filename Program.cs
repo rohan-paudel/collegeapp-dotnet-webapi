@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -57,7 +58,15 @@ builder
             )
     );
 
-builder.Services.AddIdentity<TejiloUser, IdentityRole>().AddEntityFrameworkStores<AppDataContext>();
+builder
+    .Services
+    .AddIdentity<TejiloUser, IdentityRole>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Lockout.MaxFailedAccessAttempts = 5;
+    })
+    .AddEntityFrameworkStores<AppDataContext>();
 
 var app = builder.Build();
 
