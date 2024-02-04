@@ -49,10 +49,9 @@ public class UserManagementController : ControllerBase
 
             try
             {
-                var isCreated = await _userManager.CreateAsync(
-                    tejiloUser,
-                    registerRequestDTO.Password
-                );
+                var isCreated = await _userManager
+                    .CreateAsync(tejiloUser, registerRequestDTO.Password)
+                    .ConfigureAwait(false);
                 if (isCreated.Succeeded)
                 {
                     return Ok(successRegisterResponseDTO);
