@@ -27,8 +27,6 @@
   <ItemGroup>
     <Folder Include="Controllers/AdminControllers/" />
     <Folder Include="DataAccessLayer/Admin/" />
-    <Folder Include="DataAccessLayer/User/" />
-    <Folder Include="DataAccessLayer/UserLogin/" />
   </ItemGroup>
 
 </Project>

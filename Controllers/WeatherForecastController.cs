@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.JSInterop.Infrastructure;
 
 namespace CollegeAppDotnetWebApi.Controllers;
 
 [ApiController]
 [Route("[controller]/[Action]")]
+[Authorize(Roles = Roles.TejiloAdmin)]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

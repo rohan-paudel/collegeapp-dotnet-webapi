@@ -1,6 +1,11 @@
+using System.Security.Claims;
+using System.Text;
 using CollegeAppDotnetWebApi;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IUserManagementDL, UserManagementDL>();
+builder.Services.AddScoped<IUserLoginDL, UserLoginDL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -68,6 +75,71 @@ builder
     })
     .AddEntityFrameworkStores<AppDataContext>();
 
+builder
+    .Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Account/Login";
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    });
+;
+builder.Services.AddAuthorization();
+
+/// START OF JWT TOKEN SERVICE
+
+// builder
+//     .Services
+//     .AddAuthentication(options =>
+//     {
+//         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//     })
+//     .AddJwtBearer(o =>
+//     {
+//         o.TokenValidationParameters = new TokenValidationParameters()
+//         {
+//             ValidIssuer = "https://tejilo.com.np",
+//             ValidAudience = "https://tejilo.com.np",
+//             IssuerSigningKey = new SymmetricSecurityKey(
+//                 Encoding
+//                     .UTF8
+//                     .GetBytes(
+//                         "this-is-server-jwt-key-for-encryption-12344-#$@%%#@-the_hello_98889))&^^&"
+//                     )
+//             ),
+//             ValidateAudience = true,
+//             ValidateIssuer = true,
+//             ValidateIssuerSigningKey = true,
+//             ValidateLifetime = true
+//         };
+
+//         o.Events = new JwtBearerEvents
+//         {
+//             OnTokenValidated = context =>
+//             {
+//                 var claimsIdentity = context.Principal?.Identity as ClaimsIdentity;
+//                 if (
+//                     claimsIdentity != null
+//                     && claimsIdentity.HasClaim(c => c.Type == ClaimTypes.Role)
+//                 )
+//                 {
+//                     var roleClaims = claimsIdentity.FindAll(c => c.Type == ClaimTypes.Role);
+//                     foreach (var roleClaim in roleClaims)
+//                     {
+//                         claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, roleClaim.Value));
+//                     }
+//                 }
+
+//                 return Task.CompletedTask;
+//             }
+//         };
+//     });
+
+// END OF JWT
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -79,6 +151,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

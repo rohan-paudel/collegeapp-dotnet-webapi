@@ -39,7 +39,31 @@ public class UserManagementDL : IUserManagementDL
                 .ConfigureAwait(false);
             if (isCreated.Succeeded)
             {
-                return successRegisterResponseDTO;
+                var user = await _userManager.FindByEmailAsync(tejiloUser.Email);
+
+                if (user != null)
+                {
+                    var roleResult = await _userManager
+                        .AddToRoleAsync(user, Roles.User)
+                        .ConfigureAwait(false);
+
+                    if (roleResult.Succeeded)
+                    {
+                        return successRegisterResponseDTO;
+                    }
+                    else
+                    {
+                        var deletedUser = await _userManager
+                            .DeleteAsync(user)
+                            .ConfigureAwait(false);
+                        return errorRegisterResponseDTO;
+                    }
+                }
+                else
+                {
+                    errorRegisterResponseDTO.Errors = isCreated.Errors;
+                    return errorRegisterResponseDTO;
+                }
             }
             else
             {
