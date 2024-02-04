@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CollegeAppDotnetWebApi;
 
 [ApiController]
-[Route("api/[controller]/[Action]")]
+[Route("api/admin/[controller]/[Action]")]
 public class UserManagementController : ControllerBase
 {
     private readonly ILogger<UserManagementController> _logger;
