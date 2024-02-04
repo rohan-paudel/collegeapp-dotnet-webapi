@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using CollegeAppDotnetWebApi.Controllers;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Json;
-using MySqlConnector;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -12,22 +7,16 @@ namespace CollegeAppDotnetWebApi;
 [Route("api/[controller]/[Action]")]
 public class UserManagementController : ControllerBase
 {
-    private readonly ILogger<WeatherForecastController> _logger;
-    private readonly UserManager<TejiloUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IMapper _mapper;
+    private readonly ILogger<UserManagementController> _logger;
+    private readonly IUserManagementDL _userManagementDL;
 
     public UserManagementController(
-        ILogger<WeatherForecastController> logger,
-        UserManager<TejiloUser> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IMapper mapper
+        ILogger<UserManagementController> logger,
+        IUserManagementDL userManagementDL
     )
     {
         _logger = logger;
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _mapper = mapper;
+        _userManagementDL = userManagementDL;
     }
 
     [HttpPost]
@@ -38,78 +27,30 @@ public class UserManagementController : ControllerBase
         RegisterRequestDTO registerRequestDTO
     )
     {
-        RegisterResponseDTO successRegisterResponseDTO = new();
-
-        RegisterResponseDTO errorRegisterResponseDTO =
-            new() { StatusCode = StatusCodes.Status400BadRequest, Message = "Error Occured." };
+        RegisterResponseDTO registerResponseDTO;
 
         if (ModelState.IsValid)
         {
-            TejiloUser tejiloUser = _mapper.Map<TejiloUser>(registerRequestDTO);
-
-            try
+            registerResponseDTO = await _userManagementDL
+                .RegisterUser(registerRequestDTO)
+                .ConfigureAwait(false);
+            if (registerResponseDTO.StatusCode == StatusCodes.Status200OK)
             {
-                var isCreated = await _userManager
-                    .CreateAsync(tejiloUser, registerRequestDTO.Password)
-                    .ConfigureAwait(false);
-                if (isCreated.Succeeded)
-                {
-                    return Ok(successRegisterResponseDTO);
-                }
-                else
-                {
-                    errorRegisterResponseDTO.Errors = isCreated.Errors;
-                    return BadRequest(errorRegisterResponseDTO);
-                }
+                return Ok(registerResponseDTO);
             }
-            catch (DbUpdateException e)
+            else
             {
-                if (
-                    (e.InnerException?.Message.Contains("Duplicate")) == true
-                    && (
-                        e.InnerException?.Message.Contains("AspNetUsers.IX_AspNetUsers_PhoneNumber")
-                    ) == true
-                )
-                {
-                    errorRegisterResponseDTO.Errors = new List<IdentityError>()
-                    {
-                        new()
-                        {
-                            Code = "Duplicate Phone Number",
-                            Description = "Phone Number entered is already in use"
-                        }
-                    };
-                    return BadRequest(errorRegisterResponseDTO);
-                }
-                else
-                {
-                    errorRegisterResponseDTO.Errors = new List<IdentityError>()
-                    {
-                        new()
-                        {
-                            Code = e.InnerException?.Message ?? "Error Occured",
-                            Description = e.InnerException?.Message ?? "Error Occured"
-                        }
-                    };
-                    return BadRequest(errorRegisterResponseDTO);
-                }
-            }
-            catch (Exception ex)
-            {
-                errorRegisterResponseDTO.Errors = new List<IdentityError>()
-                {
-                    new()
-                    {
-                        Code = ex.InnerException?.Message ?? "Error Occured",
-                        Description = ex.InnerException?.Message ?? "Error Occured"
-                    }
-                };
-                return BadRequest(errorRegisterResponseDTO);
+                return BadRequest(registerResponseDTO);
             }
         }
         else
         {
-            return BadRequest(errorRegisterResponseDTO);
+            registerResponseDTO = new()
+            {
+                StatusCode = 400,
+                Errors = [new IdentityError() { Code = "Bad Request", Description = "Bad Request" }]
+            };
+            return BadRequest(registerRequestDTO);
         }
     }
 }
