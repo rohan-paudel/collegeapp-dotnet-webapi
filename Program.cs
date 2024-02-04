@@ -12,6 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder
+    .Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Account/Login";
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    });
+
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
+
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserManagementDL, UserManagementDL>();
@@ -74,18 +87,6 @@ builder
         options.Lockout.MaxFailedAccessAttempts = 5;
     })
     .AddEntityFrameworkStores<AppDataContext>();
-
-builder
-    .Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.AccessDeniedPath = "/Account/AccessDenied";
-        options.LoginPath = "/Account/Login";
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    });
-;
-builder.Services.AddAuthorization();
 
 /// START OF JWT TOKEN SERVICE
 

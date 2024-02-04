@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -20,44 +22,34 @@ public class UserLoginController : ControllerBase
     )]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResponseDTO<LoginResponseDTO>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
-    public async Task<ActionResult<ResponseDTO<LoginResponseDTO>>> Login(
-        LoginRequestDTO loginRequestDTO
-    )
+    public async Task<
+        Results<
+            Ok<ResponseDTO<AccessTokenResponse>>,
+            EmptyHttpResult,
+            BadRequest<ResponseDTO<LoginResponseDTO>>
+        >
+    > Login(LoginRequestDTO loginRequestDTO)
     {
-        ResponseDTO<LoginResponseDTO> responseDTO;
+        Results<
+            Ok<ResponseDTO<AccessTokenResponse>>,
+            EmptyHttpResult,
+            BadRequest<ResponseDTO<LoginResponseDTO>>
+        > responseDTO;
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                responseDTO = await _userLoginDL.Login(loginRequestDTO).ConfigureAwait(true);
-                if (responseDTO.StatusCode == StatusCodes.Status200OK)
-                {
-                    return Ok(responseDTO);
-                }
-                else
-                {
-                    return BadRequest(responseDTO);
-                }
-            }
-            catch (Exception)
-            {
-                responseDTO = new()
+            responseDTO = await _userLoginDL.Login(loginRequestDTO).ConfigureAwait(true);
+            return responseDTO;
+        }
+        else
+        {
+            ResponseDTO<LoginResponseDTO> errorResponseDTO =
+                new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
                     Message = "Something went wrong"
                 };
-                return BadRequest(responseDTO);
-            }
-        }
-        else
-        {
-            responseDTO = new()
-            {
-                StatusCode = StatusCodes.Status400BadRequest,
-                Message = "Something went wrong"
-            };
-            return BadRequest(responseDTO);
+            return TypedResults.BadRequest(errorResponseDTO);
         }
     }
 }

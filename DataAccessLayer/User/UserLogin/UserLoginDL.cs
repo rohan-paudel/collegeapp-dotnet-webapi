@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -13,48 +15,41 @@ public class UserLoginDL : IUserLoginDL
         _userManager = userManager;
     }
 
-    public async Task<ResponseDTO<LoginResponseDTO>> Login(LoginRequestDTO loginRequestDTO)
+    public async Task<
+        Results<
+            Ok<ResponseDTO<AccessTokenResponse>>,
+            EmptyHttpResult,
+            BadRequest<ResponseDTO<LoginResponseDTO>>
+        >
+    > Login(LoginRequestDTO loginRequestDTO)
     {
-        ResponseDTO<LoginResponseDTO> successfullResponseDTO = new() { };
         ResponseDTO<LoginResponseDTO> errorResponseDTO =
             new()
             {
                 StatusCode = StatusCodes.Status400BadRequest,
                 Message = "Something went wrong"
             };
+
         try
         {
+            _signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+
             var result = await _signInManager
                 .PasswordSignInAsync(loginRequestDTO.Email, loginRequestDTO.Password, true, true)
                 .ConfigureAwait(true);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                // TejiloUser? user = await _userManager
-                //     .FindByEmailAsync(loginRequestDTO.Email)
-                //     .ConfigureAwait(true);
-                // string Token = await new JwtTokenService().GenerateJwtToken(user, _userManager);
-                // successfullResponseDTO.Data = new() { Token = Token };
-                return successfullResponseDTO;
+                errorResponseDTO.Message = "Please check email or password";
+                return (TypedResults.BadRequest(errorResponseDTO));
             }
-            else if (result.IsLockedOut)
-            {
-                errorResponseDTO.Message = "Please retry login after sometime.";
-                return errorResponseDTO;
-            }
-            else
-            {
-                errorResponseDTO.Message = "Please check email or password.";
-                return errorResponseDTO;
-            }
+
+            return TypedResults.BadRequest(errorResponseDTO);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            errorResponseDTO.Errors =
-            [
-                new() { Code = "Exception Occured", Description = ex.InnerException?.Message ?? "" }
-            ];
-            return errorResponseDTO;
+            errorResponseDTO.Errors = [new() { Code = "Exception Occured", Description = "" }];
+            return TypedResults.BadRequest(errorResponseDTO);
         }
     }
 }
