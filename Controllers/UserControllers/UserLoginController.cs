@@ -40,7 +40,7 @@ public class UserLoginController : ControllerBase
                     return BadRequest(responseDTO);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 responseDTO = new()
                 {

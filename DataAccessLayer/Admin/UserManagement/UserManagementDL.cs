@@ -39,7 +39,7 @@ public class UserManagementDL : IUserManagementDL
                 .ConfigureAwait(false);
             if (isCreated.Succeeded)
             {
-                var user = await _userManager.FindByEmailAsync(tejiloUser.Email);
+                var user = await _userManager.FindByEmailAsync(tejiloUser.Email!);
 
                 if (user != null)
                 {
