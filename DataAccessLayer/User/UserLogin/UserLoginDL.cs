@@ -40,6 +40,11 @@ public class UserLoginDL : IUserLoginDL
 
             if (!result.Succeeded)
             {
+                if (result.IsLockedOut)
+                {
+                    errorResponseDTO.Message = "Please try later now.";
+                    return (TypedResults.BadRequest(errorResponseDTO));
+                }
                 errorResponseDTO.Message = "Please check email or password";
                 return (TypedResults.BadRequest(errorResponseDTO));
             }

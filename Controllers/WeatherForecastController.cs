@@ -6,7 +6,7 @@ namespace CollegeAppDotnetWebApi.Controllers;
 
 [ApiController]
 [Route("[controller]/[Action]")]
-[Authorize(Roles = Roles.User)]
+[Authorize(Roles = Roles.TejiloAdmin, Policy = "PolicyForMobileDevice")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

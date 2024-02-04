@@ -23,7 +23,17 @@ builder
     });
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-builder.Services.AddAuthorizationBuilder();
+builder
+    .Services
+    .AddAuthorizationBuilder()
+    .AddPolicy(
+        "PolicyForMobileDevice",
+        p =>
+        {
+            p.RequireAuthenticatedUser();
+            p.AddAuthenticationSchemes(IdentityConstants.BearerScheme);
+        }
+    );
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
