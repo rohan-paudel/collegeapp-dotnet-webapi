@@ -137,9 +137,9 @@ builder
                     factory: _ =>
                         new FixedWindowRateLimiterOptions
                         {
-                            PermitLimit = 1,
+                            PermitLimit = 10,
                             QueueLimit = 1,
-                            Window = TimeSpan.FromSeconds(10)
+                            Window = TimeSpan.FromSeconds(5)
                         }
                 )
         );
