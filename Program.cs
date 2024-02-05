@@ -1,9 +1,14 @@
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.RateLimiting;
 using CollegeAppDotnetWebApi;
+using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -11,6 +16,27 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder
+    .Services
+    .Configure<KestrelServerOptions>(options =>
+    {
+        options.ConfigureHttpsDefaults(
+            options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
+        );
+        options.ListenLocalhost(
+            5001,
+            lisOptions =>
+            {
+                lisOptions.UseHttps("cert.pfx", "hello");
+            }
+        );
+    });
+
+builder
+    .Services
+    .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
+    .AddCertificate(options => { });
 
 builder
     .Services
@@ -98,6 +124,27 @@ builder
     })
     .AddEntityFrameworkStores<AppDataContext>();
 
+builder
+    .Services
+    .AddRateLimiter(options =>
+    {
+        options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        options.AddPolicy(
+            "fixed",
+            httpContext =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+                    factory: _ =>
+                        new FixedWindowRateLimiterOptions
+                        {
+                            PermitLimit = 1,
+                            QueueLimit = 1,
+                            Window = TimeSpan.FromSeconds(10)
+                        }
+                )
+        );
+    });
+
 /// START OF JWT TOKEN SERVICE
 
 // builder
@@ -164,6 +211,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 

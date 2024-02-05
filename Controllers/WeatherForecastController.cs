@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace CollegeAppDotnetWebApi.Controllers;
 
 [ApiController]
 [Route("[controller]/[Action]")]
-[Authorize(Roles = Roles.TejiloAdmin, Policy = "PolicyForMobileDevice")]
+[EnableRateLimiting("fixed")]
+[Authorize(Roles = Roles.User, Policy = "PolicyForMobileDevice")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

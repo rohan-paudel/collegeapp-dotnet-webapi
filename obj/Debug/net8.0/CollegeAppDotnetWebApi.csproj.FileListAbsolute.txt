@@ -119,3 +119,5 @@
 /Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/obj/Debug/net8.0/ref/CollegeAppDotnetWebApi.dll
 /Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/AutoMapper.dll
 /Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.Certificate.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/BouncyCastle.Crypto.dll

@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "KHOkjsys9vBBxUMeIv/rlZZ0rv/dCPuJThNuzfx5zKDc6IBEr+ytCQb/XTun/DU4iEzMnIj260mGlxgLZ1ucLQ==",
+  "dgSpecHash": "a3FB25QqG0eVy0XfHyBrt36+e39bVI/JQNIRhuhXEhgtAhk7/zHJqPsDfUWbo51E6BPExXjmF52+wFHZwByIQw==",
   "success": true,
   "projectFilePath": "/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/CollegeAppDotnetWebApi.csproj",
   "expectedPackageFiles": [
     "/Users/hamroacademy/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
     "/Users/hamroacademy/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "/Users/hamroacademy/.nuget/packages/bouncycastle.netcore/2.2.1/bouncycastle.netcore.2.2.1.nupkg.sha512",
     "/Users/hamroacademy/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/Users/hamroacademy/.nuget/packages/microsoft.aspnetcore.authentication.certificate/8.0.1/microsoft.aspnetcore.authentication.certificate.8.0.1.nupkg.sha512",
     "/Users/hamroacademy/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/8.0.1/microsoft.aspnetcore.authentication.jwtbearer.8.0.1.nupkg.sha512",
     "/Users/hamroacademy/.nuget/packages/microsoft.aspnetcore.cryptography.internal/8.0.1/microsoft.aspnetcore.cryptography.internal.8.0.1.nupkg.sha512",
     "/Users/hamroacademy/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/8.0.1/microsoft.aspnetcore.cryptography.keyderivation.8.0.1.nupkg.sha512",

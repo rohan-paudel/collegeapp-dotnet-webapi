@@ -49,7 +49,7 @@ public class UserLoginDL : IUserLoginDL
                 return (TypedResults.BadRequest(errorResponseDTO));
             }
 
-            return TypedResults.BadRequest(errorResponseDTO);
+            return TypedResults.Empty;
         }
         catch (Exception)
         {
