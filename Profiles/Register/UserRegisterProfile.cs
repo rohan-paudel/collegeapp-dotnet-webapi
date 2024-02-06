@@ -8,5 +8,7 @@ public class UserRegisterProfile : Profile
     {
         CreateMap<RegisterRequestDTO, TejiloUser>()
             .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
+
+        CreateMap<CourseModel, CourseResponseDTO>();
     }
 }

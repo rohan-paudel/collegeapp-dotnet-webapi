@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
@@ -7,7 +8,7 @@ namespace CollegeAppDotnetWebApi;
 public class CourseModel
 {
     [Key]
-    public string Id { get; set; } = new Guid().ToString();
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
     public bool Status { get; set; } = true;
 

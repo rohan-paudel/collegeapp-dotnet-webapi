@@ -26,9 +26,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers/AdminControllers/" />
-    <Folder Include="DataAccessLayer/Admin/" />
-  </ItemGroup>
-
 </Project>

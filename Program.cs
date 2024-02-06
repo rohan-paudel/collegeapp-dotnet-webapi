@@ -63,6 +63,7 @@ builder
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICategoryManagementDL, CategoryManagementDL>();
 builder.Services.AddScoped<IUserManagementDL, UserManagementDL>();
 builder.Services.AddScoped<IUserLoginDL, UserLoginDL>();
 
