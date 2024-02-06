@@ -3,22 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CollegeAppDotnetWebApi;
 
-public class SubCourseModel
+public class SubjectModel
 {
-    [Key]
     public string Id { get; set; } = new Guid().ToString();
-
     public bool Status { get; set; } = true;
 
     [Required]
     public string Name { get; set; } = "";
 
-    [Required]
-    [ForeignKey("Id")]
-    public string CourseId { get; set; } = "";
-
-    [Required]
-    public CourseModel Course { get; set; } = new();
-
-    public ICollection<SubjectModel>? Subjects { get; set; }
+    public ICollection<SubCourseModel>? SubCourses { get; set; }
 }

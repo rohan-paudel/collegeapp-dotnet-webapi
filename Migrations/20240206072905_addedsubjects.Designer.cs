@@ -3,6 +3,7 @@ using System;
 using CollegeAppDotnetWebApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240206072905_addedsubjects")]
+    partial class addedsubjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,6 +57,9 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
@@ -72,6 +78,9 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SubCourseId")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
