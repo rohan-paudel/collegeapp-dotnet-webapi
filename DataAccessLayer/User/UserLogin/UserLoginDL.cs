@@ -32,7 +32,7 @@ public class UserLoginDL : IUserLoginDL
 
         try
         {
-            _signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
+            _signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
 
             var result = await _signInManager
                 .PasswordSignInAsync(loginRequestDTO.Email, loginRequestDTO.Password, true, true)
