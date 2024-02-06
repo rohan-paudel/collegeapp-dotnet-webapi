@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
+namespace CollegeAppDotnetWebApi;
+
+[Index(nameof(Status))]
+public class CourseModel
+{
+    [Key]
+    public string Id { get; set; } = new Guid().ToString();
+
+    public bool Status { get; set; } = true;
+
+    [Required]
+    public string Name { get; set; } = "";
+
+    public ICollection<SubCourseModel>? SubCourses { get; set; }
+}

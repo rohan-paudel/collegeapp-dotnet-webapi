@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,4 +21,9 @@ public class TejiloUser : IdentityUser
     public DateTime DateOfBirth { get; set; }
 
     public string? Address { get; set; }
+
+    [ForeignKey("Id")]
+    public string? CollegeId { get; set; }
+
+    public TejiloCollege? College { get; set; }
 }

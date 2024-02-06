@@ -3,6 +3,7 @@ using System;
 using CollegeAppDotnetWebApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,56 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240206065649_TejiloCollegeAdded")]
+    partial class TejiloCollegeAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("CollegeAppDotnetWebApi.CourseModel", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Status");
-
-                    b.ToTable("CourseModel");
-                });
-
-            modelBuilder.Entity("CollegeAppDotnetWebApi.SubCourseModel", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("CourseId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("SubCourseModel");
-                });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.TejiloCollege", b =>
                 {
@@ -325,17 +286,6 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CollegeAppDotnetWebApi.SubCourseModel", b =>
-                {
-                    b.HasOne("CollegeAppDotnetWebApi.CourseModel", "Course")
-                        .WithMany("SubCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
             modelBuilder.Entity("CollegeAppDotnetWebApi.TejiloUser", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.TejiloCollege", "College")
@@ -394,11 +344,6 @@ namespace CollegeAppDotnetWebApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CollegeAppDotnetWebApi.CourseModel", b =>
-                {
-                    b.Navigation("SubCourses");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.TejiloCollege", b =>
