@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
-[Index(nameof(Status), nameof(Name))]
+[Index(nameof(Status))]
+[Index(nameof(Name))]
 public class CourseModel
 {
     [Key]
