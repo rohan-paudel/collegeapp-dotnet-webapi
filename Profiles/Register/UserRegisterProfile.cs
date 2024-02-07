@@ -11,7 +11,7 @@ public class UserRegisterProfile : Profile
 
         CreateMap<CourseModel, CourseResponseDTO>();
 
-        CreateMap<CourseModel, CourseResponseForSubCourseDTO>();
+        CreateMap<CourseModel, CourseResponseOnlyNameDTO>();
 
         CreateMap<SubCourseModel, SubCourseResponseDTO>();
     }

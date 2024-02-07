@@ -1,11 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
+[Index(nameof(Status))]
+[Index(nameof(Name))]
 public class SubjectModel
 {
-    public string Id { get; set; } = new Guid().ToString();
+    [Key]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public bool Status { get; set; } = true;
 
     [Required]
