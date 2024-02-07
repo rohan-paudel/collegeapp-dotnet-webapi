@@ -12,7 +12,7 @@ namespace CollegeAppDotnetWebApi.Migrations
 {
     [DbContext(typeof(AppDataContext))]
     [Migration("20240206072905_addedsubjects")]
-    partial class addedsubjects
+    partial class Addedsubjects
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
