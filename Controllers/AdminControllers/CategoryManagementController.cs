@@ -62,4 +62,15 @@ public class CategoryManagementController : ControllerBase
         var result = await _categoryManagementDL.GetCourses(courseName, courseStatus);
         return result;
     }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetSubCourse(SubCourseRequestDTO subCourseRequestDTO)
+    {
+        var result = await _categoryManagementDL
+            .SetSubCourse(subCourseRequestDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
 }

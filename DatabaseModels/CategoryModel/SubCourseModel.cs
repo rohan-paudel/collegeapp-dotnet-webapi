@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
+[Index(nameof(Status))]
+[Index(nameof(Name))]
 public class SubCourseModel
 {
     [Key]
-    public string Id { get; set; } = new Guid().ToString();
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
     public bool Status { get; set; } = true;
 
@@ -17,8 +20,7 @@ public class SubCourseModel
     [ForeignKey("Id")]
     public string CourseId { get; set; } = "";
 
-    [Required]
-    public CourseModel Course { get; set; } = new();
+    public CourseModel Course { get; set; }
 
     public ICollection<SubjectModel>? Subjects { get; set; }
 }

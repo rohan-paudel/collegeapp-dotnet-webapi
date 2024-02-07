@@ -23,4 +23,8 @@ public interface ICategoryManagementDL
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<CourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetCourses(string? courseName, bool? courseStatus);
+
+    public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetSubCourse(
+        SubCourseRequestDTO subCourseRequestDTO
+    );
 }

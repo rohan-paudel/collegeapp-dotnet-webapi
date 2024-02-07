@@ -5,7 +5,7 @@ namespace CollegeAppDotnetWebApi;
 public class CourseRequestDTO
 {
     [Required]
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
 }
 
 public class CourseRequestEditNameDTO
