@@ -6,7 +6,7 @@ namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(Status))]
 [Index(nameof(Name))]
-public class SubjectModel
+public class TopicModel
 {
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -17,7 +17,9 @@ public class SubjectModel
 
     public string? ImageUrl { get; set; }
 
-    public ICollection<TopicModel>? Topics { get; set; }
+    [Required]
+    [ForeignKey("Id")]
+    public string SubjectId { get; set; } = "";
 
-    public ICollection<SubCourseModel> SubCourses { get; set; } = new HashSet<SubCourseModel>();
+    public SubjectModel Subject { get; set; }
 }

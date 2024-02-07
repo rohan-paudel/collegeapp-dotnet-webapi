@@ -14,4 +14,6 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<SubCourseModel> SubCourseModel { get; set; }
 
     public DbSet<SubjectModel> SubjectModel { get; set; }
+
+    public DbSet<TopicModel> TopicModel { get; set; }
 }
