@@ -11,5 +11,7 @@ public class SubjectModel
     [Required]
     public string Name { get; set; } = "";
 
+    public string? ImageUrl { get; set; }
+
     public ICollection<SubCourseModel>? SubCourses { get; set; }
 }
