@@ -123,4 +123,15 @@ public class CategoryManagementController : ControllerBase
         );
         return result;
     }
+
+    [HttpPost]
+    public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> AddSubject(
+        SubCourseSubjectSetDTO subCourseSubjectSetDTO
+    )
+    {
+        var result = await _categoryManagementDL
+            .AddSubject(subCourseSubjectSetDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
 }

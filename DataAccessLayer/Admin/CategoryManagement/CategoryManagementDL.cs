@@ -61,7 +61,7 @@ public class CategoryManagementDL : ICategoryManagementDL
                 );
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Handle exceptions appropriately, e.g., log or report the error
             return TypedResults.BadRequest<ResponseDTO<string>>(
@@ -340,7 +340,7 @@ public class CategoryManagementDL : ICategoryManagementDL
                 );
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Handle exceptions appropriately, e.g., log or report the error
             return TypedResults.BadRequest<ResponseDTO<string>>(
@@ -539,6 +539,74 @@ public class CategoryManagementDL : ICategoryManagementDL
             return TypedResults.Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>(
                 new() { Data = subCourseModels }
             );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> AddSubject(
+        SubCourseSubjectSetDTO subCourseSubjectSetDTO
+    )
+    {
+        try
+        {
+            SubjectModel? model = await _dataContext
+                .SubjectModel
+                .FirstOrDefaultAsync(x => x.Id == subCourseSubjectSetDTO.SubjectId)
+                .ConfigureAwait(true);
+
+            if (model == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Such Subject Record Found"
+                    }
+                );
+            }
+
+            SubCourseModel? subCourseModel = await _dataContext
+                .SubCourseModel
+                .FirstOrDefaultAsync(x => x.Id == subCourseSubjectSetDTO.SubCourseId)
+                .ConfigureAwait(true);
+            if (subCourseModel == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Such SubCourse Record Found"
+                    }
+                );
+            }
+
+            model.SubCourses.Add(subCourseModel);
+            subCourseModel.Subjects.Add(model);
+
+            var rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new());
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Record Found"
+                    }
+                );
+            }
         }
         catch (Exception)
         {

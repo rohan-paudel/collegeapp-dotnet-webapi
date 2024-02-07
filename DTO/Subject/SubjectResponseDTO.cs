@@ -8,7 +8,5 @@ public class SubjectResponseDTO
 
     public string Name { get; set; } = "";
 
-    public CourseResponseOnlyNameDTO? Course { get; set; }
-
-    public SubCourseResponseOnlyNameDTO? SubCourse { get; set; }
+    public List<SubCourseResponseOnlyNameDTO>? SubCourses { get; set; }
 }

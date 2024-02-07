@@ -19,4 +19,8 @@ public interface ISubjectManagementDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteSubject(
         SubjectDeleteDTO subjectDeleteDTO
     );
+
+    public Task<
+        Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetSubjects(string? courseId, string? subcourseId, string? subjectName, bool? subjectStatus);
 }

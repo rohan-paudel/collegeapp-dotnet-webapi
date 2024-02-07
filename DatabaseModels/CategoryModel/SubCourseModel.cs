@@ -22,5 +22,5 @@ public class SubCourseModel
 
     public CourseModel Course { get; set; }
 
-    public ICollection<SubjectModel>? Subjects { get; set; }
+    public ICollection<SubjectModel> Subjects { get; set; } = new HashSet<SubjectModel>();
 }

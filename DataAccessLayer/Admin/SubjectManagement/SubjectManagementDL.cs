@@ -118,6 +118,60 @@ public class SubjectManagementDL : ISubjectManagementDL
         }
     }
 
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetSubjects(string? courseId, string? subcourseId, string? subjectName, bool? subjectStatus)
+    {
+        try
+        {
+            IQueryable<SubjectModel> querySubject = _dataContext.SubjectModel;
+
+            if (!string.IsNullOrWhiteSpace(courseId))
+            {
+                querySubject = querySubject.Where(
+                    x => x.SubCourses.Any(sc => sc.Course.Id == courseId)
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(subcourseId))
+            {
+                querySubject = querySubject.Where(
+                    x => x.SubCourses.Any(sc => sc.Id == subcourseId)
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(subjectName))
+            {
+                querySubject = querySubject.Where(x => x.Name.ToLower().Contains(subjectName));
+            }
+
+            if (subjectStatus != null)
+            {
+                querySubject = querySubject.Where(x => x.Status == subjectStatus);
+            }
+
+            var subjectModels = await querySubject
+                .Include(p => p.SubCourses)
+                .Select(p => _mapper.Map<SubjectResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(true);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>(
+                new() { Data = subjectModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetSubject(
         SubjectRequestDTO subjectRequestDTO
     )

@@ -17,5 +17,5 @@ public class SubjectModel
 
     public string? ImageUrl { get; set; }
 
-    public ICollection<SubCourseModel>? SubCourses { get; set; }
+    public ICollection<SubCourseModel> SubCourses { get; set; } = new HashSet<SubCourseModel>();
 }

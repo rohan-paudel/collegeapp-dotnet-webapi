@@ -30,3 +30,9 @@ public class SubjectStatusToggleRequestDTO
     [Required]
     public string SubjectId { get; set; } = "";
 }
+
+public class SubjectWithIdDTO
+{
+    [Required]
+    public string SubjectId { get; set; } = "";
+}

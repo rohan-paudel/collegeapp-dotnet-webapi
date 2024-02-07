@@ -31,3 +31,12 @@ public class SubCourseStatusToggleRequestDTO
     [Required]
     public string SubCourseId { get; set; } = "";
 }
+
+public class SubCourseSubjectSetDTO
+{
+    [Required]
+    public string SubCourseId { get; set; } = "";
+
+    [Required]
+    public string SubjectId { get; set; } = "";
+}
