@@ -10,3 +10,24 @@ public class SubCourseRequestDTO
     [Required]
     public string CourseId { get; set; } = "";
 }
+
+public class SubCourseRequestEditNameDTO
+{
+    [Required]
+    public string SubCourseId { get; set; } = "";
+
+    [Required]
+    public string Name { get; set; } = "";
+}
+
+public class SubCourseDeleteDTO
+{
+    [Required]
+    public string SubCourseId { get; set; } = "";
+}
+
+public class SubCourseStatusToggleRequestDTO
+{
+    [Required]
+    public string SubCourseId { get; set; } = "";
+}

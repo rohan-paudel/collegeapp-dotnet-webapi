@@ -27,4 +27,20 @@ public interface ICategoryManagementDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetSubCourse(
         SubCourseRequestDTO subCourseRequestDTO
     );
+
+    public Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > ToggleSubCourseStatus(SubCourseStatusToggleRequestDTO subCourseIdRequestDTO);
+
+    public Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > EditSubCourseName(SubCourseRequestEditNameDTO subCourseRequestEditNameDTO);
+
+    public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteSubCourse(
+        SubCourseDeleteDTO subCourseDeleteDTO
+    );
+
+    public Task<
+        Results<Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetSubCourses(string? courseId, string? subCourseName, bool? subCourseStatus);
 }

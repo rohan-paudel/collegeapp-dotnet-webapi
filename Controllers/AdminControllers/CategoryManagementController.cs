@@ -73,4 +73,54 @@ public class CategoryManagementController : ControllerBase
             .ConfigureAwait(true);
         return result;
     }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > ToggleSubCourseStatus(SubCourseStatusToggleRequestDTO subCourseStatusToggleRequestDTO)
+    {
+        var result = await _categoryManagementDL
+            .ToggleSubCourseStatus(subCourseStatusToggleRequestDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > EditSubCourseName(SubCourseRequestEditNameDTO subCourseRequestEditNameDTO)
+    {
+        var result = await _categoryManagementDL
+            .EditSubCourseName(subCourseRequestEditNameDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > DeleteSubCourse(SubCourseDeleteDTO subCourseDeleteDTO)
+    {
+        var result = await _categoryManagementDL
+            .DeleteSubCourse(subCourseDeleteDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetSubCourses(
+        [FromQuery] string? courseId,
+        [FromQuery] string? subCourseName,
+        [FromQuery] bool? subCourseStatus
+    )
+    {
+        var result = await _categoryManagementDL.GetSubCourses(
+            courseId,
+            subCourseName,
+            subCourseStatus
+        );
+        return result;
+    }
 }

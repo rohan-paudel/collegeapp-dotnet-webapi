@@ -82,7 +82,7 @@ public class CategoryManagementDL : ICategoryManagementDL
         {
             CourseModel? model = await _dataContext
                 .CourseModel
-                .FirstAsync(x => x.Id == courseIdRequestDTO.CourseId)
+                .FirstOrDefaultAsync(x => x.Id == courseIdRequestDTO.CourseId)
                 .ConfigureAwait(true);
             if (model != null)
             {
@@ -343,6 +343,205 @@ public class CategoryManagementDL : ICategoryManagementDL
         catch (Exception ex)
         {
             // Handle exceptions appropriately, e.g., log or report the error
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > ToggleSubCourseStatus(SubCourseStatusToggleRequestDTO subCourseIdRequestDTO)
+    {
+        try
+        {
+            SubCourseModel? model = await _dataContext
+                .SubCourseModel
+                .FirstOrDefaultAsync(x => x.Id == subCourseIdRequestDTO.SubCourseId)
+                .ConfigureAwait(true);
+
+            if (model == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No SubCourse Found with the given id."
+                    }
+                );
+            }
+            model.Status = !model.Status;
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new());
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Record Found"
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > EditSubCourseName(SubCourseRequestEditNameDTO subCourseRequestEditNameDTO)
+    {
+        try
+        {
+            SubCourseModel? model = await _dataContext
+                .SubCourseModel
+                .FirstOrDefaultAsync(x => x.Id == subCourseRequestEditNameDTO.SubCourseId)
+                .ConfigureAwait(true);
+
+            if (model == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Record Found"
+                    }
+                );
+            }
+
+            model.Name = subCourseRequestEditNameDTO.Name;
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new());
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Record Found"
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > DeleteSubCourse(SubCourseDeleteDTO subCourseDeleteDTO)
+    {
+        try
+        {
+            SubCourseModel? model = await _dataContext
+                .SubCourseModel
+                .FirstOrDefaultAsync(x => x.Id == subCourseDeleteDTO.SubCourseId)
+                .ConfigureAwait(true);
+
+            if (model == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Record Found"
+                    }
+                );
+            }
+
+            _dataContext.SubCourseModel.Remove(model);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new());
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Record Found"
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetSubCourses(string? courseId, string? subCourseName, bool? subCourseStatus)
+    {
+        try
+        {
+            IQueryable<SubCourseModel> querySubCourse = _dataContext.SubCourseModel;
+
+            if (!string.IsNullOrWhiteSpace(courseId))
+            {
+                querySubCourse = querySubCourse.Where(x => x.CourseId == courseId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(subCourseName))
+            {
+                querySubCourse = querySubCourse.Where(
+                    x => x.Name.ToLower().Contains(subCourseName)
+                );
+            }
+
+            if (subCourseStatus != null)
+            {
+                querySubCourse = querySubCourse.Where(x => x.Status == subCourseStatus);
+            }
+
+            var subCourseModels = await querySubCourse
+                .Include(p => p.Course)
+                .Select(p => _mapper.Map<SubCourseResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(true);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>(
+                new() { Data = subCourseModels }
+            );
+        }
+        catch (Exception)
+        {
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
                 {

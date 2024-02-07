@@ -10,5 +10,9 @@ public class UserRegisterProfile : Profile
             .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
 
         CreateMap<CourseModel, CourseResponseDTO>();
+
+        CreateMap<CourseModel, CourseResponseForSubCourseDTO>();
+
+        CreateMap<SubCourseModel, SubCourseResponseDTO>();
     }
 }
