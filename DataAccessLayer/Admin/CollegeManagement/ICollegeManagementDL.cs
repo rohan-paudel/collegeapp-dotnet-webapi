@@ -17,6 +17,6 @@ public interface ICollegeManagementDL
     );
 
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> EditCollege(
-        CollegeRequestDTO collegeRequestDTO
+        EditCollegeRequestDTO editCollegeRequestDTO
     );
 }

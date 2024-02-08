@@ -1,0 +1,47 @@
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CollegeAppDotnetWebApi;
+
+[ApiController]
+[Route("api/[controller]/[Action]")]
+public class CollgeManagementController : ControllerBase
+{
+    private readonly ICollegeManagementDL _collegeManagementDL;
+
+    public CollgeManagementController(ICollegeManagementDL collegeManagementDL)
+    {
+        _collegeManagementDL = collegeManagementDL;
+    }
+
+    [HttpPost]
+    public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetCollege(
+        CollegeRequestDTO collegeRequestDTO
+    )
+    {
+        var result = await _collegeManagementDL.SetCollege(collegeRequestDTO).ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > EditCollege(EditCollegeRequestDTO editCollegeRequestDTO)
+    {
+        var result = await _collegeManagementDL
+            .EditCollege(editCollegeRequestDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > ToggleCollegeStatus(CollegeStatusToggleRequestDTO collegeStatusToggleRequestDTO)
+    {
+        var result = await _collegeManagementDL
+            .ToggleCollegeStatus(collegeStatusToggleRequestDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+}

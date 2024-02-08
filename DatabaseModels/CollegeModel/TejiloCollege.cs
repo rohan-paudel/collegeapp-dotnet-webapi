@@ -6,7 +6,9 @@ namespace CollegeAppDotnetWebApi;
 public class TejiloCollege
 {
     [Key]
-    public string Id { get; set; } = new Guid().ToString();
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    public bool Status { get; set; } = true;
 
     [Required]
     public string Name { get; set; } = "";
@@ -17,7 +19,6 @@ public class TejiloCollege
     [Required]
     public string Email { get; set; } = "";
 
-    [Required]
     public string Telephone { get; set; } = "";
 
     [Required]

@@ -63,6 +63,7 @@ builder
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICollegeManagementDL, CollegeManagementDL>();
 builder.Services.AddScoped<ITopicManagementDL, TopicManagementDL>();
 builder.Services.AddScoped<ISubjectManagementDL, SubjectManagementDL>();
 builder.Services.AddScoped<ICategoryManagementDL, CategoryManagementDL>();

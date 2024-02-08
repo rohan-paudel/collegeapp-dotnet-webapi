@@ -90,7 +90,7 @@ public class CategoryManagementDL : ICategoryManagementDL
                 int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
                 if (rowsAffected > 0)
                 {
-                    return TypedResults.Ok<ResponseDTO<string>>(new());
+                    return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
                 }
                 else
                 {
