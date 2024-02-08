@@ -34,5 +34,10 @@ public class UserRegisterProfile : Profile
         CreateMap<SubjectModel, SubjectResponseOnlyNameDTO>();
 
         CreateMap<TopicModel, TopicResponseDTO>();
+
+        CreateMap<TejiloUser, EditStudentRequestDTO>();
+
+        CreateMap<EditStudentRequestDTO, TejiloUser>()
+            .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
     }
 }

@@ -10,4 +10,8 @@ public interface IUserManagementDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> RegisterStudent(
         RegisterRequestDTO registerRequestDTO
     );
+
+    public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> EditStudent(
+        EditStudentRequestDTO editStudentRequestDTO
+    );
 }

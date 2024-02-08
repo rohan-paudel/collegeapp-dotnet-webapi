@@ -25,6 +25,92 @@ public class UserManagementDL : IUserManagementDL
 
     public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > EditStudent(EditStudentRequestDTO editStudentRequestDTO)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(editStudentRequestDTO.StudentId);
+
+            if (user == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No such student found"
+                    }
+                );
+            }
+
+            var rowsAffected = await _userManager
+                .UpdateAsync(_mapper.Map(editStudentRequestDTO, user))
+                .ConfigureAwait(false);
+
+            if (rowsAffected.Succeeded)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Someting went wrong",
+                        Errors = rowsAffected.Errors
+                    }
+                );
+            }
+        }
+        catch (DbUpdateException e)
+        {
+            if (
+                (e.InnerException?.Message.Contains("Duplicate")) == true
+                && (e.InnerException?.Message.Contains("AspNetUsers.IX_AspNetUsers_PhoneNumber"))
+                    == true
+            )
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong.",
+                        Errors = new List<IdentityError>()
+                        {
+                            new()
+                            {
+                                Code = "Duplicate Phone Number",
+                                Description = "Phone Number entered is already in use"
+                            }
+                        }
+                    }
+                );
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong."
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something Went Wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > RegisterStudent(RegisterRequestDTO registerRequestDTO)
     {
         TejiloUser tejiloUser = _mapper.Map<TejiloUser>(registerRequestDTO);
