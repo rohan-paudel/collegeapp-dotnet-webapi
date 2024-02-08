@@ -25,7 +25,7 @@ public class SubjectManagementDL : ISubjectManagementDL
             SubjectModel? model = await _dataContext
                 .SubjectModel
                 .FirstOrDefaultAsync(x => x.Id == subjectDeleteDTO.SubjectId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -39,7 +39,7 @@ public class SubjectManagementDL : ISubjectManagementDL
             }
 
             _dataContext.SubjectModel.Remove(model);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -76,7 +76,7 @@ public class SubjectManagementDL : ISubjectManagementDL
             SubjectModel? model = await _dataContext
                 .SubjectModel
                 .FirstOrDefaultAsync(x => x.Id == subjectRequestEditNameDTO.SubjectId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -90,7 +90,7 @@ public class SubjectManagementDL : ISubjectManagementDL
             }
 
             model.Name = subjectRequestEditNameDTO.Name;
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -154,7 +154,7 @@ public class SubjectManagementDL : ISubjectManagementDL
                 .Include(p => p.SubCourses)
                 .Select(p => _mapper.Map<SubjectResponseDTO>(p))
                 .ToListAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             return TypedResults.Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>(
                 new() { Data = subjectModels }
@@ -204,9 +204,9 @@ public class SubjectManagementDL : ISubjectManagementDL
                 subjectModels.Add(new SubjectModel { Name = substring });
             }
 
-            await _dataContext.SubjectModel.AddRangeAsync(subjectModels).ConfigureAwait(true);
+            await _dataContext.SubjectModel.AddRangeAsync(subjectModels).ConfigureAwait(false);
 
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (rowsAffected > 0)
             {
@@ -245,7 +245,7 @@ public class SubjectManagementDL : ISubjectManagementDL
             SubjectModel? model = await _dataContext
                 .SubjectModel
                 .FirstOrDefaultAsync(x => x.Id == subjectStatusToggleRequestDTO.SubjectId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -258,7 +258,7 @@ public class SubjectManagementDL : ISubjectManagementDL
                 );
             }
             model.Status = !model.Status;
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());

@@ -19,7 +19,7 @@ public class TopicManagementController : ControllerBase
         TopicRequestDTO topicRequestDTO
     )
     {
-        var result = await _topicManagementDL.SetTopic(topicRequestDTO).ConfigureAwait(true);
+        var result = await _topicManagementDL.SetTopic(topicRequestDTO).ConfigureAwait(false);
         return result;
     }
 
@@ -30,7 +30,7 @@ public class TopicManagementController : ControllerBase
     {
         var result = await _topicManagementDL
             .ToggleTopicStatus(topicStatusToggleRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -41,7 +41,7 @@ public class TopicManagementController : ControllerBase
     {
         var result = await _topicManagementDL
             .EditTopicName(topicRequestEditNameDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -50,7 +50,7 @@ public class TopicManagementController : ControllerBase
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > DeleteTopic(TopicDeleteDTO topicDeleteDTO)
     {
-        var result = await _topicManagementDL.DeleteTopic(topicDeleteDTO).ConfigureAwait(true);
+        var result = await _topicManagementDL.DeleteTopic(topicDeleteDTO).ConfigureAwait(false);
         return result;
     }
 
@@ -67,7 +67,7 @@ public class TopicManagementController : ControllerBase
     {
         var result = await _topicManagementDL
             .GetTopics(courseId, subcourseId, subjectId, topicName, topicStatus)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 }

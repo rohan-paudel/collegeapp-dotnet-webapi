@@ -23,6 +23,115 @@ public class UserManagementDL : IUserManagementDL
         _mapper = mapper;
     }
 
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > RegisterStudent(RegisterRequestDTO registerRequestDTO)
+    {
+        TejiloUser tejiloUser = _mapper.Map<TejiloUser>(registerRequestDTO);
+        try
+        {
+            var isCreated = await _userManager
+                .CreateAsync(tejiloUser, registerRequestDTO.Password)
+                .ConfigureAwait(false);
+            if (isCreated.Succeeded)
+            {
+                var user = await _userManager.FindByEmailAsync(tejiloUser.Email!);
+
+                if (user != null)
+                {
+                    var roleResult = await _userManager
+                        .AddToRoleAsync(user, Roles.User)
+                        .ConfigureAwait(false);
+
+                    if (roleResult.Succeeded)
+                    {
+                        return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+                    }
+                    else
+                    {
+                        var deletedUser = await _userManager
+                            .DeleteAsync(user)
+                            .ConfigureAwait(false);
+                        return TypedResults.BadRequest<ResponseDTO<string>>(
+                            new()
+                            {
+                                StatusCode = StatusCodes.Status400BadRequest,
+                                Message = "Something went wrong."
+                            }
+                        );
+                    }
+                }
+                else
+                {
+                    return TypedResults.BadRequest<ResponseDTO<string>>(
+                        new()
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            Message = "",
+                            Errors = isCreated.Errors
+                        }
+                    );
+                }
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "",
+                        Errors = isCreated.Errors
+                    }
+                );
+            }
+        }
+        catch (DbUpdateException e)
+        {
+            if (
+                (e.InnerException?.Message.Contains("Duplicate")) == true
+                && (e.InnerException?.Message.Contains("AspNetUsers.IX_AspNetUsers_PhoneNumber"))
+                    == true
+            )
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong.",
+                        Errors = new List<IdentityError>()
+                        {
+                            new()
+                            {
+                                Code = "Duplicate Phone Number",
+                                Description = "Phone Number entered is already in use"
+                            }
+                        }
+                    }
+                );
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong."
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong."
+                }
+            );
+        }
+    }
+
     public async Task<RegisterResponseDTO> RegisterUser(RegisterRequestDTO registerRequestDTO)
     {
         RegisterResponseDTO successRegisterResponseDTO = new();

@@ -45,7 +45,7 @@ public class CollegeManagementDL : ICollegeManagementDL
 
             _mapper.Map(editCollegeRequestDTO, college);
             // _dataContext.TejiloCollege.Update(_mapper.Map<TejiloCollege>(editCollegeRequestDTO));
-            var rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            var rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (rowsAffected > 0)
             {
@@ -102,7 +102,7 @@ public class CollegeManagementDL : ICollegeManagementDL
                 .Include(x => x.Students)
                 .Select(p => _mapper.Map<CollegeResponseDTO>(p))
                 .ToListAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             return TypedResults.Ok<ResponseDTO<IEnumerable<CollegeResponseDTO>>>(
                 new() { Data = collegeModels }
@@ -129,8 +129,8 @@ public class CollegeManagementDL : ICollegeManagementDL
             await _dataContext
                 .TejiloCollege
                 .AddAsync(_mapper.Map<TejiloCollege>(collegeRequestDTO))
-                .ConfigureAwait(true);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+                .ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (rowsAffected > 0)
             {
@@ -168,12 +168,12 @@ public class CollegeManagementDL : ICollegeManagementDL
             TejiloCollege? model = await _dataContext
                 .TejiloCollege
                 .FirstOrDefaultAsync(x => x.Id == collegeStatusToggleRequestDTO.CollegeId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model != null)
             {
                 model.Status = !model.Status;
-                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
                 if (rowsAffected > 0)
                 {
                     return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });

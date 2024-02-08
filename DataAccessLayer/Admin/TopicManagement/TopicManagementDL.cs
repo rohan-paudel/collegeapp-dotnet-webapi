@@ -25,7 +25,7 @@ public class TopicManagementDL : ITopicManagementDL
             TopicModel? model = await _dataContext
                 .TopicModel
                 .FirstOrDefaultAsync(x => x.Id == topicDeleteDTO.TopicId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -39,7 +39,7 @@ public class TopicManagementDL : ITopicManagementDL
             }
 
             _dataContext.TopicModel.Remove(model);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -80,7 +80,7 @@ public class TopicManagementDL : ITopicManagementDL
                 subjectModel = await _dataContext
                     .SubjectModel
                     .FirstOrDefaultAsync(x => x.Id == topicRequestEditNameDTO.SubjectId)
-                    .ConfigureAwait(true);
+                    .ConfigureAwait(false);
                 if (subjectModel == null)
                 {
                     return TypedResults.BadRequest<ResponseDTO<string>>(
@@ -95,7 +95,7 @@ public class TopicManagementDL : ITopicManagementDL
             TopicModel? model = await _dataContext
                 .TopicModel
                 .FirstOrDefaultAsync(x => x.Id == topicRequestEditNameDTO.TopicId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -114,7 +114,7 @@ public class TopicManagementDL : ITopicManagementDL
                 model.SubjectId = topicRequestEditNameDTO.SubjectId;
             }
 
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -189,7 +189,7 @@ public class TopicManagementDL : ITopicManagementDL
                 .Include(p => p.Subject)
                 .Select(p => _mapper.Map<TopicResponseDTO>(p))
                 .ToListAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             return TypedResults.Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>(
                 new() { Data = topicModels }
@@ -220,7 +220,7 @@ public class TopicManagementDL : ITopicManagementDL
                 .SubjectModel
                 .Where(x => x.Id == topicRequestDTO.SubjectId)
                 .FirstOrDefaultAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (data == null)
             {
@@ -258,8 +258,8 @@ public class TopicManagementDL : ITopicManagementDL
                 );
             }
 
-            await _dataContext.TopicModel.AddRangeAsync(topicModels).ConfigureAwait(true);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            await _dataContext.TopicModel.AddRangeAsync(topicModels).ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (rowsAffected > 0)
             {
@@ -297,7 +297,7 @@ public class TopicManagementDL : ITopicManagementDL
             TopicModel? model = await _dataContext
                 .TopicModel
                 .FirstOrDefaultAsync(x => x.Id == topicStatusToggleRequestDTO.TopicId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -310,7 +310,7 @@ public class TopicManagementDL : ITopicManagementDL
                 );
             }
             model.Status = !model.Status;
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());

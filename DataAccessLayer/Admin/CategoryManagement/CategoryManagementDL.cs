@@ -43,8 +43,8 @@ public class CategoryManagementDL : ICategoryManagementDL
                 courseModels.Add(new CourseModel() { Name = courseRequestDTO.Name });
             }
 
-            await _dataContext.CourseModel.AddRangeAsync(courseModels).ConfigureAwait(true);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            await _dataContext.CourseModel.AddRangeAsync(courseModels).ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (rowsAffected > 0)
             {
@@ -83,11 +83,11 @@ public class CategoryManagementDL : ICategoryManagementDL
             CourseModel? model = await _dataContext
                 .CourseModel
                 .FirstOrDefaultAsync(x => x.Id == courseIdRequestDTO.CourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
             if (model != null)
             {
                 model.Status = !model.Status;
-                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
                 if (rowsAffected > 0)
                 {
                     return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
@@ -135,11 +135,11 @@ public class CategoryManagementDL : ICategoryManagementDL
             CourseModel model = await _dataContext
                 .CourseModel
                 .FirstAsync(x => x.Id == courseRequestEditNameDTO.CourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
             if (model != null)
             {
                 model.Name = courseRequestEditNameDTO.Name;
-                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
                 if (rowsAffected > 0)
                 {
                     return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -187,11 +187,11 @@ public class CategoryManagementDL : ICategoryManagementDL
             CourseModel model = await _dataContext
                 .CourseModel
                 .FirstAsync(x => x.Id == courseDeleteDTO.CourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
             if (model != null)
             {
                 _dataContext.CourseModel.Remove(model);
-                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+                int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
                 if (rowsAffected > 0)
                 {
                     return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -253,7 +253,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             var courseModels = await queryCourse
                 .Select(p => _mapper.Map<CourseResponseDTO>(p))
                 .ToListAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             return TypedResults.Ok<ResponseDTO<IEnumerable<CourseResponseDTO>>>(
                 new() { Data = courseModels }
@@ -284,7 +284,7 @@ public class CategoryManagementDL : ICategoryManagementDL
                 .CourseModel
                 .Where(x => x.Id == subCourseRequestDTO.CourseId)
                 .FirstOrDefaultAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (data == null)
             {
@@ -322,8 +322,8 @@ public class CategoryManagementDL : ICategoryManagementDL
                 );
             }
 
-            await _dataContext.SubCourseModel.AddRangeAsync(subCourseModels).ConfigureAwait(true);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            await _dataContext.SubCourseModel.AddRangeAsync(subCourseModels).ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
 
             if (rowsAffected > 0)
             {
@@ -362,7 +362,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             SubCourseModel? model = await _dataContext
                 .SubCourseModel
                 .FirstOrDefaultAsync(x => x.Id == subCourseIdRequestDTO.SubCourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -375,7 +375,7 @@ public class CategoryManagementDL : ICategoryManagementDL
                 );
             }
             model.Status = !model.Status;
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -412,7 +412,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             SubCourseModel? model = await _dataContext
                 .SubCourseModel
                 .FirstOrDefaultAsync(x => x.Id == subCourseRequestEditNameDTO.SubCourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -426,7 +426,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             }
 
             model.Name = subCourseRequestEditNameDTO.Name;
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -463,7 +463,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             SubCourseModel? model = await _dataContext
                 .SubCourseModel
                 .FirstOrDefaultAsync(x => x.Id == subCourseDeleteDTO.SubCourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -477,7 +477,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             }
 
             _dataContext.SubCourseModel.Remove(model);
-            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());
@@ -534,7 +534,7 @@ public class CategoryManagementDL : ICategoryManagementDL
                 .Include(p => p.Course)
                 .Select(p => _mapper.Map<SubCourseResponseDTO>(p))
                 .ToListAsync()
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             return TypedResults.Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>(
                 new() { Data = subCourseModels }
@@ -561,7 +561,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             SubjectModel? model = await _dataContext
                 .SubjectModel
                 .FirstOrDefaultAsync(x => x.Id == subCourseSubjectSetDTO.SubjectId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
 
             if (model == null)
             {
@@ -577,7 +577,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             SubCourseModel? subCourseModel = await _dataContext
                 .SubCourseModel
                 .FirstOrDefaultAsync(x => x.Id == subCourseSubjectSetDTO.SubCourseId)
-                .ConfigureAwait(true);
+                .ConfigureAwait(false);
             if (subCourseModel == null)
             {
                 return TypedResults.BadRequest<ResponseDTO<string>>(
@@ -592,7 +592,7 @@ public class CategoryManagementDL : ICategoryManagementDL
             model.SubCourses.Add(subCourseModel);
             subCourseModel.Subjects.Add(model);
 
-            var rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(true);
+            var rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
             if (rowsAffected > 0)
             {
                 return TypedResults.Ok<ResponseDTO<string>>(new());

@@ -19,7 +19,7 @@ public class CategoryManagementController : ControllerBase
         CourseRequestDTO courseRequestDTO
     )
     {
-        var result = await _categoryManagementDL.SetCourse(courseRequestDTO).ConfigureAwait(true);
+        var result = await _categoryManagementDL.SetCourse(courseRequestDTO).ConfigureAwait(false);
         return result;
     }
 
@@ -30,7 +30,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .ToggleCourseStatus(courseStatusToggleRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -41,7 +41,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .EditCourseName(courseRequestEditNameDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -50,7 +50,9 @@ public class CategoryManagementController : ControllerBase
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > DeleteCourse(CourseDeleteDTO courseDeleteDTO)
     {
-        var result = await _categoryManagementDL.DeleteCourse(courseDeleteDTO).ConfigureAwait(true);
+        var result = await _categoryManagementDL
+            .DeleteCourse(courseDeleteDTO)
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -70,7 +72,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .SetSubCourse(subCourseRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -81,7 +83,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .ToggleSubCourseStatus(subCourseStatusToggleRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -92,7 +94,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .EditSubCourseName(subCourseRequestEditNameDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -103,7 +105,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .DeleteSubCourse(subCourseDeleteDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -131,7 +133,7 @@ public class CategoryManagementController : ControllerBase
     {
         var result = await _categoryManagementDL
             .AddSubject(subCourseSubjectSetDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 }

@@ -19,7 +19,7 @@ public class CollgeManagementController : ControllerBase
         CollegeRequestDTO collegeRequestDTO
     )
     {
-        var result = await _collegeManagementDL.SetCollege(collegeRequestDTO).ConfigureAwait(true);
+        var result = await _collegeManagementDL.SetCollege(collegeRequestDTO).ConfigureAwait(false);
         return result;
     }
 
@@ -30,7 +30,7 @@ public class CollgeManagementController : ControllerBase
     {
         var result = await _collegeManagementDL
             .EditCollege(editCollegeRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -41,7 +41,7 @@ public class CollgeManagementController : ControllerBase
     {
         var result = await _collegeManagementDL
             .ToggleCollegeStatus(collegeStatusToggleRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -52,7 +52,7 @@ public class CollgeManagementController : ControllerBase
     {
         var result = await _collegeManagementDL
             .GetCollege(searchTerm, collegeStatus)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 }

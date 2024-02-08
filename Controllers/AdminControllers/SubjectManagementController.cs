@@ -19,7 +19,7 @@ public class SubjectManagementController : ControllerBase
         SubjectRequestDTO subjectRequestDTO
     )
     {
-        var result = await _subjectManagementDL.SetSubject(subjectRequestDTO).ConfigureAwait(true);
+        var result = await _subjectManagementDL.SetSubject(subjectRequestDTO).ConfigureAwait(false);
         return result;
     }
 
@@ -30,7 +30,7 @@ public class SubjectManagementController : ControllerBase
     {
         var result = await _subjectManagementDL
             .ToggleSubjectStatus(subjectStatusToggleRequestDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -41,7 +41,7 @@ public class SubjectManagementController : ControllerBase
     {
         var result = await _subjectManagementDL
             .EditSubjectName(subjectRequestEditNameDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -52,7 +52,7 @@ public class SubjectManagementController : ControllerBase
     {
         var result = await _subjectManagementDL
             .DeleteSubject(subjectDeleteDTO)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 
@@ -68,7 +68,7 @@ public class SubjectManagementController : ControllerBase
     {
         var result = await _subjectManagementDL
             .GetSubjects(courseId, subcourseId, subjectName, subjectStatus)
-            .ConfigureAwait(true);
+            .ConfigureAwait(false);
         return result;
     }
 }
