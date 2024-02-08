@@ -195,13 +195,13 @@ public class TopicManagementDL : ITopicManagementDL
                 new() { Data = topicModels }
             );
         }
-        catch (Exception Ex)
+        catch (Exception)
         {
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    Message = Ex.InnerException.Message
+                    Message = "Something went wrong"
                 }
             );
         }
