@@ -142,6 +142,71 @@ public class TopicManagementDL : ITopicManagementDL
         }
     }
 
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetTopics(
+        string? courseId,
+        string? subcourseId,
+        string? subjectId,
+        string? topicName,
+        bool? topicStatus
+    )
+    {
+        try
+        {
+            IQueryable<TopicModel> queryTopic = _dataContext.TopicModel;
+
+            if (!string.IsNullOrWhiteSpace(courseId))
+            {
+                queryTopic = queryTopic.Where(
+                    x => x.Subject.SubCourses.Any(sc => sc.Course.Id == courseId)
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(subcourseId))
+            {
+                queryTopic = queryTopic.Where(
+                    x => x.Subject.SubCourses.Any(sc => sc.Id == subcourseId)
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(subjectId))
+            {
+                queryTopic = queryTopic.Where(x => x.Subject.Id == subjectId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(topicName))
+            {
+                queryTopic = queryTopic.Where(x => x.Name.ToLower().Contains(topicName));
+            }
+
+            if (topicStatus != null)
+            {
+                queryTopic = queryTopic.Where(x => x.Status == topicStatus);
+            }
+
+            var topicModels = await queryTopic
+                .Include(p => p.Subject)
+                .Select(p => _mapper.Map<TopicResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(true);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>(
+                new() { Data = topicModels }
+            );
+        }
+        catch (Exception Ex)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = Ex.InnerException.Message
+                }
+            );
+        }
+    }
+
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetTopic(
         TopicRequestDTO topicRequestDTO
     )

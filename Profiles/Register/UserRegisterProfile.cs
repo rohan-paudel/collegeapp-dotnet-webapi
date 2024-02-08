@@ -19,6 +19,8 @@ public class UserRegisterProfile : Profile
 
         CreateMap<SubjectModel, SubjectResponseDTO>();
 
+        CreateMap<SubjectModel, SubjectResponseOnlyNameDTO>();
+
         CreateMap<TopicModel, TopicResponseDTO>();
     }
 }

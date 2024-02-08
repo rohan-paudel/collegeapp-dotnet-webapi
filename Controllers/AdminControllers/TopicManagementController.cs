@@ -53,4 +53,21 @@ public class TopicManagementController : ControllerBase
         var result = await _topicManagementDL.DeleteTopic(topicDeleteDTO).ConfigureAwait(true);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetTopics(
+        [FromQuery] string? courseId,
+        [FromQuery] string? subcourseId,
+        [FromQuery] string? subjectId,
+        [FromQuery] string? topicName,
+        [FromQuery] bool? topicStatus
+    )
+    {
+        var result = await _topicManagementDL
+            .GetTopics(courseId, subcourseId, subjectId, topicName, topicStatus)
+            .ConfigureAwait(true);
+        return result;
+    }
 }

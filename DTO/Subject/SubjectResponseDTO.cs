@@ -10,3 +10,8 @@ public class SubjectResponseDTO
 
     public List<SubCourseResponseOnlyNameDTO>? SubCourses { get; set; }
 }
+
+public class SubjectResponseOnlyNameDTO
+{
+    public string Name { get; set; } = "";
+}

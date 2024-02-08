@@ -19,4 +19,14 @@ public interface ITopicManagementDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteTopic(
         TopicDeleteDTO topicDeleteDTO
     );
+
+    public Task<
+        Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetTopics(
+        string? courseId,
+        string? subcourseId,
+        string? subjectId,
+        string? topicName,
+        bool? topicStatus
+    );
 }
