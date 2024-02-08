@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -11,5 +12,45 @@ public class TopicManagementController : ControllerBase
     public TopicManagementController(ITopicManagementDL topicManagementDL)
     {
         _topicManagementDL = topicManagementDL;
+    }
+
+    [HttpPost]
+    public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetTopic(
+        TopicRequestDTO topicRequestDTO
+    )
+    {
+        var result = await _topicManagementDL.SetTopic(topicRequestDTO).ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > ToggleTopicStatus(TopicStatusToggleRequestDTO topicStatusToggleRequestDTO)
+    {
+        var result = await _topicManagementDL
+            .ToggleTopicStatus(topicStatusToggleRequestDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > EditTopicName(TopicRequestEditNameDTO topicRequestEditNameDTO)
+    {
+        var result = await _topicManagementDL
+            .EditTopicName(topicRequestEditNameDTO)
+            .ConfigureAwait(true);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > DeleteTopic(TopicDeleteDTO topicDeleteDTO)
+    {
+        var result = await _topicManagementDL.DeleteTopic(topicDeleteDTO).ConfigureAwait(true);
+        return result;
     }
 }

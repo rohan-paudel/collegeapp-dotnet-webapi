@@ -13,8 +13,7 @@ public class TopicRequestDTO
 
 public class TopicRequestEditNameDTO
 {
-    [Required]
-    public string? SubjectId { get; set; } = "";
+    public string? SubjectId { get; set; }
 
     [Required]
     public string TopicId { get; set; } = "";

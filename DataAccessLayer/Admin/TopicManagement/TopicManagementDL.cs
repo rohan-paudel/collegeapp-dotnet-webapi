@@ -217,7 +217,7 @@ public class TopicManagementDL : ITopicManagementDL
                 new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    Message = "Something wend wrong."
+                    Message = "Something went wrong."
                 }
             );
         }
