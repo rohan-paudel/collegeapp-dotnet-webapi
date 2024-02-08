@@ -27,4 +27,14 @@ public class TejiloUser : IdentityUser
     public string CollegeId { get; set; }
 
     public TejiloCollege College { get; set; }
+
+    [ForeignKey("Id")]
+    public string? CourseId { get; set; }
+
+    public CourseModel? Course { get; set; }
+
+    [ForeignKey("Id")]
+    public string? SubCourseId { get; set; }
+
+    public SubCourseModel? SubCourse { get; set; }
 }
