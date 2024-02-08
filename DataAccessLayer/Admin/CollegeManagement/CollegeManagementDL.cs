@@ -74,6 +74,52 @@ public class CollegeManagementDL : ICollegeManagementDL
         }
     }
 
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<CollegeResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetCollege(string? searchTerm, bool? collegeStatus)
+    {
+        try
+        {
+            IQueryable<TejiloCollege> queryCourse = _dataContext.TejiloCollege;
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                queryCourse = queryCourse.Where(
+                    x =>
+                        x.Name.ToLower().Contains(searchTerm.ToLower())
+                        || x.Email.ToLower().Contains(searchTerm.ToLower())
+                        || x.Mobile.Contains(searchTerm.ToLower())
+                        || x.Telephone.Contains(searchTerm.ToLower())
+                );
+            }
+
+            if (collegeStatus != null)
+            {
+                queryCourse = queryCourse.Where(x => x.Status == collegeStatus);
+            }
+
+            var collegeModels = await queryCourse
+                .Include(x => x.Students)
+                .Select(p => _mapper.Map<CollegeResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(true);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<CollegeResponseDTO>>>(
+                new() { Data = collegeModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetCollege(
         CollegeRequestDTO collegeRequestDTO
     )

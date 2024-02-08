@@ -8,7 +8,7 @@ namespace CollegeAppDotnetWebApi.Controllers;
 [ApiController]
 [Route("[controller]/[Action]")]
 [EnableRateLimiting("fixed")]
-[Authorize(Roles = Roles.User, Policy = "PolicyForMobileDevice")]
+// [Authorize(Roles = Roles.User, Policy = "PolicyForMobileDevice")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

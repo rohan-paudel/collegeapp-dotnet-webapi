@@ -109,3 +109,9 @@ public class CollegeDeleteDTO
     [Required]
     public string CollegeId { get; set; } = "";
 }
+
+// public class GetCollegeDTO
+// {
+//     [Required]
+//     public string CollegeId { get; set; } = "";
+// }

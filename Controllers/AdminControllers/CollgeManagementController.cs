@@ -44,4 +44,15 @@ public class CollgeManagementController : ControllerBase
             .ConfigureAwait(true);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<CollegeResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetCollege([FromQuery] string? searchTerm, [FromQuery] bool? collegeStatus)
+    {
+        var result = await _collegeManagementDL
+            .GetCollege(searchTerm, collegeStatus)
+            .ConfigureAwait(true);
+        return result;
+    }
 }

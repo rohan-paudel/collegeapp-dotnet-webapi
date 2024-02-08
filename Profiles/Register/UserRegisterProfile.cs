@@ -12,9 +12,15 @@ public class UserRegisterProfile : Profile
 
         CreateMap<TejiloCollege, EditCollegeRequestDTO>();
 
+        CreateMap<TejiloCollege, CollegeResponseDTO>()
+            .ForMember(dest => dest.CollegeId, src => src.MapFrom(x => x.Id))
+            .ForMember(
+                dest => dest.StudentCount,
+                src => src.MapFrom(x => x.Students != null ? x.Students.Count : 0)
+            );
+
         CreateMap<RegisterRequestDTO, TejiloUser>()
             .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
-
         CreateMap<CourseModel, CourseResponseDTO>();
 
         CreateMap<CourseModel, CourseResponseOnlyNameDTO>();

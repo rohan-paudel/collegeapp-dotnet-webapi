@@ -6,6 +6,10 @@ namespace CollegeAppDotnetWebApi;
 public class RegisterRequestDTO
 {
     [Required]
+    [StringLength(50)]
+    public string CollegeId { get; set; } = "";
+
+    [Required]
     [StringLength(30)]
     public string FullName { get; set; } = "";
 
