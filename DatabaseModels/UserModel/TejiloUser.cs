@@ -23,7 +23,8 @@ public class TejiloUser : IdentityUser
     public string? Address { get; set; }
 
     [ForeignKey("Id")]
-    public string? CollegeId { get; set; }
+    [Required]
+    public string CollegeId { get; set; }
 
-    public TejiloCollege? College { get; set; }
+    public TejiloCollege College { get; set; }
 }
