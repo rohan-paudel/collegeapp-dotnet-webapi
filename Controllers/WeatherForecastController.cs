@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace CollegeAppDotnetWebApi.Controllers;
 [Route("[controller]/[Action]")]
 [EnableRateLimiting("fixed")]
 // [Authorize(Roles = Roles.User, Policy = "PolicyForMobileDevice")]
+[Authorize(Policy = "PolicyForMobileDevice")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
@@ -41,20 +43,20 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    public dynamic Get()
     {
-        return Enumerable
-            .Range(1, 5)
-            .Select(
-                index =>
-                    new WeatherForecast
-                    {
-                        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-                    }
-            )
-            .ToArray();
+        IEnumerable<Claim> claimsIdentities;
+
+        Dictionary<string, string> hey = new();
+
+        claimsIdentities = User.Claims;
+
+        foreach (var claim in claimsIdentities)
+        {
+            hey.Add(claim.Type, claim.Value);
+        }
+
+        return hey;
     }
 
     [HttpGet]

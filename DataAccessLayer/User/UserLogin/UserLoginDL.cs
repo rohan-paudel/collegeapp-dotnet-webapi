@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 
@@ -34,9 +35,44 @@ public class UserLoginDL : IUserLoginDL
         {
             _signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
 
-            var result = await _signInManager
-                .PasswordSignInAsync(loginRequestDTO.Email, loginRequestDTO.Password, true, true)
-                .ConfigureAwait(true);
+            var user = await _userManager
+                .FindByEmailAsync(loginRequestDTO.Email)
+                .ConfigureAwait(false);
+            if (user == null)
+            {
+                // User not found
+                errorResponseDTO.Message = "Please check email or password";
+                return (TypedResults.BadRequest(errorResponseDTO));
+            }
+
+            // var result = await _signInManager
+            //     .PasswordSignInAsync(user, loginRequestDTO.Password, true, true)
+            //     .ConfigureAwait(false);
+
+            var result = await _signInManager.CheckPasswordSignInAsync(
+                user,
+                loginRequestDTO.Password,
+                false
+            );
+            if (!result.Succeeded)
+            {
+                // Failed login attempt
+                errorResponseDTO.Message = "Please check email or password";
+                return (TypedResults.BadRequest(errorResponseDTO));
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim("CollegeId", user.CollegeId),
+                new Claim("CourseId", user.CourseId != null ? user.CourseId : ""),
+                new Claim("SubCourseId", user.SubCourseId != null ? user.SubCourseId : ""),
+                // Add more custom claims as needed
+            };
+            // var result = await _signInManager
+            //     .PasswordSignInAsync(loginRequestDTO.Email, loginRequestDTO.Password, true, true)
+            //     .ConfigureAwait(false);
+
+            await _signInManager.SignInWithClaimsAsync(user, true, claims);
 
             if (!result.Succeeded)
             {
@@ -58,3 +94,5 @@ public class UserLoginDL : IUserLoginDL
         }
     }
 }
+
+public interface IUserClaimsPrincipalFactory { }

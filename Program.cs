@@ -61,6 +61,8 @@ builder
         }
     );
 
+var cookiePolicyOptions = new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict, };
+
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICollegeManagementDL, CollegeManagementDL>();
@@ -207,6 +209,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) { }
 app.UseSwagger();
+
+app.UseCookiePolicy(cookiePolicyOptions);
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
