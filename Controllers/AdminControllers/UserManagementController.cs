@@ -76,4 +76,29 @@ public class UserManagementController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetStudent([FromQuery] string? searchTerm, [FromQuery] bool? studentStatus)
+    {
+        var result = await _userManagementDL
+            .GetStudent(searchTerm, studentStatus)
+            .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateStudentCourseSubCourse(UpdateStudentCourseSubCourse updateStudentCourseSubCourse)
+    {
+        var result = await _userManagementDL
+            .UpdateStudentCourseSubCourse(updateStudentCourseSubCourse)
+            .ConfigureAwait(false);
+        return result;
+    }
 }

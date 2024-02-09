@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Xml.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,16 +11,20 @@ public class UserManagementDL : IUserManagementDL
 {
     private readonly UserManager<TejiloUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+
+    private readonly AppDataContext _dataContext;
     private readonly IMapper _mapper;
 
     public UserManagementDL(
         UserManager<TejiloUser> userManager,
         RoleManager<IdentityRole> roleManager,
+        AppDataContext dataContext,
         IMapper mapper
     )
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _dataContext = dataContext;
         _mapper = mapper;
     }
 
@@ -29,7 +34,9 @@ public class UserManagementDL : IUserManagementDL
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(editStudentRequestDTO.StudentId);
+            var user = await _userManager
+                .FindByIdAsync(editStudentRequestDTO.StudentId)
+                .ConfigureAwait(false);
 
             if (user == null)
             {
@@ -104,6 +111,56 @@ public class UserManagementDL : IUserManagementDL
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
                     Message = "Something Went Wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetStudent(string? searchTerm, bool? studentStatus)
+    {
+        try
+        {
+            IQueryable<TejiloUser> queryCourse = _dataContext.TejiloUsers;
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                queryCourse = queryCourse.Where(
+                    x =>
+                        x.FullName.ToLower().Contains(searchTerm.ToLower())
+                        || x.Email!.ToLower().Contains(searchTerm.ToLower())
+                        || x.PhoneNumber!.Contains(searchTerm.ToLower())
+                );
+            }
+
+            if (studentStatus != null)
+            {
+                queryCourse = queryCourse.Where(x => x.Status == studentStatus);
+            }
+
+            var userModels = await queryCourse
+                .Include(x => x.College)
+                .Include(x => x.SubCourse)
+                .Include(x => x.Course)
+                .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>(
+                new() { Data = userModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
                 }
             );
         }
@@ -308,6 +365,92 @@ public class UserManagementDL : IUserManagementDL
                 }
             };
             return errorRegisterResponseDTO;
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateStudentCourseSubCourse(UpdateStudentCourseSubCourse updateStudentCourseSubCourse)
+    {
+        try
+        {
+            var student = await _userManager
+                .FindByIdAsync(updateStudentCourseSubCourse.StudentId)
+                .ConfigureAwait(false);
+
+            if (student == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No such student found"
+                    }
+                );
+            }
+
+            var course = await _dataContext
+                .CourseModel
+                .FirstOrDefaultAsync(x => x.Id == updateStudentCourseSubCourse.CourseId)
+                .ConfigureAwait(false);
+
+            if (course == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No such course found"
+                    }
+                );
+            }
+
+            var subCourse = await _dataContext
+                .SubCourseModel
+                .FirstOrDefaultAsync(x => x.Id == updateStudentCourseSubCourse.SubCourseId)
+                .ConfigureAwait(false);
+
+            if (subCourse == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No such sub course found"
+                    }
+                );
+            }
+
+            student.CourseId = updateStudentCourseSubCourse.CourseId;
+            student.SubCourseId = updateStudentCourseSubCourse.SubCourseId;
+
+            var rowsAffected = await _userManager.UpdateAsync(student).ConfigureAwait(false);
+
+            if (rowsAffected.Succeeded)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Someting went wrong",
+                        Errors = rowsAffected.Errors
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong."
+                }
+            );
         }
     }
 }

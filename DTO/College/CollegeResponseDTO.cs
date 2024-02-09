@@ -26,3 +26,10 @@ public class CollegeResponseDTO
 
     public int StudentCount { get; set; } = 0;
 }
+
+public class CollegeOnlyNameResponseDTO
+{
+    public string? Id { get; set; }
+
+    public string? Name { get; set; }
+}

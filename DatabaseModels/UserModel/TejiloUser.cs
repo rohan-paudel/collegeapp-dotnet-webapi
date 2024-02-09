@@ -13,9 +13,14 @@ public class TejiloUser : IdentityUser
     [StringLength(10, MinimumLength = 10)]
     [RegularExpression("^9[0-9]*$", ErrorMessage = "Phone number must start with '9'.")]
     public override string? PhoneNumber { get; set; }
-    public string? FullName { get; set; }
 
-    public string? Gender { get; set; }
+    public bool Status { get; set; } = true;
+
+    [Required]
+    public string FullName { get; set; } = "";
+
+    [Required]
+    public string Gender { get; set; } = "male";
 
     [Required]
     public DateTime DateOfBirth { get; set; }

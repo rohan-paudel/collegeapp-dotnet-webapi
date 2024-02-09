@@ -12,6 +12,8 @@ public class UserRegisterProfile : Profile
 
         CreateMap<TejiloCollege, EditCollegeRequestDTO>();
 
+        CreateMap<TejiloCollege, CollegeOnlyNameResponseDTO>();
+
         CreateMap<TejiloCollege, CollegeResponseDTO>()
             .ForMember(dest => dest.CollegeId, src => src.MapFrom(x => x.Id))
             .ForMember(
@@ -39,5 +41,7 @@ public class UserRegisterProfile : Profile
 
         CreateMap<EditStudentRequestDTO, TejiloUser>()
             .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
+
+        CreateMap<TejiloUser, RegisterStudentResponseDTO>();
     }
 }

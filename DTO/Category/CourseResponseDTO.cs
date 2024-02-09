@@ -9,5 +9,6 @@ public class CourseResponseDTO
 
 public class CourseResponseOnlyNameDTO
 {
+    public string Id { get; set; } = "";
     public string Name { get; set; } = "";
 }

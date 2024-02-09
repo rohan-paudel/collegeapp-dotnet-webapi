@@ -10,5 +10,6 @@ public class SubCourseResponseDTO
 
 public class SubCourseResponseOnlyNameDTO
 {
+    public string Id { get; set; } = "";
     public string Name { get; set; } = "";
 }

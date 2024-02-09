@@ -9,6 +9,7 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public AppDataContext(DbContextOptions<AppDataContext> options)
         : base(options) { }
 
+    public DbSet<TejiloUser> TejiloUsers { get; set; }
     public DbSet<TejiloCollege> TejiloCollege { get; set; }
     public DbSet<CourseModel> CourseModel { get; set; }
     public DbSet<SubCourseModel> SubCourseModel { get; set; }
