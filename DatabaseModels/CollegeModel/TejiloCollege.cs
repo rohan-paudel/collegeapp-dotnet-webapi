@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Crypto;
 
 namespace CollegeAppDotnetWebApi;
 
+[Index(nameof(Status))]
+[Index(nameof(Name))]
 public class TejiloCollege
 {
     [Key]
