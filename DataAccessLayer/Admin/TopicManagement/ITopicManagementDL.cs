@@ -23,9 +23,9 @@ public interface ITopicManagementDL
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetTopics(
-        string? courseId,
-        string? subcourseId,
-        string? subjectId,
+        int? courseId,
+        int? subcourseId,
+        int? subjectId,
         string? topicName,
         bool? topicStatus
     );

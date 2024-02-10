@@ -6,7 +6,7 @@ public class NoteResponseDTO
 
     public string Description { get; set; } = "";
 
-    public string TopicId { get; set; } = "";
+    public int TopicId { get; set; }
 
     public string FileName { get; set; } = "";
 

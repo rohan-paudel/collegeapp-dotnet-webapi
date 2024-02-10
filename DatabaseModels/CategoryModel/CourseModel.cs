@@ -9,7 +9,7 @@ namespace CollegeAppDotnetWebApi;
 public class CourseModel
 {
     [Key]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public int Id { get; set; }
 
     public bool Status { get; set; } = true;
 

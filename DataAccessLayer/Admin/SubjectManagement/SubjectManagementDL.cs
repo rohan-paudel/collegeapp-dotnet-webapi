@@ -120,20 +120,20 @@ public class SubjectManagementDL : ISubjectManagementDL
 
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetSubjects(string? courseId, string? subcourseId, string? subjectName, bool? subjectStatus)
+    > GetSubjects(int? courseId, int? subcourseId, string? subjectName, bool? subjectStatus)
     {
         try
         {
             IQueryable<SubjectModel> querySubject = _dataContext.SubjectModel;
 
-            if (!string.IsNullOrWhiteSpace(courseId))
+            if (courseId != null)
             {
                 querySubject = querySubject.Where(
                     x => x.SubCourses.Any(sc => sc.Course.Id == courseId)
                 );
             }
 
-            if (!string.IsNullOrWhiteSpace(subcourseId))
+            if (subcourseId != null)
             {
                 querySubject = querySubject.Where(
                     x => x.SubCourses.Any(sc => sc.Id == subcourseId)

@@ -28,7 +28,7 @@ public class NoteManagementController : ControllerBase
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetNotes(
-        [FromQuery] string? topicId,
+        [FromQuery] int? topicId,
         [FromQuery] string? noteName,
         [FromQuery] [Required] int page,
         [FromQuery] bool? noteStatus

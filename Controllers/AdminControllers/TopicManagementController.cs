@@ -58,9 +58,9 @@ public class TopicManagementController : ControllerBase
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetTopics(
-        [FromQuery] string? courseId,
-        [FromQuery] string? subcourseId,
-        [FromQuery] string? subjectId,
+        [FromQuery] int? courseId,
+        [FromQuery] int? subcourseId,
+        [FromQuery] int? subjectId,
         [FromQuery] string? topicName,
         [FromQuery] bool? topicStatus
     )

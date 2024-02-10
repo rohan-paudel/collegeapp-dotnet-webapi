@@ -171,7 +171,7 @@ public class UserManagementDL : IUserManagementDL
             Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
             BadRequest<ResponseDTO<string>>
         >
-    > GetStudentByCollegeId(string collegeId, bool? studentStatus)
+    > GetStudentByCollegeId(int collegeId, bool? studentStatus)
     {
         try
         {

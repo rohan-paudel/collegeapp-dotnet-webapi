@@ -113,7 +113,7 @@ public class CategoryManagementController : ControllerBase
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetSubCourses(
-        [FromQuery] string? courseId,
+        [FromQuery] int? courseId,
         [FromQuery] string? subCourseName,
         [FromQuery] bool? subCourseStatus
     )

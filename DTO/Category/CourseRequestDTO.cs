@@ -11,7 +11,7 @@ public class CourseRequestDTO
 public class CourseRequestEditNameDTO
 {
     [Required]
-    public string CourseId { get; set; } = "";
+    public int CourseId { get; set; }
 
     [Required]
     public string Name { get; set; } = "";
@@ -20,11 +20,11 @@ public class CourseRequestEditNameDTO
 public class CourseDeleteDTO
 {
     [Required]
-    public string CourseId { get; set; } = "";
+    public int CourseId { get; set; }
 }
 
 public class CourseStatusToggleRequestDTO
 {
     [Required]
-    public string CourseId { get; set; } = "";
+    public int CourseId { get; set; }
 }

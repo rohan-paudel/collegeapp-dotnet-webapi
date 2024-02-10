@@ -8,8 +8,8 @@ public class UpdateStudentCourseSubCourse
     public string StudentId { get; set; } = "";
 
     [Required]
-    public string CourseId { get; set; } = "";
+    public int CourseId { get; set; }
 
     [Required]
-    public string SubCourseId { get; set; } = "";
+    public int SubCourseId { get; set; }
 }

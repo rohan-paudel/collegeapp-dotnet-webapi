@@ -13,7 +13,7 @@ public class SubjectRequestDTO
 public class SubjectRequestEditNameDTO
 {
     [Required]
-    public string SubjectId { get; set; } = "";
+    public int SubjectId { get; set; }
 
     [Required]
     public string Name { get; set; } = "";
@@ -22,17 +22,17 @@ public class SubjectRequestEditNameDTO
 public class SubjectDeleteDTO
 {
     [Required]
-    public string SubjectId { get; set; } = "";
+    public int SubjectId { get; set; }
 }
 
 public class SubjectStatusToggleRequestDTO
 {
     [Required]
-    public string SubjectId { get; set; } = "";
+    public int SubjectId { get; set; }
 }
 
 public class SubjectWithIdDTO
 {
     [Required]
-    public string SubjectId { get; set; } = "";
+    public int SubjectId { get; set; }
 }

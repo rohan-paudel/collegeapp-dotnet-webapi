@@ -42,7 +42,7 @@ public interface ICategoryManagementDL
 
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetSubCourses(string? courseId, string? subCourseName, bool? subCourseStatus);
+    > GetSubCourses(int? courseId, string? subCourseName, bool? subCourseStatus);
 
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> AddSubject(
         SubCourseSubjectSetDTO subCourseSubjectSetDTO

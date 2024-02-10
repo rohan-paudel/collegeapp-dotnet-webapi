@@ -8,13 +8,13 @@ public class SubCourseRequestDTO
     public string Name { get; set; } = "";
 
     [Required]
-    public string CourseId { get; set; } = "";
+    public int CourseId { get; set; }
 }
 
 public class SubCourseRequestEditNameDTO
 {
     [Required]
-    public string SubCourseId { get; set; } = "";
+    public int SubCourseId { get; set; }
 
     [Required]
     public string Name { get; set; } = "";
@@ -23,20 +23,20 @@ public class SubCourseRequestEditNameDTO
 public class SubCourseDeleteDTO
 {
     [Required]
-    public string SubCourseId { get; set; } = "";
+    public int SubCourseId { get; set; }
 }
 
 public class SubCourseStatusToggleRequestDTO
 {
     [Required]
-    public string SubCourseId { get; set; } = "";
+    public int SubCourseId { get; set; }
 }
 
 public class SubCourseSubjectSetDTO
 {
     [Required]
-    public string SubCourseId { get; set; } = "";
+    public int SubCourseId { get; set; }
 
     [Required]
-    public string SubjectId { get; set; } = "";
+    public int SubjectId { get; set; }
 }

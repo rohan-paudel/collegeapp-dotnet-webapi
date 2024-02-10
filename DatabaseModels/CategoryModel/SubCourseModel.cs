@@ -6,10 +6,11 @@ namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(Status))]
 [Index(nameof(Name))]
+[Index(nameof(CourseId))]
 public class SubCourseModel
 {
     [Key]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public int Id { get; set; }
 
     public bool Status { get; set; } = true;
 
@@ -18,7 +19,7 @@ public class SubCourseModel
 
     [Required]
     [ForeignKey("Id")]
-    public string CourseId { get; set; } = "";
+    public int CourseId { get; set; }
 
     public CourseModel Course { get; set; }
 

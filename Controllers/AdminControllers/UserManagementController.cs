@@ -109,7 +109,7 @@ public class UserManagementController : ControllerBase
             Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
             BadRequest<ResponseDTO<string>>
         >
-    > GetStudentsByCollegeId([FromQuery] [Required] string collegeId, bool? studentStatus)
+    > GetStudentsByCollegeId([FromQuery] [Required] int collegeId, bool? studentStatus)
     {
         var result = await _userManagementDL
             .GetStudentByCollegeId(collegeId, studentStatus)

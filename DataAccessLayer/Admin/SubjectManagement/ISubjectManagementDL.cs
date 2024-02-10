@@ -22,5 +22,5 @@ public interface ISubjectManagementDL
 
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetSubjects(string? courseId, string? subcourseId, string? subjectName, bool? subjectStatus);
+    > GetSubjects(int? courseId, int? subcourseId, string? subjectName, bool? subjectStatus);
 }

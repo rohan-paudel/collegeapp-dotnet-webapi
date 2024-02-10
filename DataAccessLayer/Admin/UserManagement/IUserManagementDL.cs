@@ -31,7 +31,7 @@ public interface IUserManagementDL
             Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
             BadRequest<ResponseDTO<string>>
         >
-    > GetStudentByCollegeId(string collegeId, bool? studentStatus);
+    > GetStudentByCollegeId(int collegeId, bool? studentStatus);
 
     public Task<
         Results<Ok<ResponseDTO<RegisterStudentResponseDTO>>, BadRequest<ResponseDTO<string>>>

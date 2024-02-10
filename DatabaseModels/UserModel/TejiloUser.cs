@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(PhoneNumber), IsUnique = true)]
+[Index(nameof(CollegeId))]
+[Index(nameof(CourseId))]
+[Index(nameof(SubCourseId))]
 public class TejiloUser : IdentityUser
 {
     [Phone]
@@ -29,17 +32,17 @@ public class TejiloUser : IdentityUser
 
     [ForeignKey("Id")]
     [Required]
-    public string CollegeId { get; set; }
+    public int CollegeId { get; set; }
 
     public TejiloCollege College { get; set; }
 
     [ForeignKey("Id")]
-    public string? CourseId { get; set; }
+    public int? CourseId { get; set; }
 
     public CourseModel? Course { get; set; }
 
     [ForeignKey("Id")]
-    public string? SubCourseId { get; set; }
+    public int? SubCourseId { get; set; }
 
     public SubCourseModel? SubCourse { get; set; }
 }

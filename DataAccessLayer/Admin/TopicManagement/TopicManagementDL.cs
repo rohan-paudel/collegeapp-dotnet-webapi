@@ -111,7 +111,7 @@ public class TopicManagementDL : ITopicManagementDL
             model.Name = topicRequestEditNameDTO.Name;
             if (topicRequestEditNameDTO.SubjectId != null)
             {
-                model.SubjectId = topicRequestEditNameDTO.SubjectId;
+                model.SubjectId = (int)topicRequestEditNameDTO.SubjectId;
             }
 
             int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
@@ -145,9 +145,9 @@ public class TopicManagementDL : ITopicManagementDL
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetTopics(
-        string? courseId,
-        string? subcourseId,
-        string? subjectId,
+        int? courseId,
+        int? subcourseId,
+        int? subjectId,
         string? topicName,
         bool? topicStatus
     )
@@ -156,21 +156,21 @@ public class TopicManagementDL : ITopicManagementDL
         {
             IQueryable<TopicModel> queryTopic = _dataContext.TopicModel;
 
-            if (!string.IsNullOrWhiteSpace(courseId))
+            if (courseId != null)
             {
                 queryTopic = queryTopic.Where(
                     x => x.Subject.SubCourses.Any(sc => sc.Course.Id == courseId)
                 );
             }
 
-            if (!string.IsNullOrWhiteSpace(subcourseId))
+            if (subcourseId != null)
             {
                 queryTopic = queryTopic.Where(
                     x => x.Subject.SubCourses.Any(sc => sc.Id == subcourseId)
                 );
             }
 
-            if (!string.IsNullOrWhiteSpace(subjectId))
+            if (subjectId != null)
             {
                 queryTopic = queryTopic.Where(x => x.Subject.Id == subjectId);
             }

@@ -507,13 +507,13 @@ public class CategoryManagementDL : ICategoryManagementDL
 
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<SubCourseResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetSubCourses(string? courseId, string? subCourseName, bool? subCourseStatus)
+    > GetSubCourses(int? courseId, string? subCourseName, bool? subCourseStatus)
     {
         try
         {
             IQueryable<SubCourseModel> querySubCourse = _dataContext.SubCourseModel;
 
-            if (!string.IsNullOrWhiteSpace(courseId))
+            if (courseId != null)
             {
                 querySubCourse = querySubCourse.Where(x => x.CourseId == courseId);
             }

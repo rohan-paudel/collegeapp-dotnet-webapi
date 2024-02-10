@@ -60,8 +60,8 @@ public class SubjectManagementController : ControllerBase
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetSubjects(
-        [FromQuery] string? courseId,
-        [FromQuery] string? subcourseId,
+        [FromQuery] int? courseId,
+        [FromQuery] int? subcourseId,
         [FromQuery] string? subjectName,
         [FromQuery] bool? subjectStatus
     )

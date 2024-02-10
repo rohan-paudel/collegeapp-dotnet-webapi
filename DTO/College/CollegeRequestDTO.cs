@@ -54,7 +54,7 @@ public class CollegeRequestDTO
 public class EditCollegeRequestDTO
 {
     [Required]
-    public string CollegeId { get; set; } = "";
+    public int CollegeId { get; set; }
 
     [Required]
     [StringLength(50)]
@@ -101,13 +101,13 @@ public class EditCollegeRequestDTO
 public class CollegeStatusToggleRequestDTO
 {
     [Required]
-    public string CollegeId { get; set; } = "";
+    public int CollegeId { get; set; }
 }
 
 public class CollegeDeleteDTO
 {
     [Required]
-    public string CollegeId { get; set; } = "";
+    public int CollegeId { get; set; }
 }
 
 // public class GetCollegeDTO

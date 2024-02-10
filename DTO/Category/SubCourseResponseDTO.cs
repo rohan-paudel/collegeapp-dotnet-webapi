@@ -2,7 +2,7 @@
 
 public class SubCourseResponseDTO
 {
-    public string Id { get; set; } = "";
+    public int Id { get; set; }
     public CourseResponseOnlyNameDTO? Course { get; set; }
     public string Name { get; set; } = "";
     public bool Status { get; set; }
@@ -10,6 +10,6 @@ public class SubCourseResponseDTO
 
 public class SubCourseResponseOnlyNameDTO
 {
-    public string Id { get; set; } = "";
+    public int Id { get; set; }
     public string Name { get; set; } = "";
 }

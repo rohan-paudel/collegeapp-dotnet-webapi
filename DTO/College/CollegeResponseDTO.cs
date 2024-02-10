@@ -2,7 +2,7 @@
 
 public class CollegeResponseDTO
 {
-    public string? CollegeId { get; set; }
+    public int? CollegeId { get; set; }
 
     public string? Name { get; set; }
 
@@ -29,7 +29,7 @@ public class CollegeResponseDTO
 
 public class CollegeOnlyNameResponseDTO
 {
-    public string? Id { get; set; }
+    public int? Id { get; set; }
 
     public string? Name { get; set; }
 }

@@ -17,13 +17,13 @@ public class NoteManagementDL : INoteManagementDL
 
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetNotes(string? topicId, string? noteName, int page, bool? noteStatus)
+    > GetNotes(int? topicId, string? noteName, int page, bool? noteStatus)
     {
         try
         {
             IQueryable<NoteModel> queryNote = _dataContext.NoteModel;
 
-            if (!string.IsNullOrWhiteSpace(topicId))
+            if (topicId != null)
             {
                 queryNote = queryNote.Where(x => x.TopicId == topicId);
             }

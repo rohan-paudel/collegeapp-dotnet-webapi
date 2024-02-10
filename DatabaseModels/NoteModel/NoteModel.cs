@@ -10,7 +10,7 @@ namespace CollegeAppDotnetWebApi;
 public class NoteModel
 {
     [Key]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public int Id { get; set; }
 
     public bool Status { get; set; } = true;
 
@@ -27,7 +27,7 @@ public class NoteModel
 
     [Required]
     [ForeignKey("Id")]
-    public string TopicId { get; set; } = "";
+    public int TopicId { get; set; }
 
     public TopicModel Topic { get; set; }
 }

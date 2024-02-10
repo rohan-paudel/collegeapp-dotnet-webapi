@@ -18,8 +18,7 @@ public class NoteRequestDTO
     public string Description { get; set; } = "";
 
     [Required]
-    [StringLength(50)]
-    public string TopicId { get; set; } = "";
+    public int TopicId { get; set; }
 
     [Required]
     public IFormFile File { get; set; }
