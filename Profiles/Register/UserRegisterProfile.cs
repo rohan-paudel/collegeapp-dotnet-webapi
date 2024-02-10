@@ -37,6 +37,8 @@ public class UserRegisterProfile : Profile
 
         CreateMap<TopicModel, TopicResponseDTO>();
 
+        CreateMap<TopicModel, TopicResponseOnlyNameDTO>();
+
         CreateMap<TejiloUser, EditStudentRequestDTO>();
 
         CreateMap<EditStudentRequestDTO, TejiloUser>()

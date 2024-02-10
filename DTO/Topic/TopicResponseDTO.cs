@@ -10,3 +10,9 @@ public class TopicResponseDTO
 
     public SubjectResponseOnlyNameDTO Subject { get; set; }
 }
+
+public class TopicResponseOnlyNameDTO
+{
+    public string Id { get; set; } = "";
+    public string Name { get; set; } = "";
+}

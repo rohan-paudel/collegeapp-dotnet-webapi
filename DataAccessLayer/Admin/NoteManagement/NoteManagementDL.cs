@@ -15,6 +15,51 @@ public class NoteManagementDL : INoteManagementDL
         _mapper = mapper;
     }
 
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetNotes(string? topicId, string? noteName, bool? noteStatus)
+    {
+        try
+        {
+            IQueryable<NoteModel> queryNote = _dataContext.NoteModel;
+
+            if (!string.IsNullOrWhiteSpace(topicId))
+            {
+                queryNote = queryNote.Where(x => x.TopicId == topicId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(noteName))
+            {
+                queryNote = queryNote.Where(x => x.Name.ToLower().Contains(noteName));
+            }
+
+            if (noteStatus != null)
+            {
+                queryNote = queryNote.Where(x => x.Status == noteStatus);
+            }
+
+            var noteModels = await queryNote
+                .Include(p => p.Topic)
+                .Select(p => _mapper.Map<NoteResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>(
+                new() { Data = noteModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetNote(
         NoteRequestDTO noteRequestDTO
     )

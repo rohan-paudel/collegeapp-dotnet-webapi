@@ -22,4 +22,19 @@ public class NoteManagementController : ControllerBase
         var result = await _noteManagementDL.SetNote(noteRequestDTO).ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetNotes(
+        [FromQuery] string? topicId,
+        [FromQuery] string? noteName,
+        [FromQuery] bool? noteStatus
+    )
+    {
+        var result = await _noteManagementDL
+            .GetNotes(topicId, noteName, noteStatus)
+            .ConfigureAwait(false);
+        return result;
+    }
 }
