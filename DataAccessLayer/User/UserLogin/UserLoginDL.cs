@@ -63,9 +63,12 @@ public class UserLoginDL : IUserLoginDL
 
             var claims = new List<Claim>
             {
-                new Claim("CollegeId", user.CollegeId),
-                new Claim("CourseId", user.CourseId != null ? user.CourseId : ""),
-                new Claim("SubCourseId", user.SubCourseId != null ? user.SubCourseId : ""),
+                new Claim("CollegeId", user.CollegeId.ToString()),
+                new Claim("CourseId", user.CourseId != null ? user.CourseId.ToString() : ""),
+                new Claim(
+                    "SubCourseId",
+                    user.SubCourseId != null ? user.SubCourseId.ToString() : ""
+                ),
                 // Add more custom claims as needed
             };
             // var result = await _signInManager
