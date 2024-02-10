@@ -21,8 +21,8 @@ public class TopicModel
     public ICollection<NoteModel>? Notes { get; set; }
 
     [Required]
-    [ForeignKey("Id")]
     public int SubjectId { get; set; }
 
+    [ForeignKey("SubjectId")]
     public SubjectModel Subject { get; set; }
 }

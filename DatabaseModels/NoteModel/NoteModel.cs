@@ -26,8 +26,8 @@ public class NoteModel
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Required]
-    [ForeignKey("Id")]
     public int TopicId { get; set; }
 
+    [ForeignKey("TopicId")]
     public TopicModel Topic { get; set; }
 }

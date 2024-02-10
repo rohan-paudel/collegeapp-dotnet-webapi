@@ -18,9 +18,9 @@ public class SubCourseModel
     public string Name { get; set; } = "";
 
     [Required]
-    [ForeignKey("Id")]
     public int CourseId { get; set; }
 
+    [ForeignKey("CourseId")]
     public CourseModel Course { get; set; }
 
     public ICollection<SubjectModel> Subjects { get; set; } = new HashSet<SubjectModel>();

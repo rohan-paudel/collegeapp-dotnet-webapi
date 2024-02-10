@@ -30,19 +30,19 @@ public class TejiloUser : IdentityUser
 
     public string? Address { get; set; }
 
-    [ForeignKey("Id")]
     [Required]
     public int CollegeId { get; set; }
 
+    [ForeignKey("CollegeId")]
     public TejiloCollege College { get; set; }
 
-    [ForeignKey("Id")]
     public int? CourseId { get; set; }
 
+    [ForeignKey("CourseId")]
     public CourseModel? Course { get; set; }
 
-    [ForeignKey("Id")]
     public int? SubCourseId { get; set; }
 
+    [ForeignKey("SubCourseId")]
     public SubCourseModel? SubCourse { get; set; }
 }
