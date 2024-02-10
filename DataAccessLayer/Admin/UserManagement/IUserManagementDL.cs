@@ -25,4 +25,15 @@ public interface IUserManagementDL
             BadRequest<ResponseDTO<string>>
         >
     > GetStudent(string? searchTerm, bool? studentStatus);
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetStudentByCollegeId(string collegeId, bool? studentStatus);
+
+    public Task<
+        Results<Ok<ResponseDTO<RegisterStudentResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetStudentByStudentId(string studentId, bool? studentStatus);
 }

@@ -1,27 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
-[Index(nameof(Status))]
-[Index(nameof(Name))]
-public class TopicModel
+public class NoteModel
 {
-    [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
+
     public bool Status { get; set; } = true;
 
     [Required]
     public string Name { get; set; } = "";
 
-    public string? ImageUrl { get; set; }
+    [Required]
+    public string Description { get; set; } = "";
 
-    public ICollection<NoteModel>? Notes { get; set; }
+    [Required]
+    public string FileName { get; set; } = "";
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Required]
     [ForeignKey("Id")]
-    public string SubjectId { get; set; } = "";
+    public string TopicId { get; set; } = "";
 
-    public SubjectModel Subject { get; set; }
+    public TopicModel Topic { get; set; }
 }

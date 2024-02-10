@@ -43,5 +43,8 @@ public class UserRegisterProfile : Profile
             .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
 
         CreateMap<TejiloUser, RegisterStudentResponseDTO>();
+
+        CreateMap<NoteRequestDTO, NoteModel>()
+            .ForMember(dest => dest.FileName, src => src.MapFrom(x => x.FileNameByDeveloper));
     }
 }

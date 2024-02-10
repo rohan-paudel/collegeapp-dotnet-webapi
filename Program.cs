@@ -17,21 +17,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder
-    .Services
-    .Configure<KestrelServerOptions>(options =>
-    {
-        options.ConfigureHttpsDefaults(
-            options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
-        );
-        options.ListenLocalhost(
-            5001,
-            lisOptions =>
-            {
-                lisOptions.UseHttps("cert.pfx", "hello");
-            }
-        );
-    });
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ConfigureHttpsDefaults(
+//             options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
+//         );
+//         options.ListenLocalhost(
+//             5001,
+//             lisOptions =>
+//             {
+//                 lisOptions.UseHttps("cert.pfx", "hello");
+//             }
+//         );
+//     });
 
 builder
     .Services
@@ -65,6 +65,7 @@ var cookiePolicyOptions = new CookiePolicyOptions { MinimumSameSitePolicy = Same
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<INoteManagementDL, NoteManagementDL>();
 builder.Services.AddScoped<ICollegeManagementDL, CollegeManagementDL>();
 builder.Services.AddScoped<ITopicManagementDL, TopicManagementDL>();
 builder.Services.AddScoped<ISubjectManagementDL, SubjectManagementDL>();
@@ -217,6 +218,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseRateLimiter();
 
 app.MapControllers();

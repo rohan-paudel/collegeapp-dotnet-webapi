@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -83,7 +84,7 @@ public class UserManagementController : ControllerBase
             Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
             BadRequest<ResponseDTO<string>>
         >
-    > GetStudent([FromQuery] string? searchTerm, [FromQuery] bool? studentStatus)
+    > GetStudents([FromQuery] string? searchTerm, [FromQuery] bool? studentStatus)
     {
         var result = await _userManagementDL
             .GetStudent(searchTerm, studentStatus)
@@ -98,6 +99,31 @@ public class UserManagementController : ControllerBase
     {
         var result = await _userManagementDL
             .UpdateStudentCourseSubCourse(updateStudentCourseSubCourse)
+            .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetStudentsByCollegeId([FromQuery] [Required] string collegeId, bool? studentStatus)
+    {
+        var result = await _userManagementDL
+            .GetStudentByCollegeId(collegeId, studentStatus)
+            .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<RegisterStudentResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetStudentByStudentId([FromQuery] [Required] string studentId, bool? studentStatus)
+    {
+        var result = await _userManagementDL
+            .GetStudentByStudentId(studentId, studentStatus)
             .ConfigureAwait(false);
         return result;
     }

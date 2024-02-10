@@ -167,6 +167,87 @@ public class UserManagementDL : IUserManagementDL
     }
 
     public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetStudentByCollegeId(string collegeId, bool? studentStatus)
+    {
+        try
+        {
+            IQueryable<TejiloUser> queryCourse = _dataContext.TejiloUsers;
+
+            queryCourse = queryCourse.Where(x => x.CollegeId == collegeId);
+
+            if (studentStatus != null)
+            {
+                queryCourse = queryCourse.Where(x => x.Status == studentStatus);
+            }
+
+            var userModels = await queryCourse
+                .Include(x => x.College)
+                .Include(x => x.SubCourse)
+                .Include(x => x.Course)
+                .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<RegisterStudentResponseDTO>>>(
+                new() { Data = userModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<RegisterStudentResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetStudentByStudentId(string studentId, bool? studentStatus)
+    {
+        try
+        {
+            IQueryable<TejiloUser> queryCourse = _dataContext.TejiloUsers;
+
+            queryCourse = queryCourse.Where(x => x.Id == studentId);
+
+            if (studentStatus != null)
+            {
+                queryCourse = queryCourse.Where(x => x.Status == studentStatus);
+            }
+
+            var userModels = await queryCourse
+                .Include(x => x.College)
+                .Include(x => x.SubCourse)
+                .Include(x => x.Course)
+                .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<RegisterStudentResponseDTO>>(
+                new() { Data = userModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > RegisterStudent(RegisterRequestDTO registerRequestDTO)
     {
