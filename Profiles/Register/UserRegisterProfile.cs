@@ -48,5 +48,7 @@ public class UserRegisterProfile : Profile
 
         CreateMap<NoteRequestDTO, NoteModel>()
             .ForMember(dest => dest.FileName, src => src.MapFrom(x => x.FileNameByDeveloper));
+
+        CreateMap<NoteModel, NoteResponseDTO>();
     }
 }

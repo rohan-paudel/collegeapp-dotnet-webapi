@@ -10,5 +10,5 @@ public interface INoteManagementDL
 
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetNotes(string? topicId, string? noteName, bool? noteStatus);
+    > GetNotes(string? topicId, string? noteName, int page, bool? noteStatus);
 }

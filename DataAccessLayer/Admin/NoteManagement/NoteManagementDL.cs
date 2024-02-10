@@ -17,7 +17,7 @@ public class NoteManagementDL : INoteManagementDL
 
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetNotes(string? topicId, string? noteName, bool? noteStatus)
+    > GetNotes(string? topicId, string? noteName, int page, bool? noteStatus)
     {
         try
         {
@@ -38,6 +38,9 @@ public class NoteManagementDL : INoteManagementDL
                 queryNote = queryNote.Where(x => x.Status == noteStatus);
             }
 
+            int pageCount = (int)Math.Ceiling(queryNote.Count() / 10f);
+            queryNote = queryNote.Skip((page - 1) * 10).Take(10);
+
             var noteModels = await queryNote
                 .Include(p => p.Topic)
                 .Select(p => _mapper.Map<NoteResponseDTO>(p))
@@ -45,7 +48,12 @@ public class NoteManagementDL : INoteManagementDL
                 .ConfigureAwait(false);
 
             return TypedResults.Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>(
-                new() { Data = noteModels }
+                new()
+                {
+                    Data = noteModels,
+                    TotalPageCount = pageCount,
+                    CurrentPageCount = page
+                }
             );
         }
         catch (Exception)

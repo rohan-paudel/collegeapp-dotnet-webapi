@@ -10,6 +10,10 @@ public class ResponseDTO<T>
     public IEnumerable<IdentityError>? Errors { get; set; }
 
     public T? Data { get; set; }
+
+    public int? TotalPageCount { get; set; }
+
+    public int? CurrentPageCount { get; set; }
 }
 
 public class ErrorOfIntity
