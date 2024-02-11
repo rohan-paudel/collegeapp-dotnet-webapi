@@ -38,7 +38,8 @@ public class NoteManagementDL : INoteManagementDL
                 queryNote = queryNote.Where(x => x.Status == noteStatus);
             }
 
-            int pageCount = (int)Math.Ceiling(queryNote.Count() / 10f);
+            // int totalCount = await queryNote.CountAsync().ConfigureAwait(false);
+            // int pageCount = (int)Math.Ceiling(totalCount / 10f);
             queryNote = queryNote.Skip((page - 1) * 10).Take(10);
 
             var noteModels = await queryNote
@@ -51,7 +52,7 @@ public class NoteManagementDL : INoteManagementDL
                 new()
                 {
                     Data = noteModels,
-                    TotalPageCount = pageCount,
+                    // TotalPageCount = pageCount,
                     CurrentPageCount = page
                 }
             );
