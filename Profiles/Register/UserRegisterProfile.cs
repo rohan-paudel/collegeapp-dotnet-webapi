@@ -50,5 +50,9 @@ public class UserRegisterProfile : Profile
             .ForMember(dest => dest.FileName, src => src.MapFrom(x => x.FileNameByDeveloper));
 
         CreateMap<NoteModel, NoteResponseDTO>();
+
+        // Discussion Models
+
+        CreateMap<DiscussionRequestDTO, DiscussionModel>();
     }
 }
