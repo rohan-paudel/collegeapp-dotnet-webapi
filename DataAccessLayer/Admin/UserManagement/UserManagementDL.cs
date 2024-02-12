@@ -144,7 +144,7 @@ public class UserManagementDL : IUserManagementDL
 
             var userModels = await queryCourse
                 .Include(x => x.SubCourse)
-                .ThenInclude(a => a!.Course)
+                .ThenInclude(a => a.Course)
                 .Include(x => x.College)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .ToListAsync()

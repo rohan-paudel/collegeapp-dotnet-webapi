@@ -24,5 +24,4 @@ public class RegisterStudentResponseDTO
     public CollegeOnlyNameResponseDTO College { get; set; } = new CollegeOnlyNameResponseDTO();
     public SubCourseResponseOnlyNameDTO SubCourse { get; set; } =
         new SubCourseResponseOnlyNameDTO();
-    public CourseResponseOnlyNameDTO Course { get; set; } = new CourseResponseOnlyNameDTO();
 }
