@@ -16,6 +16,55 @@ public class DiscussionManagementDL : IDiscussionManagementDL
     }
 
     public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<DiscussionResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetDiscussion(int collegeId, int topicId, int page, bool? discussionStatus)
+    {
+        try
+        {
+            IQueryable<DiscussionModel> queryDiscussion = _dataContext.DiscussionModel;
+
+            queryDiscussion = queryDiscussion.Where(
+                x => x.CollegeId == collegeId && x.TopicId == topicId
+            );
+
+            if (discussionStatus != null)
+            {
+                queryDiscussion = queryDiscussion.Where(x => x.Status == discussionStatus);
+            }
+
+            queryDiscussion = queryDiscussion.Skip((page - 1) * 10).Take(10);
+
+            var noteModels = await queryDiscussion
+                .Include(x => x.TejiloUser)
+                .Select(p => _mapper.Map<DiscussionResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<DiscussionResponseDTO>>>(
+                new()
+                {
+                    Data = noteModels,
+                    // TotalPageCount = pageCount,
+                    CurrentPageCount = page
+                }
+            );
+        }
+        catch (Exception ex)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = ex.InnerException.Message
+                }
+            );
+        }
+    }
+
+    public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > SetDiscussion(DiscussionRequestDTO discussionRequestDTO)
     {

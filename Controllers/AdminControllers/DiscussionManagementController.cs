@@ -1,11 +1,11 @@
-﻿using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeAppDotnetWebApi;
 
-[Authorize(Policy = "PolicyForMobileDevice")]
 [ApiController]
 [Route("api/[controller]/[Action]")]
 public class DiscussionManagementController : ControllerBase
@@ -22,10 +22,29 @@ public class DiscussionManagementController : ControllerBase
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > SetDiscussion(DiscussionRequestDTO discussionRequestDTO)
     {
-        discussionRequestDTO.StudentId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        discussionRequestDTO.CollegeId = int.Parse(User.FindFirstValue(ClaimTypes.GroupSid)!);
+        // discussionRequestDTO.StudentId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        // discussionRequestDTO.CollegeId = int.Parse(User.FindFirstValue(ClaimTypes.GroupSid)!);
         var result = await _discussionManagementDL
             .SetDiscussion(discussionRequestDTO)
+            .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<DiscussionResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetDiscussion(
+        [FromQuery] [Required] int collegeId,
+        [FromQuery] [Required] int topicId,
+        [FromQuery] [Required] int page,
+        [FromQuery] bool? discussionStatus
+    )
+    {
+        var result = await _discussionManagementDL
+            .GetDiscussion(collegeId, topicId, page, discussionStatus)
             .ConfigureAwait(false);
         return result;
     }

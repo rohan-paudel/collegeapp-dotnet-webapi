@@ -7,4 +7,11 @@ public interface IDiscussionManagementDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetDiscussion(
         DiscussionRequestDTO discussionRequestDTO
     );
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<DiscussionResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetDiscussion(int collegeId, int topicId, int page, bool? discussionStatus);
 }
