@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
@@ -38,8 +40,6 @@ public class NoteManagementDL : INoteManagementDL
                 queryNote = queryNote.Where(x => x.Status == noteStatus);
             }
 
-            // int totalCount = await queryNote.CountAsync().ConfigureAwait(false);
-            // int pageCount = (int)Math.Ceiling(totalCount / 10f);
             queryNote = queryNote.Skip((page - 1) * 10).Take(10);
 
             var noteModels = await queryNote
