@@ -79,6 +79,7 @@ public class DiscussionManagementDL : IDiscussionManagementDL
                 queryQuery = queryQuery.Where(x => x.Status == queryStatus);
             }
 
+            queryQuery = queryQuery.Skip((page - 1) * 10).Take(10);
             var queryModels = await queryQuery
                 .Include(p => p.TejiloUser)
                 .Select(p => _mapper.Map<QueryResponseDTO>(p))
@@ -89,13 +90,13 @@ public class DiscussionManagementDL : IDiscussionManagementDL
                 new() { Data = queryModels }
             );
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    Message = "Something went wrong"
+                    Message = ex.InnerException.Message
                 }
             );
         }

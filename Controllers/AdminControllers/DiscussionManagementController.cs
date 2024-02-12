@@ -61,7 +61,11 @@ public class DiscussionManagementController : ControllerBase
     [HttpGet]
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<QueryResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetQuery(int discussionId, int page, bool? queryStatus)
+    > GetQuery(
+        [FromQuery] [Required] int discussionId,
+        [FromQuery] [Required] int page,
+        bool? queryStatus
+    )
     {
         var result = await _discussionManagementDL
             .GetQuery(discussionId, page, queryStatus)
