@@ -43,4 +43,6 @@ public class TejiloCollege
     public string Description { get; set; } = "";
 
     public ICollection<TejiloUser>? Students { get; set; }
+
+    public ICollection<DiscussionModel>? Discussions { get; set; }
 }

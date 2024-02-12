@@ -19,4 +19,8 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<TopicModel> TopicModel { get; set; }
 
     public DbSet<NoteModel> NoteModel { get; set; }
+
+    public DbSet<DiscussionModel> DiscussionModel { get; set; }
+
+    public DbSet<QueryModel> QueryModel { get; set; }
 }

@@ -39,4 +39,6 @@ public class TejiloUser : IdentityUser
 
     [ForeignKey("SubCourseId")]
     public SubCourseModel? SubCourse { get; set; }
+
+    public ICollection<DiscussionModel>? Discussions { get; set; }
 }

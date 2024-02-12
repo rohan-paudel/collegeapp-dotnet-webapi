@@ -25,4 +25,6 @@ public class TopicModel
 
     [ForeignKey("SubjectId")]
     public SubjectModel Subject { get; set; }
+
+    public ICollection<DiscussionModel>? Discussions { get; set; }
 }
