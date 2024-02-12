@@ -14,5 +14,6 @@ public class TopicResponseDTO
 public class TopicResponseOnlyNameDTO
 {
     public int Id { get; set; }
+
     public string Name { get; set; } = "";
 }

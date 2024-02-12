@@ -52,13 +52,50 @@ public class DiscussionManagementDL : IDiscussionManagementDL
                 }
             );
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.InnerException.Message
+                    Message = "Something went wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<QueryResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetQuery(int discussionId, int page, bool? queryStatus)
+    {
+        try
+        {
+            IQueryable<QueryModel> queryQuery = _dataContext.QueryModel;
+
+            queryQuery = queryQuery.Where(x => x.DiscussionId == discussionId);
+
+            if (queryStatus != null)
+            {
+                queryQuery = queryQuery.Where(x => x.Status == queryStatus);
+            }
+
+            var queryModels = await queryQuery
+                .Include(p => p.TejiloUser)
+                .Select(p => _mapper.Map<QueryResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<QueryResponseDTO>>>(
+                new() { Data = queryModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
                 }
             );
         }
@@ -115,6 +152,64 @@ public class DiscussionManagementDL : IDiscussionManagementDL
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
                     Message = "Someting went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetQuery(
+        QueryRequestDTO queryRequestDTO
+    )
+    {
+        try
+        {
+            List<string> topicStrings = [];
+            QueryModel queryModel;
+
+            var data = await _dataContext
+                .DiscussionModel
+                .Where(x => x.Id == queryRequestDTO.DiscussionId)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (data == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Discussion Found with the given id."
+                    }
+                );
+            }
+
+            queryModel = _mapper.Map<QueryModel>(queryRequestDTO);
+
+            await _dataContext.QueryModel.AddRangeAsync(queryModel).ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
+
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong."
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong."
                 }
             );
         }

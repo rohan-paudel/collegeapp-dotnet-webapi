@@ -48,4 +48,24 @@ public class DiscussionManagementController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpPost]
+    public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetQuery(
+        QueryRequestDTO queryRequestDTO
+    )
+    {
+        var result = await _discussionManagementDL.SetQuery(queryRequestDTO).ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<QueryResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetQuery(int discussionId, int page, bool? queryStatus)
+    {
+        var result = await _discussionManagementDL
+            .GetQuery(discussionId, page, queryStatus)
+            .ConfigureAwait(false);
+        return result;
+    }
 }

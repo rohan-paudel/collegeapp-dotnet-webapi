@@ -14,3 +14,15 @@ public class DiscussionRequestDTO
 
     public int CollegeId { get; set; }
 }
+
+public class QueryRequestDTO
+{
+    [Required]
+    public int DiscussionId { get; set; }
+
+    [Required]
+    public string Query { get; set; }
+
+    [Required]
+    public string StudentId { get; set; }
+}

@@ -7,3 +7,12 @@ public class DiscussionResponseDTO
 
     public StudentResponseOnlyNameDTO Student { get; set; }
 }
+
+public class QueryResponseDTO
+{
+    public int Id { get; set; }
+
+    public string Query { get; set; }
+
+    public StudentResponseOnlyNameDTO Student { get; set; }
+}

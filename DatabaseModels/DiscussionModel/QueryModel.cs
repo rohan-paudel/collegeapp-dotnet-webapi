@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(DiscussionId))]
+[Index(nameof(StudentId))]
 public class QueryModel
 {
     [Key]
@@ -16,9 +17,9 @@ public class QueryModel
     public string Query { get; set; } = "";
 
     [Required]
-    public string UserId { get; set; } = "";
+    public string StudentId { get; set; } = "";
 
-    [ForeignKey("UserId")]
+    [ForeignKey("StudentId")]
     public TejiloUser TejiloUser { get; set; }
 
     [Required]
