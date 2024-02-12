@@ -22,9 +22,7 @@ public class RegisterStudentResponseDTO
     public string? Address { get; set; }
 
     public CollegeOnlyNameResponseDTO College { get; set; } = new CollegeOnlyNameResponseDTO();
-
-    public CourseResponseOnlyNameDTO Course { get; set; } = new CourseResponseOnlyNameDTO();
-
     public SubCourseResponseOnlyNameDTO SubCourse { get; set; } =
         new SubCourseResponseOnlyNameDTO();
+    public CourseResponseOnlyNameDTO Course { get; set; } = new CourseResponseOnlyNameDTO();
 }

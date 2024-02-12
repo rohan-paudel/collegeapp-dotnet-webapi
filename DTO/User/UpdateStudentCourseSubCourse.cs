@@ -8,8 +8,5 @@ public class UpdateStudentCourseSubCourse
     public string StudentId { get; set; } = "";
 
     [Required]
-    public int CourseId { get; set; }
-
-    [Required]
     public int SubCourseId { get; set; }
 }

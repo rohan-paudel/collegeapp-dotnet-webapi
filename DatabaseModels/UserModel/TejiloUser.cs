@@ -7,7 +7,6 @@ namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(PhoneNumber), IsUnique = true)]
 [Index(nameof(CollegeId))]
-[Index(nameof(CourseId))]
 [Index(nameof(SubCourseId))]
 public class TejiloUser : IdentityUser
 {
@@ -35,11 +34,6 @@ public class TejiloUser : IdentityUser
 
     [ForeignKey("CollegeId")]
     public TejiloCollege College { get; set; }
-
-    public int? CourseId { get; set; }
-
-    [ForeignKey("CourseId")]
-    public CourseModel? Course { get; set; }
 
     public int? SubCourseId { get; set; }
 

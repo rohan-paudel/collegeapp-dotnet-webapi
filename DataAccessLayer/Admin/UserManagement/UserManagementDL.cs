@@ -143,9 +143,9 @@ public class UserManagementDL : IUserManagementDL
             }
 
             var userModels = await queryCourse
-                .Include(x => x.College)
                 .Include(x => x.SubCourse)
-                .Include(x => x.Course)
+                .ThenInclude(a => a!.Course)
+                .Include(x => x.College)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .ToListAsync()
                 .ConfigureAwait(false);
@@ -187,7 +187,7 @@ public class UserManagementDL : IUserManagementDL
             var userModels = await queryCourse
                 .Include(x => x.College)
                 .Include(x => x.SubCourse)
-                .Include(x => x.Course)
+                .ThenInclude(x => x.Course)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .ToListAsync()
                 .ConfigureAwait(false);
@@ -226,7 +226,7 @@ public class UserManagementDL : IUserManagementDL
             var userModels = await queryCourse
                 .Include(x => x.College)
                 .Include(x => x.SubCourse)
-                .Include(x => x.Course)
+                .ThenInclude(x => x.Course)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
@@ -470,22 +470,6 @@ public class UserManagementDL : IUserManagementDL
                 );
             }
 
-            var course = await _dataContext
-                .CourseModel
-                .FirstOrDefaultAsync(x => x.Id == updateStudentCourseSubCourse.CourseId)
-                .ConfigureAwait(false);
-
-            if (course == null)
-            {
-                return TypedResults.BadRequest<ResponseDTO<string>>(
-                    new()
-                    {
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        Message = "No such course found"
-                    }
-                );
-            }
-
             var subCourse = await _dataContext
                 .SubCourseModel
                 .FirstOrDefaultAsync(x => x.Id == updateStudentCourseSubCourse.SubCourseId)
@@ -501,8 +485,6 @@ public class UserManagementDL : IUserManagementDL
                     }
                 );
             }
-
-            student.CourseId = updateStudentCourseSubCourse.CourseId;
             student.SubCourseId = updateStudentCourseSubCourse.SubCourseId;
 
             var rowsAffected = await _userManager.UpdateAsync(student).ConfigureAwait(false);

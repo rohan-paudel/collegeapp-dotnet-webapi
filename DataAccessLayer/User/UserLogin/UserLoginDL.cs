@@ -64,7 +64,6 @@ public class UserLoginDL : IUserLoginDL
             var claims = new List<Claim>
             {
                 new Claim("CollegeId", user.CollegeId.ToString()),
-                new Claim("CourseId", user.CourseId != null ? user.CourseId.ToString() : ""),
                 new Claim(
                     "SubCourseId",
                     user.SubCourseId != null ? user.SubCourseId.ToString() : ""
