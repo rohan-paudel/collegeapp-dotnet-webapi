@@ -117,8 +117,8 @@ builder
     .AddDbContext<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.ConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.ConnectionString)
+                SqlSetupConstants.OldConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.OldConnectionString)
             )
     );
 
