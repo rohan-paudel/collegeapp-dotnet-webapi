@@ -35,6 +35,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder
     .Services
+    .Configure<KestrelServerOptions>(options =>
+    {
+        options.ListenAnyIP(5272);
+    });
+
+builder
+    .Services
     .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
     .AddCertificate(options => { });
 
@@ -117,8 +124,8 @@ builder
     .AddDbContext<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.OldConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.OldConnectionString)
+                SqlSetupConstants.ConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.ConnectionString)
             )
     );
 
