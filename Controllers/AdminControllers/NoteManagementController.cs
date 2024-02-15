@@ -42,15 +42,17 @@ public class NoteManagementController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<PhysicalFileResult> GetNotePDF([FromQuery] [Required] string fileName)
+    public async Task<Results<Ok<FileContentResult>, BadRequest<ResponseDTO<string>>>> GetNotePDF(
+        [FromQuery] [Required] string fileName
+    )
     {
         if (
             string.IsNullOrEmpty(fileName)
             || Path.GetInvalidFileNameChars().Any(c => fileName.Contains(c))
         )
         {
-            return BadRequest(
-                new ResponseDTO<string>
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
                     Message = "Doesnot contains any file"
@@ -64,8 +66,8 @@ public class NoteManagementController : ControllerBase
         {
             if (!System.IO.File.Exists(filePath))
             {
-                return BadRequest(
-                    new ResponseDTO<string>
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
                     {
                         StatusCode = StatusCodes.Status400BadRequest,
                         Message = "Doesnot contains any file"
@@ -73,26 +75,20 @@ public class NoteManagementController : ControllerBase
                 );
             }
 
-            // Set the file content type
-            var contentType = "application/pdf";
-
-            // Send the file to the user
-            return PhysicalFile(filePath, contentType);
-
             // Determine the content type based on the file extension
-            // var contentType = GetContentType(fileName);
-            // var bytes = await System.IO.File.ReadAllBytesAsync(filePath).ConfigureAwait(false);
+            var contentType = GetContentType(fileName);
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath).ConfigureAwait(false);
 
-            // // Serve the file using FileStreamResult
-            // return TypedResults.Ok(File(bytes, contentType, Path.GetFileName(filePath)));
+            // Serve the file using FileStreamResult
+            return TypedResults.Ok(File(bytes, contentType, Path.GetFileName(filePath)));
         }
         catch (Exception)
         {
-            return BadRequest(
-                new ResponseDTO<string>
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    Message = "Something went wrong"
+                    Message = "Something went wrong."
                 }
             );
         }

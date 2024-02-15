@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -33,12 +34,12 @@ var builder = WebApplication.CreateBuilder(args);
 //         );
 //     });
 
-builder
-    .Services
-    .Configure<KestrelServerOptions>(options =>
-    {
-        options.ListenAnyIP(5272);
-    });
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ListenAnyIP(5272);
+//     });
 
 builder
     .Services
@@ -124,8 +125,8 @@ builder
     .AddDbContext<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.ConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.ConnectionString)
+                SqlSetupConstants.OldConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.OldConnectionString)
             )
     );
 
@@ -214,6 +215,16 @@ builder
 // END OF JWT
 
 var app = builder.Build();
+
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
+        ),
+        RequestPath = "/Uploads"
+    }
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) { }
