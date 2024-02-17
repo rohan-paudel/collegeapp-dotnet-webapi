@@ -23,8 +23,10 @@ public class TopicModel
     [Required]
     public int SubjectId { get; set; }
 
+#pragma warning disable CS8618
     [ForeignKey("SubjectId")]
     public SubjectModel Subject { get; set; }
+#pragma warning restore CS8618
 
     public ICollection<DiscussionModel>? Discussions { get; set; }
 }

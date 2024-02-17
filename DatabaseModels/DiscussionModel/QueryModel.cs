@@ -19,6 +19,7 @@ public class QueryModel
     [Required]
     public string StudentId { get; set; } = "";
 
+#pragma warning disable CS8618
     [ForeignKey("StudentId")]
     public TejiloUser TejiloUser { get; set; }
 
@@ -27,4 +28,5 @@ public class QueryModel
 
     [ForeignKey("DiscussionId")]
     public DiscussionModel Discussion { get; set; }
+#pragma warning restore CS8618
 }

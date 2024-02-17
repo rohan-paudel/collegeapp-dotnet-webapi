@@ -28,6 +28,8 @@ public class NoteModel
     [Required]
     public int TopicId { get; set; }
 
+#pragma warning disable CS8618
     [ForeignKey("TopicId")]
     public TopicModel Topic { get; set; }
+#pragma warning restore CS8618
 }

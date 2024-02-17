@@ -22,6 +22,7 @@ public class DiscussionModel
     [Required]
     public string StudentId { get; set; } = "";
 
+#pragma warning disable CS8618
     [ForeignKey("StudentId")]
     public TejiloUser TejiloUser { get; set; }
 
@@ -36,6 +37,7 @@ public class DiscussionModel
 
     [ForeignKey("CollegeId")]
     public TejiloCollege TejiloCollege { get; set; }
+#pragma warning restore CS8618
 
     public ICollection<QueryModel>? Queries { get; set; }
 }
