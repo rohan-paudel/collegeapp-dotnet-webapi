@@ -22,4 +22,16 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<DiscussionModel> DiscussionModel { get; set; }
 
     public DbSet<QueryModel> QueryModel { get; set; }
+
+    public DbSet<ChapterTestModel> ChapterTestModel { get; set; }
+
+    public DbSet<ChapterTestQuestionModel> ChapterTestQuestionModel { get; set; }
+
+    public DbSet<ChapterTestOptionModel> ChapterTestOptionModel { get; set; }
+
+    public DbSet<LiveTestModel> LiveTestModel { get; set; }
+
+    public DbSet<LiveTestQuestionModel> LiveTestQuestionModel { get; set; }
+
+    public DbSet<LiveTestOptionModel> LiveTestOptionModel { get; set; }
 }

@@ -19,21 +19,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder
-    .Services
-    .Configure<KestrelServerOptions>(options =>
-    {
-        options.ConfigureHttpsDefaults(
-            options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
-        );
-        options.ListenAnyIP(
-            5272,
-            lisOptions =>
-            {
-                lisOptions.UseHttps("cert.pfx", "hello");
-            }
-        );
-    });
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ConfigureHttpsDefaults(
+//             options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
+//         );
+//         options.ListenAnyIP(
+//             5272,
+//             lisOptions =>
+//             {
+//                 lisOptions.UseHttps("cert.pfx", "hello");
+//             }
+//         );
+//     });
 
 // builder
 //     .Services
@@ -228,7 +228,7 @@ builder
 
 var app = builder.Build();
 
-string uploadsFolder = "/data";
+string uploadsFolder = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
 if (!Directory.Exists(uploadsFolder))
 {
     // Directory.CreateDirectory(uploadsFolder);
@@ -250,7 +250,7 @@ app.UseStaticFiles(
     new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(uploadsFolder),
-        RequestPath = "/data"
+        RequestPath = "/Uploads"
     }
 );
 
