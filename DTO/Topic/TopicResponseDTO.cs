@@ -8,7 +8,7 @@ public class TopicResponseDTO
 
     public string Name { get; set; } = "";
 
-    public SubjectResponseOnlyNameDTO Subject { get; set; }
+    public SubjectResponseOnlyNameDTO? Subject { get; set; }
 }
 
 public class TopicResponseOnlyNameDTO

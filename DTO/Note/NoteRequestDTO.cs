@@ -20,8 +20,10 @@ public class NoteRequestDTO
     [Required]
     public int TopicId { get; set; }
 
+#pragma warning disable CS8618
     [Required]
     public IFormFile File { get; set; }
+#pragma warning restore CS8618
 
     public string FileNameByDeveloper { get; set; } = "";
 }
