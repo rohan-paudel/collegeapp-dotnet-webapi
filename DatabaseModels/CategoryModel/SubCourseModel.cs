@@ -20,8 +20,10 @@ public class SubCourseModel
     [Required]
     public int CourseId { get; set; }
 
+#pragma warning disable CS8618
     [ForeignKey("CourseId")]
     public CourseModel Course { get; set; }
+#pragma warning restore CS8618
 
     public ICollection<SubjectModel> Subjects { get; set; } = new HashSet<SubjectModel>();
 }

@@ -32,8 +32,12 @@ public class TejiloUser : IdentityUser
     [Required]
     public int CollegeId { get; set; }
 
+#pragma warning disable CS8618
+
     [ForeignKey("CollegeId")]
     public TejiloCollege College { get; set; }
+
+#pragma warning restore CS8618
 
     public int? SubCourseId { get; set; }
 
