@@ -41,12 +41,23 @@ public class NoteManagementController : ControllerBase
         return result;
     }
 
-    [HttpPost]
+    [HttpDelete]
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteNote(
-        [FromForm] DeleteNoteRequestDTO deleteNoteRequestDTO
+        DeleteNoteRequestDTO deleteNoteRequestDTO
     )
     {
         var result = await _noteManagementDL.DeleteNote(deleteNoteRequestDTO).ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > ToggleNoteStatus(NoteStatusToggleRequestDTO noteStatusToggleRequestDTO)
+    {
+        var result = await _noteManagementDL
+            .ToggleNoteStatus(noteStatusToggleRequestDTO)
+            .ConfigureAwait(false);
         return result;
     }
 
