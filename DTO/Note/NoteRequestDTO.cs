@@ -25,3 +25,15 @@ public class NoteRequestDTO
 
     public string FileNameByDeveloper { get; set; } = "";
 }
+
+public class DeleteNoteRequestDTO
+{
+    [Required]
+    public int NoteId { get; set; }
+}
+
+public class NoteStatusToggleRequestDTO
+{
+    [Required]
+    public int NoteId { get; set; }
+}
