@@ -33,7 +33,7 @@ public class UserLoginDL : IUserLoginDL
 
         try
         {
-            _signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+            _signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
 
             var user = await _userManager
                 .FindByEmailAsync(loginRequestDTO.Email)

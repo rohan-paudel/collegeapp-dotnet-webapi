@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace CollegeAppDotnetWebApi;
 
 [ApiController]
 [Route("api/[controller]/[Action]")]
+[AllowAnonymous]
 public class UserLoginController : ControllerBase
 {
     private readonly IUserLoginDL _userLoginDL;

@@ -6,6 +6,7 @@ using CollegeAppDotnetWebApi;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
@@ -57,6 +58,7 @@ builder
     });
 
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+
 builder
     .Services
     .AddAuthorizationBuilder()
@@ -214,21 +216,23 @@ builder
 
 // END OF JWT
 
+
+// builder
+//     .Services
+//     .AddAuthorization(options =>
+//     {
+//         options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//             .RequireAuthenticatedUser()
+//             .Build();
+//     });
+
 var app = builder.Build();
 
-string uploadsFolder = Path.Combine("/data");
+string uploadsFolder = "/data";
 if (!Directory.Exists(uploadsFolder))
 {
     // Directory.CreateDirectory(uploadsFolder);
 }
-
-app.UseStaticFiles(
-    new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(uploadsFolder),
-        RequestPath = "/data"
-    }
-);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) { }
@@ -242,8 +246,32 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(uploadsFolder),
+        RequestPath = "/data"
+    }
+);
+
 app.UseRateLimiter();
 
 app.MapControllers();
+
+// app.MapGet(
+//         "/files/{fileName}",
+//         IResult (string fileName) =>
+//         {
+//             var filePath = $"{uploadsFolder}/{fileName}";
+
+//             if (File.Exists(filePath))
+//             {
+//                 return TypedResults.PhysicalFile(filePath, fileDownloadName: $"{fileName}");
+//             }
+
+//             return TypedResults.NotFound("No file found with the supplied file name");
+//         }
+//     )
+//     .WithName("GetFileByName");
 
 app.Run();
