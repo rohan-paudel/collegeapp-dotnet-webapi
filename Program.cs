@@ -19,28 +19,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// builder
-//     .Services
-//     .Configure<KestrelServerOptions>(options =>
-//     {
-//         options.ConfigureHttpsDefaults(
-//             options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
-//         );
-//         options.ListenLocalhost(
-//             5001,
-//             lisOptions =>
-//             {
-//                 lisOptions.UseHttps("cert.pfx", "hello");
-//             }
-//         );
-//     });
-
 builder
     .Services
     .Configure<KestrelServerOptions>(options =>
     {
-        options.ListenAnyIP(5272);
+        options.ConfigureHttpsDefaults(
+            options => options.ClientCertificateMode = ClientCertificateMode.RequireCertificate
+        );
+        options.ListenAnyIP(
+            5272,
+            lisOptions =>
+            {
+                lisOptions.UseHttps("cert.pfx", "hello");
+            }
+        );
     });
+
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ListenAnyIP(5272);
+//     });
 
 builder
     .Services
