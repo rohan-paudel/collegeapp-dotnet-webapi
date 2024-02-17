@@ -34,12 +34,12 @@ var builder = WebApplication.CreateBuilder(args);
 //         );
 //     });
 
-builder
-    .Services
-    .Configure<KestrelServerOptions>(options =>
-    {
-        options.ListenAnyIP(5272);
-    });
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ListenAnyIP(5272);
+//     });
 
 builder
     .Services
@@ -125,8 +125,8 @@ builder
     .AddDbContext<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.ConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.ConnectionString)
+                SqlSetupConstants.DevConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.DevConnectionString)
             )
     );
 
@@ -216,12 +216,16 @@ builder
 
 var app = builder.Build();
 
+string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+if (!Directory.Exists(uploadsFolder))
+{
+    Directory.CreateDirectory(uploadsFolder);
+}
+
 app.UseStaticFiles(
     new StaticFileOptions
     {
-        FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "Uploads")
-        ),
+        FileProvider = new PhysicalFileProvider(uploadsFolder),
         RequestPath = "/Uploads"
     }
 );
