@@ -33,9 +33,9 @@ public class NoteManagementDL : INoteManagementDL
                 int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
                 if (rowsAffected > 0)
                 {
-                    if (File.Exists(Path.Combine("Uploads", "Notes", model.FileName)))
+                    if (File.Exists(Path.Combine("/data", "Notes", model.FileName)))
                     {
-                        File.Delete(Path.Combine("Uploads", "Notes", model.FileName));
+                        File.Delete(Path.Combine("/data", "Notes", model.FileName));
                     }
                     return TypedResults.Ok<ResponseDTO<string>>(new());
                 }
@@ -175,7 +175,7 @@ public class NoteManagementDL : INoteManagementDL
                 var uniqueFileName = $"{Guid.NewGuid()}.pdf";
 
                 // Save the file to a secure location with the unique filename
-                var filePath = Path.Combine("Uploads", "Notes", uniqueFileName); // Adjust this path to your desired folder
+                var filePath = Path.Combine("/data", "Notes", uniqueFileName); // Adjust this path to your desired folder
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Create directory if it doesn't exist
                 using (var stream = new FileStream(filePath, FileMode.CreateNew))
                 {

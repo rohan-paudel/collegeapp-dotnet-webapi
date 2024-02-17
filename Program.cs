@@ -216,17 +216,17 @@ builder
 
 var app = builder.Build();
 
-string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+string uploadsFolder = Path.Combine("/data");
 if (!Directory.Exists(uploadsFolder))
 {
-    Directory.CreateDirectory(uploadsFolder);
+    // Directory.CreateDirectory(uploadsFolder);
 }
 
 app.UseStaticFiles(
     new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(uploadsFolder),
-        RequestPath = "/Uploads"
+        RequestPath = "/data"
     }
 );
 
