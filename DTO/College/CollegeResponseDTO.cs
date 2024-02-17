@@ -25,6 +25,10 @@ public class CollegeResponseDTO
     public string? Description { get; set; }
 
     public int StudentCount { get; set; } = 0;
+
+    public DateTime ValidTill { get; set; } = DateTime.UtcNow;
+
+    public int RemainingDays { get; set; }
 }
 
 public class CollegeOnlyNameResponseDTO

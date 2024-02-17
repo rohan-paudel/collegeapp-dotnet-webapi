@@ -100,6 +100,7 @@ public class CollegeManagementDL : ICollegeManagementDL
 
             var collegeModels = await queryCourse
                 .Include(x => x.Students)
+                .OrderByDescending(e => e.Id)
                 .Select(p => _mapper.Map<CollegeResponseDTO>(p))
                 .ToListAsync()
                 .ConfigureAwait(false);

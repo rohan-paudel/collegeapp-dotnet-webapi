@@ -19,6 +19,13 @@ public class UserRegisterProfile : Profile
             .ForMember(
                 dest => dest.StudentCount,
                 src => src.MapFrom(x => x.Students != null ? x.Students.Count : 0)
+            )
+            .ForMember(
+                dest => dest.RemainingDays,
+                opt =>
+                    opt.MapFrom(
+                        src => (int)Math.Ceiling((src.ValidTill - DateTime.UtcNow).TotalDays)
+                    )
             );
 
         CreateMap<RegisterRequestDTO, TejiloUser>()

@@ -42,6 +42,8 @@ public class TejiloCollege
     [Required]
     public string Description { get; set; } = "";
 
+    public DateTime ValidTill { get; set; } = DateTime.UtcNow;
+
     public ICollection<TejiloUser>? Students { get; set; }
 
     public ICollection<DiscussionModel>? Discussions { get; set; }
