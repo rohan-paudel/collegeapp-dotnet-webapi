@@ -90,13 +90,13 @@ public class DiscussionManagementDL : IDiscussionManagementDL
                 new() { Data = queryModels }
             );
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    Message = ex.InnerException.Message
+                    Message = "Something went wrong."
                 }
             );
         }

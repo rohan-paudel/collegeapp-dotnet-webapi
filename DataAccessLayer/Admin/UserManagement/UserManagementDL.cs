@@ -144,7 +144,7 @@ public class UserManagementDL : IUserManagementDL
 
             var userModels = await queryCourse
                 .Include(x => x.SubCourse)
-                .ThenInclude(a => a.Course)
+                .ThenInclude(a => a!.Course)
                 .Include(x => x.College)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .ToListAsync()
@@ -187,7 +187,7 @@ public class UserManagementDL : IUserManagementDL
             var userModels = await queryCourse
                 .Include(x => x.College)
                 .Include(x => x.SubCourse)
-                .ThenInclude(x => x.Course)
+                .ThenInclude(x => x!.Course)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .ToListAsync()
                 .ConfigureAwait(false);
@@ -226,7 +226,7 @@ public class UserManagementDL : IUserManagementDL
             var userModels = await queryCourse
                 .Include(x => x.College)
                 .Include(x => x.SubCourse)
-                .ThenInclude(x => x.Course)
+                .ThenInclude(x => x!.Course)
                 .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
