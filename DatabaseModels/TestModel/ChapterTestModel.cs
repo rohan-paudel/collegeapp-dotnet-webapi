@@ -22,6 +22,8 @@ public class ChapterTestModel
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    public int TestType { get; set; } = 0;
+
     [Required]
     public int TopicId { get; set; }
 
