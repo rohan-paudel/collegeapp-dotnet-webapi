@@ -14,6 +14,8 @@ public class ChapterTestOptionModel
     public string OptionImage { get; set; } = "";
 
     [Required]
+    public bool IsCorrect { get; set; }
+
     public int ChapterTestQuestionId { get; set; }
 
 #pragma warning disable CS8618
