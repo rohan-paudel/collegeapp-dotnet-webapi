@@ -6,6 +6,7 @@ namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(Status))]
 [Index(nameof(TopicId))]
+[Index(nameof(Name))]
 public class ChapterTestModel
 {
     [Key]

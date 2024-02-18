@@ -134,4 +134,43 @@ public class TestManagementDL : ITestManagementDL
             );
         }
     }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetLiveTest(LiveTestRequestDTO liveTestRequestDTO)
+    {
+        try
+        {
+            await _dataContext
+                .LiveTestModel
+                .AddAsync(_mapper.Map<LiveTestModel>(liveTestRequestDTO))
+                .ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
+
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong."
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
 }

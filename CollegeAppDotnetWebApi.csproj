@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO/Test/LiveTest/" />
     <Folder Include="Uploads/" />
   </ItemGroup>
 

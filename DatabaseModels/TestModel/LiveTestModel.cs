@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
+[Index(nameof(Status))]
+[Index(nameof(SubjectId))]
+[Index(nameof(Name))]
 public class LiveTestModel
 {
     [Key]
@@ -19,9 +23,6 @@ public class LiveTestModel
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [Required]
-    public int SubjectId { get; set; }
-
-    [Required]
     public DateTime StartDate { get; set; }
 
     [Required]
@@ -32,6 +33,9 @@ public class LiveTestModel
 
     [Required]
     public int TestDuration { get; set; }
+
+    [Required]
+    public int SubjectId { get; set; }
 
 #pragma warning disable CS8618
     [ForeignKey("SubjectId")]

@@ -35,4 +35,13 @@ public class TestManagementController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetLiveTest(LiveTestRequestDTO liveTestRequestDTO)
+    {
+        var result = await _testManagementDL.SetLiveTest(liveTestRequestDTO).ConfigureAwait(false);
+        return result;
+    }
 }

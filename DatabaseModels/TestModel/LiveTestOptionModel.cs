@@ -14,6 +14,9 @@ public class LiveTestOptionModel
     public string OptionImage { get; set; } = "";
 
     [Required]
+    public bool IsCorrect { get; set; }
+
+    [Required]
     public int LiveTestQuestionId { get; set; }
 
 #pragma warning disable CS8618
