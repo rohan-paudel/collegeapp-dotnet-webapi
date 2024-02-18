@@ -25,7 +25,6 @@ public class ChapterTestQuestionModel
     [Required]
     public int PositiveMark { get; set; }
 
-    [Required]
     public int AnswerId { get; set; }
 
     [Required]

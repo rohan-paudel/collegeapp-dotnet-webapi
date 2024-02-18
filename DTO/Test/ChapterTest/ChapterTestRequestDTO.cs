@@ -36,10 +36,10 @@ public class ChapterTestQuestionDTO
     public int PositiveMark { get; set; }
 
     [Required]
-    public List<ChapterTestOptionDTO> ChapterTestOption { get; set; } = [];
+    public int ChapterTestId { get; set; }
 
     [Required]
-    public int AnswerId { get; set; }
+    public List<ChapterTestOptionDTO> Options { get; set; } = [];
 }
 
 public class ChapterTestOptionDTO

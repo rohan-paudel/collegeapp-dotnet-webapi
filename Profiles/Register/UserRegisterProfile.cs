@@ -74,5 +74,7 @@ public class UserRegisterProfile : Profile
 
         // For Chapter Test
         CreateMap<ChapterTestRequestDTO, ChapterTestModel>();
+        CreateMap<ChapterTestQuestionDTO, ChapterTestQuestionModel>();
+        CreateMap<ChapterTestOptionDTO, ChapterTestOptionModel>();
     }
 }

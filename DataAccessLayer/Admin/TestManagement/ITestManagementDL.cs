@@ -7,4 +7,8 @@ public interface ITestManagementDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetChapterTest(
         ChapterTestRequestDTO chapterTestRequestDTO
     );
+
+    public Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetChapterTestQuestion(ChapterTestQuestionDTO chapterTestQuestionDTO);
 }

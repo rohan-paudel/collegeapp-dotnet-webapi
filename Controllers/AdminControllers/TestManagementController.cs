@@ -24,4 +24,15 @@ public class TestManagementController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetChapterTestQuestion(ChapterTestQuestionDTO chapterTestQuestionDTO)
+    {
+        var result = await _testManagementDL
+            .SetChapterTestQuestion(chapterTestQuestionDTO)
+            .ConfigureAwait(false);
+        return result;
+    }
 }
