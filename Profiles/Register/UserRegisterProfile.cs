@@ -71,5 +71,8 @@ public class UserRegisterProfile : Profile
         CreateMap<QueryRequestDTO, QueryModel>();
         CreateMap<QueryModel, QueryResponseDTO>()
             .ForMember(dest => dest.Student, src => src.MapFrom(x => x.TejiloUser));
+
+        // For Chapter Test
+        CreateMap<ChapterTestRequestDTO, ChapterTestModel>();
     }
 }
