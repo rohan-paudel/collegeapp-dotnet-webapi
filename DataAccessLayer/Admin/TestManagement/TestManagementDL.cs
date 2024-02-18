@@ -75,13 +75,23 @@ public class TestManagementDL : ITestManagementDL
                 }
             }
 
-            if (countOfNumberOfTrues > 1)
+            if (countOfNumberOfTrues == 0)
             {
                 return TypedResults.BadRequest<ResponseDTO<string>>(
                     new()
                     {
                         StatusCode = StatusCodes.Status400BadRequest,
-                        Message = "Cannot have more then one true."
+                        Message = "One must be true."
+                    }
+                );
+            }
+            else if (countOfNumberOfTrues > 1)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Only one must be true."
                     }
                 );
             }
