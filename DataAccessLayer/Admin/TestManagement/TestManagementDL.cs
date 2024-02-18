@@ -65,6 +65,27 @@ public class TestManagementDL : ITestManagementDL
     {
         try
         {
+            int countOfNumberOfTrues = 0;
+
+            foreach (var option in chapterTestQuestionDTO.Options)
+            {
+                if (option.IsCorrect)
+                {
+                    countOfNumberOfTrues++;
+                }
+            }
+
+            if (countOfNumberOfTrues > 1)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Cannot have more then one true."
+                    }
+                );
+            }
+
             // var data = await _dataContext
             //     .ChapterTestModel
             //     .Where(x => x.Id == subCourseRequestDTO.CourseId)
