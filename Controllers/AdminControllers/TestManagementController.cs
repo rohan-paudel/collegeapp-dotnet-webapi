@@ -44,4 +44,15 @@ public class TestManagementController : ControllerBase
         var result = await _testManagementDL.SetLiveTest(liveTestRequestDTO).ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetTest([FromQuery] int? testType, [FromQuery] string? name, [FromQuery] bool? testStatus)
+    {
+        var result = await _testManagementDL
+            .GetTest(testType, name, testStatus)
+            .ConfigureAwait(false);
+        return result;
+    }
 }

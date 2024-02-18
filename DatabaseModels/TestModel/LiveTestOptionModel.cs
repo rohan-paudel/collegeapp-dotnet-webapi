@@ -21,6 +21,6 @@ public class LiveTestOptionModel
 
 #pragma warning disable CS8618
     [ForeignKey("LiveTestQuestionId")]
-    public LiveTestQuestionModel LiveTestQuestionModel { get; set; }
+    public LiveTestQuestionModel LiveTestQuestion { get; set; }
 #pragma warning restore CS8618
 }

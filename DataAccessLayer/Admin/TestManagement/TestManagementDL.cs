@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -12,6 +13,112 @@ public class TestManagementDL : ITestManagementDL
     {
         _dataContext = dataContext;
         _mapper = mapper;
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetTest(int? testType, string? name, bool? testStatus)
+    {
+        try
+        {
+            IQueryable<ChapterTestModel> queryChapterTest = _dataContext.ChapterTestModel;
+            IQueryable<LiveTestModel> queryLiveTest = _dataContext.LiveTestModel;
+
+            List<TestResponseDTO> listOfAllTest = [];
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                queryChapterTest = queryChapterTest.Where(x => x.Name.ToLower().Contains(name));
+                queryLiveTest = queryLiveTest.Where(x => x.Name.ToLower().Contains(name));
+            }
+
+            if (testStatus != null)
+            {
+                queryChapterTest = queryChapterTest.Where(x => x.Status == testStatus);
+                queryLiveTest = queryLiveTest.Where(x => x.Status == testStatus);
+            }
+
+            if (testType != null)
+            {
+                if (testType == 0)
+                {
+                    var chapterTestModel = await queryChapterTest
+                        .Include(p => p.Topic)
+                        .ThenInclude(x => x.Subject)
+                        .ThenInclude(y => y.SubCourses)
+                        .ThenInclude(z => z.Course)
+                        .OrderByDescending(e => e.Id)
+                        .Select(p => _mapper.Map<TestResponseDTO>(p))
+                        .ToListAsync()
+                        .ConfigureAwait(false);
+
+                    return TypedResults.Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>(
+                        new() { Data = chapterTestModel }
+                    );
+                }
+                else if (testType == 1)
+                {
+                    var liveTestModel = await queryLiveTest
+                        .Include(p => p.Subject)
+                        .ThenInclude(x => x.SubCourses)
+                        .ThenInclude(y => y.Course)
+                        .OrderByDescending(e => e.Id)
+                        .Select(p => _mapper.Map<TestResponseDTO>(p))
+                        .ToListAsync()
+                        .ConfigureAwait(false);
+
+                    return TypedResults.Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>(
+                        new() { Data = liveTestModel }
+                    );
+                }
+                else
+                {
+                    return TypedResults.BadRequest<ResponseDTO<string>>(
+                        new()
+                        {
+                            StatusCode = StatusCodes.Status400BadRequest,
+                            Message = "Something wend wrong."
+                        }
+                    );
+                }
+            }
+
+            var chapterTestModelForBoth = await queryChapterTest
+                .Include(p => p.Topic)
+                .ThenInclude(x => x.Subject)
+                .ThenInclude(y => y.SubCourses)
+                .ThenInclude(z => z.Course)
+                .Select(p => _mapper.Map<TestResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            var liveTestModelForBoth = await queryLiveTest
+                .Include(p => p.Subject)
+                .ThenInclude(x => x.SubCourses)
+                .ThenInclude(y => y.Course)
+                .Select(p => _mapper.Map<TestResponseDTO>(p))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            listOfAllTest.AddRange(chapterTestModelForBoth);
+            listOfAllTest.AddRange(liveTestModelForBoth);
+
+            listOfAllTest = [.. listOfAllTest.OrderByDescending(d => d.CreatedAt)];
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>(
+                new() { Data = listOfAllTest }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong."
+                }
+            );
+        }
     }
 
     public async Task<

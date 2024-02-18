@@ -42,9 +42,13 @@ public class UserRegisterProfile : Profile
 
         CreateMap<SubjectModel, SubjectResponseOnlyNameDTO>();
 
+        CreateMap<SubjectModel, SubjectResponseWithSubCourseDTO>();
+
         CreateMap<TopicModel, TopicResponseDTO>();
 
         CreateMap<TopicModel, TopicResponseOnlyNameDTO>();
+
+        CreateMap<TopicModel, TopicResponseWithSubCourseDTO>();
 
         CreateMap<TejiloUser, EditStudentRequestDTO>();
 
@@ -76,8 +80,10 @@ public class UserRegisterProfile : Profile
         CreateMap<ChapterTestRequestDTO, ChapterTestModel>();
         CreateMap<ChapterTestQuestionDTO, ChapterTestQuestionModel>();
         CreateMap<ChapterTestOptionDTO, ChapterTestOptionModel>();
+        CreateMap<ChapterTestModel, TestResponseDTO>();
 
         // For Live Test
         CreateMap<LiveTestRequestDTO, LiveTestModel>();
+        CreateMap<LiveTestModel, TestResponseDTO>();
     }
 }

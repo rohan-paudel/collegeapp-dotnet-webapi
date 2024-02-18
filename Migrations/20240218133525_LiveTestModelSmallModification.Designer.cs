@@ -3,6 +3,7 @@ using System;
 using CollegeAppDotnetWebApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20240218133525_LiveTestModelSmallModification")]
+    partial class LiveTestModelSmallModification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -783,13 +786,13 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestOptionModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestion")
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestionModel")
                         .WithMany("Options")
                         .HasForeignKey("ChapterTestQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ChapterTestQuestion");
+                    b.Navigation("ChapterTestQuestionModel");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestQuestionModel", b =>
@@ -832,24 +835,24 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.SubjectModel", "Subject")
+                    b.HasOne("CollegeAppDotnetWebApi.SubjectModel", "SubjectModel")
                         .WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subject");
+                    b.Navigation("SubjectModel");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestOptionModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.LiveTestQuestionModel", "LiveTestQuestion")
+                    b.HasOne("CollegeAppDotnetWebApi.LiveTestQuestionModel", "LiveTestQuestionModel")
                         .WithMany("Options")
                         .HasForeignKey("LiveTestQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LiveTestQuestion");
+                    b.Navigation("LiveTestQuestionModel");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestQuestionModel", b =>

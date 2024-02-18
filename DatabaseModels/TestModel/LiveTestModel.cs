@@ -41,7 +41,7 @@ public class LiveTestModel
 
 #pragma warning disable CS8618
     [ForeignKey("SubjectId")]
-    public SubjectModel SubjectModel { get; set; }
+    public SubjectModel Subject { get; set; }
 #pragma warning restore CS8618
 
     public ICollection<LiveTestQuestionModel>? Questions { get; set; }

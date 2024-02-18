@@ -20,6 +20,6 @@ public class ChapterTestOptionModel
 
 #pragma warning disable CS8618
     [ForeignKey("ChapterTestQuestionId")]
-    public ChapterTestQuestionModel ChapterTestQuestionModel { get; set; }
+    public ChapterTestQuestionModel ChapterTestQuestion { get; set; }
 #pragma warning restore CS8618
 }

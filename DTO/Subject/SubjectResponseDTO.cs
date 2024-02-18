@@ -16,3 +16,11 @@ public class SubjectResponseOnlyNameDTO
     public int Id { get; set; }
     public string Name { get; set; } = "";
 }
+
+public class SubjectResponseWithSubCourseDTO
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+
+    public List<SubCourseResponseOnlyNameDTO>? SubCourses { get; set; }
+}

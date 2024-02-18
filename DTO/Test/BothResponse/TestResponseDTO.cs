@@ -16,9 +16,9 @@ public class TestResponseDTO
 
     public int TestType { get; set; }
 
-    public int? TopicId { get; set; }
+    public TopicResponseWithSubCourseDTO? Topic { get; set; }
 
-    public int? SubjectId { get; set; }
+    public SubjectResponseWithSubCourseDTO? Subject { get; set; }
 
     public DateTime? StartDate { get; set; }
 
