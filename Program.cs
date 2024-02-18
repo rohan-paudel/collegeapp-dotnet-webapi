@@ -30,17 +30,17 @@ var builder = WebApplication.CreateBuilder(args);
 //             5272,
 //             lisOptions =>
 //             {
-//                 lisOptions.UseHttps("cert.pfx", "hello");
+//                 lisOptions.UseHttps("/data/cert.pfx", "hello");
 //             }
 //         );
 //     });
 
-// builder
-//     .Services
-//     .Configure<KestrelServerOptions>(options =>
-//     {
-//         options.ListenAnyIP(5272);
-//     });
+builder
+    .Services
+    .Configure<KestrelServerOptions>(options =>
+    {
+        options.ListenAnyIP(5272);
+    });
 
 builder
     .Services
@@ -131,6 +131,19 @@ builder
                 ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
             )
     );
+
+builder
+    .Services
+    .AddCors(options =>
+    {
+        options.AddPolicy(
+            "AllowAll",
+            builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }
+        );
+    });
 
 builder
     .Services
@@ -228,7 +241,7 @@ builder
 
 var app = builder.Build();
 
-string uploadsFolder = Path.Combine(builder.Environment.ContentRootPath, "Uploads");
+string uploadsFolder = "/data";
 if (!Directory.Exists(uploadsFolder))
 {
     // Directory.CreateDirectory(uploadsFolder);
@@ -240,6 +253,7 @@ app.UseSwagger();
 
 app.UseCookiePolicy(cookiePolicyOptions);
 app.UseSwaggerUI();
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
@@ -250,7 +264,7 @@ app.UseStaticFiles(
     new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(uploadsFolder),
-        RequestPath = "/Uploads"
+        RequestPath = "/data"
     }
 );
 
