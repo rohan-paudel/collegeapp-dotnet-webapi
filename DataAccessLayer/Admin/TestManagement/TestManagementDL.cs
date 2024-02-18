@@ -92,7 +92,7 @@ public class TestManagementDL : ITestManagementDL
                 );
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
