@@ -270,8 +270,7 @@ app.UseAuthorization();
 // );
 
 app.UseRateLimiter();
-
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("fixed");
 
 // app.MapGet(
 //         "/files/{fileName}",
