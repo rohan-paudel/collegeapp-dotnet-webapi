@@ -280,4 +280,80 @@ public class TestManagementDL : ITestManagementDL
             );
         }
     }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetLiveTestQuestion(LiveTestQuestionDTO liveTestQuestionDTO)
+    {
+        try
+        {
+            int countOfNumberOfTrues = 0;
+
+            foreach (var option in liveTestQuestionDTO.Options)
+            {
+                if (option.IsCorrect)
+                {
+                    countOfNumberOfTrues++;
+                }
+            }
+
+            if (countOfNumberOfTrues == 0)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "One must be true."
+                    }
+                );
+            }
+            else if (countOfNumberOfTrues > 1)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Only one must be true."
+                    }
+                );
+            }
+
+            // var data = await _dataContext
+            //     .ChapterTestModel
+            //     .Where(x => x.Id == subCourseRequestDTO.CourseId)
+            //     .FirstOrDefaultAsync()
+            //     .ConfigureAwait(false);
+
+            await _dataContext
+                .LiveTestQuestionModel
+                .AddAsync(_mapper.Map<LiveTestQuestionModel>(liveTestQuestionDTO))
+                .ConfigureAwait(false);
+            int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
+
+            if (rowsAffected > 0)
+            {
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+            else
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong."
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong."
+                }
+            );
+        }
+    }
 }

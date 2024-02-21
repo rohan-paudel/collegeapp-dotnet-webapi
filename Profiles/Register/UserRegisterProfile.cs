@@ -84,6 +84,8 @@ public class UserRegisterProfile : Profile
 
         // For Live Test
         CreateMap<LiveTestRequestDTO, LiveTestModel>();
+        CreateMap<LiveTestQuestionDTO, LiveTestQuestionModel>();
+        CreateMap<LiveTestOptionDTO, LiveTestOptionModel>();
         CreateMap<LiveTestModel, TestResponseDTO>();
     }
 }

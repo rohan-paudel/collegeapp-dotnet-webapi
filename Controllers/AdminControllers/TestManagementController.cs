@@ -45,6 +45,17 @@ public class TestManagementController : ControllerBase
         return result;
     }
 
+    [HttpPost]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetLiveTestQuestion(LiveTestQuestionDTO liveTestQuestionDTO)
+    {
+        var result = await _testManagementDL
+            .SetLiveTestQuestion(liveTestQuestionDTO)
+            .ConfigureAwait(false);
+        return result;
+    }
+
     [HttpGet]
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>, BadRequest<ResponseDTO<string>>>

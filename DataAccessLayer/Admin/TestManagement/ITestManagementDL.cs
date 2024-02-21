@@ -17,6 +17,10 @@ public interface ITestManagementDL
     );
 
     public Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > SetLiveTestQuestion(LiveTestQuestionDTO liveTestQuestionDTO);
+
+    public Task<
         Results<Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetTest(int? testType, string? name, bool? testStatus);
 }
