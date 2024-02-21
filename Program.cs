@@ -3,6 +3,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.RateLimiting;
 using CollegeAppDotnetWebApi;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -241,6 +243,18 @@ builder
 //     });
 
 var app = builder.Build();
+
+FirebaseApp.Create(
+    new AppOptions()
+    {
+        Credential = GoogleCredential.FromFile(
+            Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "testing-ac356-firebase-adminsdk-vepp3-5b81cb5d82.json"
+            )
+        ),
+    }
+);
 
 // string uploadsFolder = "/data";
 // if (!Directory.Exists(uploadsFolder))

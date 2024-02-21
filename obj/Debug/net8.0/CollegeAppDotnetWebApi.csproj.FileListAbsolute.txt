@@ -121,3 +121,12 @@
 /Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.Certificate.dll
 /Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/BouncyCastle.Crypto.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/testing-ac356-firebase-adminsdk-vepp3-5b81cb5d82.json
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/FirebaseAdmin.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Google.Api.Gax.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Google.Api.Gax.Rest.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Google.Apis.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Google.Apis.Auth.PlatformServices.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Google.Apis.Auth.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Google.Apis.Core.dll
+/Users/hamroacademy/Work/dotnet/webapi/CollegeAppDotnetWebApi/bin/Debug/net8.0/Newtonsoft.Json.dll
