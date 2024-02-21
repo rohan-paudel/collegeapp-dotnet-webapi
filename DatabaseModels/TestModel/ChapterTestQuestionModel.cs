@@ -20,10 +20,10 @@ public class ChapterTestQuestionModel
     public string SolutionImage { get; set; } = "";
 
     [Required]
-    public int NegativeMark { get; set; }
+    public float NegativeMark { get; set; }
 
     [Required]
-    public int PositiveMark { get; set; }
+    public float PositiveMark { get; set; }
 
     public int AnswerId { get; set; }
 

@@ -82,6 +82,11 @@ public class UserRegisterProfile : Profile
         CreateMap<ChapterTestOptionDTO, ChapterTestOptionModel>();
         CreateMap<ChapterTestModel, TestResponseDTO>();
 
+        //For ChapterTest User
+        CreateMap<ChapterTestQuestionModel, QuestionResponseFromDatabaseDTO>();
+        CreateMap<PostChapterTestOptionChosedDTO, ChapterTestDetailedDataModel>();
+        CreateMap<PostChapterTestDTO, ChapterTestUserDataModel>();
+
         // For Live Test
         CreateMap<LiveTestRequestDTO, LiveTestModel>();
         CreateMap<LiveTestQuestionDTO, LiveTestQuestionModel>();

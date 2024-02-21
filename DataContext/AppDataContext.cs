@@ -34,4 +34,8 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<LiveTestQuestionModel> LiveTestQuestionModel { get; set; }
 
     public DbSet<LiveTestOptionModel> LiveTestOptionModel { get; set; }
+
+    public DbSet<ChapterTestDetailedDataModel> ChapterTestDetailedDataModel { get; set; }
+
+    public DbSet<ChapterTestUserDataModel> ChapterTestUserDataModel { get; set; }
 }

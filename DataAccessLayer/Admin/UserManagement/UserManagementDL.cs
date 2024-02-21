@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -146,7 +147,7 @@ public class UserManagementDL : IUserManagementDL
                 .Include(x => x.SubCourse)
                 .ThenInclude(a => a!.Course)
                 .Include(x => x.College)
-                .Select(p => _mapper.Map<RegisterStudentResponseDTO>(p))
+                .ProjectTo<RegisterStudentResponseDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync()
                 .ConfigureAwait(false);
 
