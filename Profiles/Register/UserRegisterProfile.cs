@@ -92,5 +92,8 @@ public class UserRegisterProfile : Profile
         CreateMap<LiveTestQuestionDTO, LiveTestQuestionModel>();
         CreateMap<LiveTestOptionDTO, LiveTestOptionModel>();
         CreateMap<LiveTestModel, TestResponseDTO>();
+
+        // For Daily Quote
+        CreateMap<QuoteRequestDTO, QuoteModel>();
     }
 }

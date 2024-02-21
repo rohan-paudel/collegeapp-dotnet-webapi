@@ -38,4 +38,6 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<ChapterTestDetailedDataModel> ChapterTestDetailedDataModel { get; set; }
 
     public DbSet<ChapterTestUserDataModel> ChapterTestUserDataModel { get; set; }
+
+    public DbSet<QuoteModel> QuoteModel { get; set; }
 }
