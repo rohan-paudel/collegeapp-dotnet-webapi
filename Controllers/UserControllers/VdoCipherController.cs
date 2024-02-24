@@ -26,4 +26,13 @@ public class VdoCipherController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<VideoResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetVideos(int topicId, bool? statusCode)
+    {
+        var result = await _vdoCipherDL.GetVideos(topicId, statusCode).ConfigureAwait(false);
+        return result;
+    }
 }
