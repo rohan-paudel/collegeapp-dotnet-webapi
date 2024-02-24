@@ -27,12 +27,26 @@ public class NoticeBoardManagementDL : INoticeBoardManagementDL
                 try
                 {
                     if (
-                        fileExtension != ".pdf"
-                        || fileExtension != ".png"
-                        || fileExtension != ".jpeg"
-                        || fileExtension != ".jpg"
-                        || noticeBoardRequestDTO.File.Length > 1 * 1024 * 1024
+                        fileExtension == ".pdf"
+                        || fileExtension == ".png"
+                        || fileExtension == ".jpeg"
+                        || fileExtension == ".jpg"
+                        || noticeBoardRequestDTO.File.Length < 1 * 1024 * 1024
                     )
+                    {
+                        var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+
+                        // Save the file to a secure location with the unique filename
+                        var filePath = Path.Combine("/data", "NoticeBoard", uniqueFileName); // Adjust this path to your desired folder
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Create directory if it doesn't exist
+                        using (var stream = new FileStream(filePath, FileMode.CreateNew))
+                        {
+                            await noticeBoardRequestDTO.File.CopyToAsync(stream);
+                        }
+
+                        noticeBoardRequestDTO.FileNameByDeveloper = uniqueFileName;
+                    }
+                    else
                     {
                         return TypedResults.BadRequest<ResponseDTO<string>>(
                             new()
@@ -44,17 +58,6 @@ public class NoticeBoardManagementDL : INoticeBoardManagementDL
                         );
                     }
                     // Generate a unique filename using GUID
-                    var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
-
-                    // Save the file to a secure location with the unique filename
-                    var filePath = Path.Combine("/data", "NoticeBoard", uniqueFileName); // Adjust this path to your desired folder
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Create directory if it doesn't exist
-                    using (var stream = new FileStream(filePath, FileMode.CreateNew))
-                    {
-                        await noticeBoardRequestDTO.File.CopyToAsync(stream);
-                    }
-
-                    noticeBoardRequestDTO.FileNameByDeveloper = uniqueFileName;
                 }
                 catch (Exception)
                 {
