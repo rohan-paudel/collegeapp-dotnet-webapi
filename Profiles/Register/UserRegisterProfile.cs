@@ -95,5 +95,9 @@ public class UserRegisterProfile : Profile
 
         // For Daily Quote
         CreateMap<QuoteRequestDTO, QuoteModel>();
+
+        // For NoticeBoardModel
+        CreateMap<NoticeBoardRequestDTO, NoticeBoardModel>()
+            .ForMember(dest => dest.FileName, src => src.MapFrom(x => x.FileNameByDeveloper));
     }
 }

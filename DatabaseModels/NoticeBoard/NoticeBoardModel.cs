@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
@@ -10,7 +11,6 @@ public class NoticeBoardModel
 {
     [Key]
     public int Id { get; set; }
-
     public bool Status { get; set; } = true;
 
     [Required]
@@ -21,8 +21,8 @@ public class NoticeBoardModel
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [Required]
-    public string FileName { get; set; } = "";
+    [AllowNull]
+    public string? FileName { get; set; }
 
     [Required]
     public int CollegeId { get; set; }
