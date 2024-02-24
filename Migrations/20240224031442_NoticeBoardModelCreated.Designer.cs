@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20240217164042_LiveTestAndChapterTestModelAdded")]
-    partial class LiveTestAndChapterTestModelAdded
+    [Migration("20240224031442_NoticeBoardModelCreated")]
+    partial class NoticeBoardModelCreated
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,35 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestDetailedDataModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChapterTestQuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChapterTestUserDataId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("UserAnswerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapterTestQuestionId");
+
+                    b.HasIndex("ChapterTestUserDataId");
+
+                    b.HasIndex("UserAnswerId");
+
+                    b.ToTable("ChapterTestDetailedDataModel");
+                });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestModel", b =>
                 {
@@ -44,15 +73,22 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("TestType")
+                        .HasColumnType("int");
 
                     b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Status");
 
                     b.HasIndex("TopicId");
 
@@ -67,6 +103,9 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.Property<int>("ChapterTestQuestionId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Option")
                         .IsRequired()
@@ -92,14 +131,14 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.Property<int>("AnswerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChapterTestModelId")
+                    b.Property<int>("ChapterTestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NegativeMark")
-                        .HasColumnType("int");
+                    b.Property<float>("NegativeMark")
+                        .HasColumnType("float");
 
-                    b.Property<int>("PositiveMark")
-                        .HasColumnType("int");
+                    b.Property<float>("PositiveMark")
+                        .HasColumnType("float");
 
                     b.Property<string>("Question")
                         .IsRequired()
@@ -122,9 +161,52 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChapterTestModelId");
+                    b.HasIndex("ChapterTestId");
 
                     b.ToTable("ChapterTestQuestionModel");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestUserDataModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChapterTestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Correct")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Incorrect")
+                        .HasColumnType("int");
+
+                    b.Property<float>("MarksObtained")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<float>("TotalMark")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TotalQuestion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unanswered")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapterTestId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("ChapterTestUserDataModel");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.CourseModel", b =>
@@ -212,7 +294,7 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("ResultDate")
                         .HasColumnType("datetime(6)");
@@ -229,7 +311,14 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.Property<int>("TestDuration")
                         .HasColumnType("int");
 
+                    b.Property<int>("TestType")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Status");
 
                     b.HasIndex("SubjectId");
 
@@ -241,6 +330,9 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("LiveTestQuestionId")
                         .HasColumnType("int");
@@ -266,10 +358,10 @@ namespace CollegeAppDotnetWebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AnswerId")
+                    b.Property<int?>("AnswerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LiveTestModelId")
+                    b.Property<int>("LiveTestId")
                         .HasColumnType("int");
 
                     b.Property<int>("NegativeMark")
@@ -299,7 +391,7 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LiveTestModelId");
+                    b.HasIndex("LiveTestId");
 
                     b.ToTable("LiveTestQuestionModel");
                 });
@@ -342,6 +434,42 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("NoteModel");
                 });
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.NoticeBoardModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CollegeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Notice")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollegeId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("NoticeBoardModel");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.QueryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -369,6 +497,42 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("QueryModel");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.QuoteModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EndDate");
+
+                    b.HasIndex("StartDate");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("StartDate", "EndDate");
+
+                    b.ToTable("QuoteModel");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.SubCourseModel", b =>
@@ -738,6 +902,21 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("NoticeBoardModelSubCourseModel", b =>
+                {
+                    b.Property<int>("NoticeBoardsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubCoursesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NoticeBoardsId", "SubCoursesId");
+
+                    b.HasIndex("SubCoursesId");
+
+                    b.ToTable("NoticeBoardModelSubCourseModel");
+                });
+
             modelBuilder.Entity("SubCourseModelSubjectModel", b =>
                 {
                     b.Property<int>("SubCoursesId")
@@ -753,6 +932,31 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("SubCourseModelSubjectModel");
                 });
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestDetailedDataModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestion")
+                        .WithMany()
+                        .HasForeignKey("ChapterTestQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestUserDataModel", "ChapterTestUserData")
+                        .WithMany("ChapterTestDetailedData")
+                        .HasForeignKey("ChapterTestUserDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestOptionModel", "UserAnswer")
+                        .WithMany()
+                        .HasForeignKey("UserAnswerId");
+
+                    b.Navigation("ChapterTestQuestion");
+
+                    b.Navigation("ChapterTestUserData");
+
+                    b.Navigation("UserAnswer");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.TopicModel", "Topic")
@@ -766,20 +970,43 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestOptionModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestionModel")
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestion")
                         .WithMany("Options")
                         .HasForeignKey("ChapterTestQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ChapterTestQuestionModel");
+                    b.Navigation("ChapterTestQuestion");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestQuestionModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestModel", null)
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestModel", "ChapterTest")
                         .WithMany("Questions")
-                        .HasForeignKey("ChapterTestModelId");
+                        .HasForeignKey("ChapterTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChapterTest");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestUserDataModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.ChapterTestModel", "ChapterTest")
+                        .WithMany()
+                        .HasForeignKey("ChapterTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.TejiloUser", "TejiloUser")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChapterTest");
+
+                    b.Navigation("TejiloUser");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.DiscussionModel", b =>
@@ -811,31 +1038,35 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.SubjectModel", "SubjectModel")
+                    b.HasOne("CollegeAppDotnetWebApi.SubjectModel", "Subject")
                         .WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubjectModel");
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestOptionModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.LiveTestQuestionModel", "LiveTestQuestionModel")
+                    b.HasOne("CollegeAppDotnetWebApi.LiveTestQuestionModel", "LiveTestQuestion")
                         .WithMany("Options")
                         .HasForeignKey("LiveTestQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LiveTestQuestionModel");
+                    b.Navigation("LiveTestQuestion");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestQuestionModel", b =>
                 {
-                    b.HasOne("CollegeAppDotnetWebApi.LiveTestModel", null)
+                    b.HasOne("CollegeAppDotnetWebApi.LiveTestModel", "LiveTest")
                         .WithMany("Questions")
-                        .HasForeignKey("LiveTestModelId");
+                        .HasForeignKey("LiveTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LiveTest");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.NoteModel", b =>
@@ -847,6 +1078,17 @@ namespace CollegeAppDotnetWebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.NoticeBoardModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.TejiloCollege", "TejiloCollege")
+                        .WithMany("NoticeBoards")
+                        .HasForeignKey("CollegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TejiloCollege");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.QueryModel", b =>
@@ -958,6 +1200,21 @@ namespace CollegeAppDotnetWebApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NoticeBoardModelSubCourseModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.NoticeBoardModel", null)
+                        .WithMany()
+                        .HasForeignKey("NoticeBoardsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.SubCourseModel", null)
+                        .WithMany()
+                        .HasForeignKey("SubCoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SubCourseModelSubjectModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.SubCourseModel", null)
@@ -981,6 +1238,11 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestQuestionModel", b =>
                 {
                     b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestUserDataModel", b =>
+                {
+                    b.Navigation("ChapterTestDetailedData");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.CourseModel", b =>
@@ -1011,6 +1273,8 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder.Entity("CollegeAppDotnetWebApi.TejiloCollege", b =>
                 {
                     b.Navigation("Discussions");
+
+                    b.Navigation("NoticeBoards");
 
                     b.Navigation("Students");
                 });

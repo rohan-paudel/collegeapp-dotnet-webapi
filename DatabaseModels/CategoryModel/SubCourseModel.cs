@@ -26,4 +26,7 @@ public class SubCourseModel
 #pragma warning restore CS8618
 
     public ICollection<SubjectModel> Subjects { get; set; } = new HashSet<SubjectModel>();
+
+    public ICollection<NoticeBoardModel> NoticeBoards { get; set; } =
+        new HashSet<NoticeBoardModel>();
 }

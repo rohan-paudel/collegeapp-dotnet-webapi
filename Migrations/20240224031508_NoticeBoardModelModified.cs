@@ -5,7 +5,7 @@
 namespace CollegeAppDotnetWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class LiveTestModification : Migration
+    public partial class NoticeBoardModelModified : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

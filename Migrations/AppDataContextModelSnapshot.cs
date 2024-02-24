@@ -431,6 +431,42 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("NoteModel");
                 });
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.NoticeBoardModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CollegeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Notice")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollegeId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("NoticeBoardModel");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.QueryModel", b =>
                 {
                     b.Property<int>("Id")
@@ -458,6 +494,42 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("QueryModel");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.QuoteModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EndDate");
+
+                    b.HasIndex("StartDate");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("StartDate", "EndDate");
+
+                    b.ToTable("QuoteModel");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.SubCourseModel", b =>
@@ -827,6 +899,21 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("NoticeBoardModelSubCourseModel", b =>
+                {
+                    b.Property<int>("NoticeBoardsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubCoursesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NoticeBoardsId", "SubCoursesId");
+
+                    b.HasIndex("SubCoursesId");
+
+                    b.ToTable("NoticeBoardModelSubCourseModel");
+                });
+
             modelBuilder.Entity("SubCourseModelSubjectModel", b =>
                 {
                     b.Property<int>("SubCoursesId")
@@ -990,6 +1077,17 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.Navigation("Topic");
                 });
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.NoticeBoardModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.TejiloCollege", "TejiloCollege")
+                        .WithMany("NoticeBoards")
+                        .HasForeignKey("CollegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TejiloCollege");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.QueryModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.DiscussionModel", "Discussion")
@@ -1099,6 +1197,21 @@ namespace CollegeAppDotnetWebApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NoticeBoardModelSubCourseModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.NoticeBoardModel", null)
+                        .WithMany()
+                        .HasForeignKey("NoticeBoardsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.SubCourseModel", null)
+                        .WithMany()
+                        .HasForeignKey("SubCoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SubCourseModelSubjectModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.SubCourseModel", null)
@@ -1157,6 +1270,8 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder.Entity("CollegeAppDotnetWebApi.TejiloCollege", b =>
                 {
                     b.Navigation("Discussions");
+
+                    b.Navigation("NoticeBoards");
 
                     b.Navigation("Students");
                 });

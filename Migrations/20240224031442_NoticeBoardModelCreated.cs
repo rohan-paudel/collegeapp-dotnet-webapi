@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class NoticeBoardModelCreated : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,6 +47,26 @@ namespace CollegeAppDotnetWebApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CourseModel", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "QuoteModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuoteModel", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -94,7 +114,8 @@ namespace CollegeAppDotnetWebApi.Migrations
                     ThumbnailUrl = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ValidTill = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,6 +172,40 @@ namespace CollegeAppDotnetWebApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "LiveTestModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Instruction = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TestType = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ResultDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TestDuration = table.Column<int>(type: "int", nullable: false),
+                    SubjectId = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LiveTestModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LiveTestModel_SubjectModel_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "SubjectModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "TopicModel",
                 columns: table => new
                 {
@@ -170,6 +225,34 @@ namespace CollegeAppDotnetWebApi.Migrations
                         name: "FK_TopicModel_SubjectModel_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "SubjectModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "NoticeBoardModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Notice = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FileName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CollegeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NoticeBoardModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NoticeBoardModel_TejiloCollege_CollegeId",
+                        column: x => x.CollegeId,
+                        principalTable: "TejiloCollege",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -257,6 +340,68 @@ namespace CollegeAppDotnetWebApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "LiveTestQuestionModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Question = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    QuestionImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Solution = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SolutionImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NegativeMark = table.Column<int>(type: "int", nullable: false),
+                    PositiveMark = table.Column<int>(type: "int", nullable: false),
+                    AnswerId = table.Column<int>(type: "int", nullable: true),
+                    LiveTestId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LiveTestQuestionModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LiveTestQuestionModel_LiveTestModel_LiveTestId",
+                        column: x => x.LiveTestId,
+                        principalTable: "LiveTestModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ChapterTestModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Instruction = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    TestType = table.Column<int>(type: "int", nullable: false),
+                    TopicId = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChapterTestModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestModel_TopicModel_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "TopicModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "NoteModel",
                 columns: table => new
                 {
@@ -279,6 +424,31 @@ namespace CollegeAppDotnetWebApi.Migrations
                         name: "FK_NoteModel_TopicModel_TopicId",
                         column: x => x.TopicId,
                         principalTable: "TopicModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "NoticeBoardModelSubCourseModel",
+                columns: table => new
+                {
+                    NoticeBoardsId = table.Column<int>(type: "int", nullable: false),
+                    SubCoursesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NoticeBoardModelSubCourseModel", x => new { x.NoticeBoardsId, x.SubCoursesId });
+                    table.ForeignKey(
+                        name: "FK_NoticeBoardModelSubCourseModel_NoticeBoardModel_NoticeBoards~",
+                        column: x => x.NoticeBoardsId,
+                        principalTable: "NoticeBoardModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NoticeBoardModelSubCourseModel_SubCourseModel_SubCoursesId",
+                        column: x => x.SubCoursesId,
+                        principalTable: "SubCourseModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -425,6 +595,98 @@ namespace CollegeAppDotnetWebApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "LiveTestOptionModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Option = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OptionImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsCorrect = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    LiveTestQuestionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LiveTestOptionModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LiveTestOptionModel_LiveTestQuestionModel_LiveTestQuestionId",
+                        column: x => x.LiveTestQuestionId,
+                        principalTable: "LiveTestQuestionModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ChapterTestQuestionModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Question = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    QuestionImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Solution = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SolutionImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NegativeMark = table.Column<float>(type: "float", nullable: false),
+                    PositiveMark = table.Column<float>(type: "float", nullable: false),
+                    AnswerId = table.Column<int>(type: "int", nullable: false),
+                    ChapterTestId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChapterTestQuestionModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestQuestionModel_ChapterTestModel_ChapterTestId",
+                        column: x => x.ChapterTestId,
+                        principalTable: "ChapterTestModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ChapterTestUserDataModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    StudentId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ChapterTestId = table.Column<int>(type: "int", nullable: false),
+                    Correct = table.Column<int>(type: "int", nullable: false),
+                    Incorrect = table.Column<int>(type: "int", nullable: false),
+                    Unanswered = table.Column<int>(type: "int", nullable: false),
+                    MarksObtained = table.Column<float>(type: "float", nullable: false),
+                    TotalMark = table.Column<float>(type: "float", nullable: false),
+                    TotalQuestion = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChapterTestUserDataModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestUserDataModel_AspNetUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestUserDataModel_ChapterTestModel_ChapterTestId",
+                        column: x => x.ChapterTestId,
+                        principalTable: "ChapterTestModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "QueryModel",
                 columns: table => new
                 {
@@ -450,6 +712,65 @@ namespace CollegeAppDotnetWebApi.Migrations
                         name: "FK_QueryModel_DiscussionModel_DiscussionId",
                         column: x => x.DiscussionId,
                         principalTable: "DiscussionModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ChapterTestOptionModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Option = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OptionImage = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsCorrect = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ChapterTestQuestionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChapterTestOptionModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestOptionModel_ChapterTestQuestionModel_ChapterTestQ~",
+                        column: x => x.ChapterTestQuestionId,
+                        principalTable: "ChapterTestQuestionModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ChapterTestDetailedDataModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ChapterTestQuestionId = table.Column<int>(type: "int", nullable: false),
+                    UserAnswerId = table.Column<int>(type: "int", nullable: true),
+                    ChapterTestUserDataId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChapterTestDetailedDataModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestDetailedDataModel_ChapterTestOptionModel_UserAnsw~",
+                        column: x => x.UserAnswerId,
+                        principalTable: "ChapterTestOptionModel",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ChapterTestDetailedDataModel_ChapterTestQuestionModel_Chapte~",
+                        column: x => x.ChapterTestQuestionId,
+                        principalTable: "ChapterTestQuestionModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ChapterTestDetailedDataModel_ChapterTestUserDataModel_Chapte~",
+                        column: x => x.ChapterTestUserDataId,
+                        principalTable: "ChapterTestUserDataModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -509,6 +830,56 @@ namespace CollegeAppDotnetWebApi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestDetailedDataModel_ChapterTestQuestionId",
+                table: "ChapterTestDetailedDataModel",
+                column: "ChapterTestQuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestDetailedDataModel_ChapterTestUserDataId",
+                table: "ChapterTestDetailedDataModel",
+                column: "ChapterTestUserDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestDetailedDataModel_UserAnswerId",
+                table: "ChapterTestDetailedDataModel",
+                column: "UserAnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestModel_Name",
+                table: "ChapterTestModel",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestModel_Status",
+                table: "ChapterTestModel",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestModel_TopicId",
+                table: "ChapterTestModel",
+                column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestOptionModel_ChapterTestQuestionId",
+                table: "ChapterTestOptionModel",
+                column: "ChapterTestQuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestQuestionModel_ChapterTestId",
+                table: "ChapterTestQuestionModel",
+                column: "ChapterTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestUserDataModel_ChapterTestId",
+                table: "ChapterTestUserDataModel",
+                column: "ChapterTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChapterTestUserDataModel_StudentId",
+                table: "ChapterTestUserDataModel",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CourseModel_Name",
                 table: "CourseModel",
                 column: "Name");
@@ -544,6 +915,31 @@ namespace CollegeAppDotnetWebApi.Migrations
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LiveTestModel_Name",
+                table: "LiveTestModel",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LiveTestModel_Status",
+                table: "LiveTestModel",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LiveTestModel_SubjectId",
+                table: "LiveTestModel",
+                column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LiveTestOptionModel_LiveTestQuestionId",
+                table: "LiveTestOptionModel",
+                column: "LiveTestQuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LiveTestQuestionModel_LiveTestId",
+                table: "LiveTestQuestionModel",
+                column: "LiveTestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NoteModel_Name",
                 table: "NoteModel",
                 column: "Name");
@@ -559,6 +955,21 @@ namespace CollegeAppDotnetWebApi.Migrations
                 column: "TopicId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_NoticeBoardModel_CollegeId",
+                table: "NoticeBoardModel",
+                column: "CollegeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NoticeBoardModel_Status",
+                table: "NoticeBoardModel",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NoticeBoardModelSubCourseModel_SubCoursesId",
+                table: "NoticeBoardModelSubCourseModel",
+                column: "SubCoursesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QueryModel_DiscussionId",
                 table: "QueryModel",
                 column: "DiscussionId");
@@ -567,6 +978,26 @@ namespace CollegeAppDotnetWebApi.Migrations
                 name: "IX_QueryModel_StudentId",
                 table: "QueryModel",
                 column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuoteModel_EndDate",
+                table: "QuoteModel",
+                column: "EndDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuoteModel_StartDate",
+                table: "QuoteModel",
+                column: "StartDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuoteModel_StartDate_EndDate",
+                table: "QuoteModel",
+                columns: new[] { "StartDate", "EndDate" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuoteModel_Status",
+                table: "QuoteModel",
+                column: "Status");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubCourseModel_CourseId",
@@ -643,10 +1074,22 @@ namespace CollegeAppDotnetWebApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ChapterTestDetailedDataModel");
+
+            migrationBuilder.DropTable(
+                name: "LiveTestOptionModel");
+
+            migrationBuilder.DropTable(
                 name: "NoteModel");
 
             migrationBuilder.DropTable(
+                name: "NoticeBoardModelSubCourseModel");
+
+            migrationBuilder.DropTable(
                 name: "QueryModel");
+
+            migrationBuilder.DropTable(
+                name: "QuoteModel");
 
             migrationBuilder.DropTable(
                 name: "SubCourseModelSubjectModel");
@@ -655,13 +1098,31 @@ namespace CollegeAppDotnetWebApi.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "ChapterTestOptionModel");
+
+            migrationBuilder.DropTable(
+                name: "ChapterTestUserDataModel");
+
+            migrationBuilder.DropTable(
+                name: "LiveTestQuestionModel");
+
+            migrationBuilder.DropTable(
+                name: "NoticeBoardModel");
+
+            migrationBuilder.DropTable(
                 name: "DiscussionModel");
+
+            migrationBuilder.DropTable(
+                name: "ChapterTestQuestionModel");
+
+            migrationBuilder.DropTable(
+                name: "LiveTestModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "TopicModel");
+                name: "ChapterTestModel");
 
             migrationBuilder.DropTable(
                 name: "SubCourseModel");
@@ -670,10 +1131,13 @@ namespace CollegeAppDotnetWebApi.Migrations
                 name: "TejiloCollege");
 
             migrationBuilder.DropTable(
-                name: "SubjectModel");
+                name: "TopicModel");
 
             migrationBuilder.DropTable(
                 name: "CourseModel");
+
+            migrationBuilder.DropTable(
+                name: "SubjectModel");
         }
     }
 }

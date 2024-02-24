@@ -47,4 +47,6 @@ public class TejiloCollege
     public ICollection<TejiloUser>? Students { get; set; }
 
     public ICollection<DiscussionModel>? Discussions { get; set; }
+
+    public ICollection<NoticeBoardModel>? NoticeBoards { get; set; }
 }
