@@ -33,4 +33,6 @@ public class TopicModel
     public ICollection<ChapterTestModel>? ChapterTests { get; set; }
 
     public ICollection<VideoModel>? Videos { get; set; }
+
+    public ICollection<UserNoteModel>? UserNotes { get; set; }
 }

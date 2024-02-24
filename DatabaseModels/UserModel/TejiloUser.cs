@@ -45,4 +45,6 @@ public class TejiloUser : IdentityUser
     public SubCourseModel? SubCourse { get; set; }
 
     public ICollection<DiscussionModel>? Discussions { get; set; }
+
+    public ICollection<UserNoteModel>? UserNotes { get; set; }
 }
