@@ -102,5 +102,8 @@ public class UserRegisterProfile : Profile
 
         // For Video Cipher Admin
         CreateMap<UploadVideoRequestDTO, VideoModel>();
+
+        // For Video User side
+        CreateMap<VideoModel, VideoResponseDTO>();
     }
 }

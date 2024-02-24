@@ -16,7 +16,7 @@ public class VideoCipherAdminController : ControllerBase
 
     [HttpPost]
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetVideo(
-        [FromForm] UploadVideoRequestDTO uploadVideoRequestDTO
+        [FromBody] UploadVideoRequestDTO uploadVideoRequestDTO
     )
     {
         var result = await _videoCipherAdmin.SetVideo(uploadVideoRequestDTO).ConfigureAwait(false);
