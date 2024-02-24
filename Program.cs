@@ -37,12 +37,12 @@ var builder = WebApplication.CreateBuilder(args);
 //         );
 //     });
 
-builder
-    .Services
-    .Configure<KestrelServerOptions>(options =>
-    {
-        options.ListenAnyIP(5272);
-    });
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ListenAnyIP(5272);
+//     });
 
 builder
     .Services
@@ -77,6 +77,7 @@ var cookiePolicyOptions = new CookiePolicyOptions { MinimumSameSitePolicy = Same
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IVideoCipherAdminDL, VideoCipherAdminDL>();
 builder.Services.AddScoped<INoticeBoardManagementDL, NoticeBoardManagementDL>();
 builder.Services.AddScoped<IVdoCipherDL, VdoCipherDL>();
 builder.Services.AddScoped<IQuoteManagementDL, QuoteManagementDL>();
@@ -134,8 +135,8 @@ builder
     .AddDbContextPool<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.ServerConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
+                SqlSetupConstants.DevConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.DevConnectionString)
             )
     );
 
@@ -277,11 +278,11 @@ FirebaseApp.Create(
     }
 );
 
-string uploadsFolder = "/data";
-if (!Directory.Exists(uploadsFolder))
-{
-    // Directory.CreateDirectory(uploadsFolder);
-}
+// string uploadsFolder = "/data";
+// if (!Directory.Exists(uploadsFolder))
+// {
+//     // Directory.CreateDirectory(uploadsFolder);
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) { }
@@ -296,13 +297,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStaticFiles(
-    new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(uploadsFolder),
-        RequestPath = "/data"
-    }
-);
+// app.UseStaticFiles(
+//     new StaticFileOptions
+//     {
+//         FileProvider = new PhysicalFileProvider(uploadsFolder),
+//         RequestPath = "/data"
+//     }
+// );
 
 app.UseRateLimiter();
 app.MapControllers().RequireRateLimiting("fixed");

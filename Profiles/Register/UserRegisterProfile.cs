@@ -99,5 +99,8 @@ public class UserRegisterProfile : Profile
         // For NoticeBoardModel
         CreateMap<NoticeBoardRequestDTO, NoticeBoardModel>()
             .ForMember(dest => dest.FileName, src => src.MapFrom(x => x.FileNameByDeveloper));
+
+        // For Video Cipher Admin
+        CreateMap<UploadVideoRequestDTO, VideoModel>();
     }
 }

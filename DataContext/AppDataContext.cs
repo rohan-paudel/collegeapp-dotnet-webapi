@@ -42,4 +42,5 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<QuoteModel> QuoteModel { get; set; }
 
     public DbSet<NoticeBoardModel> NoticeBoardModel { get; set; }
+    public DbSet<VideoModel> VideoModel { get; set; }
 }
