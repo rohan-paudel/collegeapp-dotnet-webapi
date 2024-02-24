@@ -12,7 +12,7 @@ public interface IUserNoteManagementDL
         Results<Ok<ResponseDTO<IEnumerable<UserNoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetUserNotes(int topicId, string studentId, bool? noteStatus);
 
-    public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> EditCollege(
+    public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> EditUserNote(
         UserNoteUpdateDTO userNoteUpdateDTO
     );
 }

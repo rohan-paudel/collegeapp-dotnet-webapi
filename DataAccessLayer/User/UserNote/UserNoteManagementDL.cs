@@ -17,7 +17,7 @@ public class UserNoteManagementDL : IUserNoteManagementDL
 
     public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
-    > EditCollege(UserNoteUpdateDTO userNoteUpdateDTO)
+    > EditUserNote(UserNoteUpdateDTO userNoteUpdateDTO)
     {
         try
         {
