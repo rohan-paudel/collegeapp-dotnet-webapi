@@ -18,6 +18,7 @@ public class SubjectModel
     public string? ImageUrl { get; set; }
 
     public ICollection<TopicModel>? Topics { get; set; }
+    public ICollection<LiveTestModel>? LiveTests { get; set; }
 
     public ICollection<SubCourseModel> SubCourses { get; set; } = new HashSet<SubCourseModel>();
 }

@@ -29,4 +29,8 @@ public class TopicModel
 #pragma warning restore CS8618
 
     public ICollection<DiscussionModel>? Discussions { get; set; }
+
+    public ICollection<ChapterTestModel>? ChapterTests { get; set; }
+
+    public ICollection<VideoModel>? Videos { get; set; }
 }

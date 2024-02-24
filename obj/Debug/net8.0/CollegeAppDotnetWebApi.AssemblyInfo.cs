@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CollegeAppDotnetWebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f206ebb5ad2d503cf2b2e4ead79844af263b6eb8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+962254104d896bd6d7d8a7b326a1ffd1ba9f9cca")]
 [assembly: System.Reflection.AssemblyProductAttribute("CollegeAppDotnetWebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CollegeAppDotnetWebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
