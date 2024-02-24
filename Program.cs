@@ -37,12 +37,12 @@ var builder = WebApplication.CreateBuilder(args);
 //         );
 //     });
 
-// builder
-//     .Services
-//     .Configure<KestrelServerOptions>(options =>
-//     {
-//         options.ListenAnyIP(5272);
-//     });
+builder
+    .Services
+    .Configure<KestrelServerOptions>(options =>
+    {
+        options.ListenAnyIP(5272);
+    });
 
 builder
     .Services
@@ -136,8 +136,8 @@ builder
     .AddDbContextPool<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.DevConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.DevConnectionString)
+                SqlSetupConstants.ServerConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
             )
     );
 
@@ -279,11 +279,11 @@ FirebaseApp.Create(
     }
 );
 
-// string uploadsFolder = "/data";
-// if (!Directory.Exists(uploadsFolder))
-// {
-//     // Directory.CreateDirectory(uploadsFolder);
-// }
+string uploadsFolder = "/data";
+if (!Directory.Exists(uploadsFolder))
+{
+    // Directory.CreateDirectory(uploadsFolder);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) { }
@@ -298,13 +298,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// app.UseStaticFiles(
-//     new StaticFileOptions
-//     {
-//         FileProvider = new PhysicalFileProvider(uploadsFolder),
-//         RequestPath = "/data"
-//     }
-// );
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(uploadsFolder),
+        RequestPath = "/data"
+    }
+);
 
 app.UseRateLimiter();
 app.MapControllers().RequireRateLimiting("fixed");
