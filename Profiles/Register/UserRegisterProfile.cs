@@ -105,5 +105,10 @@ public class UserRegisterProfile : Profile
 
         // For Video User side
         CreateMap<VideoModel, VideoResponseDTO>();
+
+        // For User Note
+        CreateMap<UserNoteRequestDTO, UserNoteModel>();
+        CreateMap<UserNoteModel, UserNoteResponseDTO>();
+        CreateMap<UserNoteUpdateDTO, UserNoteModel>();
     }
 }

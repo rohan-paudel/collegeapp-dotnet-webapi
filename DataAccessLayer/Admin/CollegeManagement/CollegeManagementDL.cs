@@ -30,7 +30,8 @@ public class CollegeManagementDL : ICollegeManagementDL
         {
             var college = await _dataContext
                 .TejiloCollege
-                .FirstOrDefaultAsync(x => x.Id == editCollegeRequestDTO.CollegeId);
+                .FirstOrDefaultAsync(x => x.Id == editCollegeRequestDTO.CollegeId)
+                .ConfigureAwait(false);
 
             if (college == null)
             {
