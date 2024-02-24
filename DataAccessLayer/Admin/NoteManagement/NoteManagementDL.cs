@@ -137,38 +137,10 @@ public class NoteManagementDL : INoteManagementDL
             );
 
         if (
-            Path.GetExtension(noteRequestDTO.File.FileName).ToLower() != ".pdf"
-            || noteRequestDTO.File.Length > 3 * 1024 * 1024
+            Path.GetExtension(noteRequestDTO.File.FileName).ToLower() == ".pdf"
+            && noteRequestDTO.File.Length < 2 * 1024 * 1024
         )
         {
-            return TypedResults.BadRequest<ResponseDTO<string>>(
-                new()
-                {
-                    StatusCode = StatusCodes.Status400BadRequest,
-                    Message = "Invalid file. Only PDF files up to 3MB are allowed."
-                }
-            );
-        }
-
-        try
-        {
-            var data = await _dataContext
-                .TopicModel
-                .Where(x => x.Id == noteRequestDTO.TopicId)
-                .FirstOrDefaultAsync()
-                .ConfigureAwait(false);
-
-            if (data == null)
-            {
-                return TypedResults.BadRequest<ResponseDTO<string>>(
-                    new()
-                    {
-                        StatusCode = StatusCodes.Status400BadRequest,
-                        Message = "No Such Topics Found."
-                    }
-                );
-            }
-
             try
             {
                 // Generate a unique filename using GUID
@@ -191,6 +163,36 @@ public class NoteManagementDL : INoteManagementDL
                     {
                         StatusCode = StatusCodes.Status400BadRequest,
                         Message = "Something went wrong with file upload."
+                    }
+                );
+            }
+        }
+        else
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Invalid file. Only PDF files up to 2MB are allowed."
+                }
+            );
+        }
+
+        try
+        {
+            var data = await _dataContext
+                .TopicModel
+                .Where(x => x.Id == noteRequestDTO.TopicId)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (data == null)
+            {
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "No Such Topics Found."
                     }
                 );
             }

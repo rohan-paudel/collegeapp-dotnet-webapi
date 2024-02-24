@@ -27,11 +27,13 @@ public class NoticeBoardManagementDL : INoticeBoardManagementDL
                 try
                 {
                     if (
-                        fileExtension == ".pdf"
-                        || fileExtension == ".png"
-                        || fileExtension == ".jpeg"
-                        || fileExtension == ".jpg"
-                        || noticeBoardRequestDTO.File.Length < 1 * 1024 * 1024
+                        (
+                            fileExtension == ".pdf"
+                            || fileExtension == ".png"
+                            || fileExtension == ".jpeg"
+                            || fileExtension == ".jpg"
+                        )
+                        && noticeBoardRequestDTO.File.Length < 1 * 1024 * 1024
                     )
                     {
                         var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
