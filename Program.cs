@@ -44,6 +44,8 @@ var builder = WebApplication.CreateBuilder(args);
 //         options.ListenAnyIP(5272);
 //     });
 
+
+
 builder
     .Services
     .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
@@ -77,6 +79,7 @@ var cookiePolicyOptions = new CookiePolicyOptions { MinimumSameSitePolicy = Same
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IVdoCipherDL, VdoCipherDL>();
 builder.Services.AddScoped<IQuoteManagementDL, QuoteManagementDL>();
 builder.Services.AddScoped<IChapterTestDL, ChapterTestDL>();
 builder.Services.AddScoped<ITestManagementDL, TestManagementDL>();
@@ -180,6 +183,23 @@ builder
                 )
         );
     });
+
+builder
+    .Services
+    .AddHttpClient(
+        "VdoCipherClient",
+        client =>
+        {
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            // client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+            client
+                .DefaultRequestHeaders
+                .Add(
+                    "Authorization",
+                    "Apisecret JpTbYAfcaXeKDiJt6h6MSppcJVgVGnkuYKzrQQDdbxVSBDJIe08qgtlXrthbjV5a"
+                );
+        }
+    );
 
 /// START OF JWT TOKEN SERVICE
 
