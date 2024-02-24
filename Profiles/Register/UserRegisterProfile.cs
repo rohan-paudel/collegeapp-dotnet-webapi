@@ -30,13 +30,15 @@ public class UserRegisterProfile : Profile
 
         CreateMap<RegisterRequestDTO, TejiloUser>()
             .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.Email));
-        CreateMap<CourseModel, CourseResponseDTO>();
+        CreateMap<CourseModel, CourseResponseDTO>()
+            .ForMember(dest => dest.SubCourses, src => src.MapFrom(x => x.SubCourses));
 
         CreateMap<CourseModel, CourseResponseOnlyNameDTO>();
 
         CreateMap<SubCourseModel, SubCourseResponseDTO>();
 
         CreateMap<SubCourseModel, SubCourseResponseOnlyNameDTO>();
+        CreateMap<SubCourseModel, SubCourseResponseOnlyIdDTO>();
 
         CreateMap<SubjectModel, SubjectResponseDTO>();
 

@@ -4,7 +4,6 @@ namespace CollegeAppDotnetWebApi;
 
 public class UpdateStudentCourseSubCourse
 {
-    [Required]
     public string StudentId { get; set; } = "";
 
     [Required]

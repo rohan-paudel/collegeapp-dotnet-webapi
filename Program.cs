@@ -46,6 +46,16 @@ builder
 
 builder
     .Services
+    .AddDbContextPool<AppDataContext>(
+        options =>
+            options.UseMySql(
+                SqlSetupConstants.ServerConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
+            )
+    );
+
+builder
+    .Services
     .AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
     .AddCertificate(options => { });
 
@@ -130,16 +140,6 @@ builder
             }
         );
     });
-
-builder
-    .Services
-    .AddDbContextPool<AppDataContext>(
-        options =>
-            options.UseMySql(
-                SqlSetupConstants.ServerConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
-            )
-    );
 
 builder
     .Services
@@ -279,11 +279,11 @@ FirebaseApp.Create(
     }
 );
 
-string uploadsFolder = "/data";
-if (!Directory.Exists(uploadsFolder))
-{
-    // Directory.CreateDirectory(uploadsFolder);
-}
+// string uploadsFolder = "/data";
+// if (!Directory.Exists(uploadsFolder))
+// {
+//     // Directory.CreateDirectory(uploadsFolder);
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) { }
@@ -298,13 +298,13 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStaticFiles(
-    new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(uploadsFolder),
-        RequestPath = "/data"
-    }
-);
+// app.UseStaticFiles(
+//     new StaticFileOptions
+//     {
+//         FileProvider = new PhysicalFileProvider(uploadsFolder),
+//         RequestPath = "/data"
+//     }
+// );
 
 app.UseRateLimiter();
 app.MapControllers().RequireRateLimiting("fixed");

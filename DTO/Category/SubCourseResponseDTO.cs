@@ -15,3 +15,9 @@ public class SubCourseResponseOnlyNameDTO
 
     public CourseResponseOnlyNameDTO Course { get; set; } = new CourseResponseOnlyNameDTO();
 }
+
+public class SubCourseResponseOnlyIdDTO
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+}

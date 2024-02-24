@@ -24,4 +24,8 @@ public interface ICollegeManagementDL
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<CollegeResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetCollege(string? searchTerm, bool? collegeStatus);
+
+    public Task<
+        Results<Ok<ResponseDTO<CollegeResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetCollegeById(string collegeId);
 }

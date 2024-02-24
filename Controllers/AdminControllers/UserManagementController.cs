@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -93,10 +95,12 @@ public class UserManagementController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "PolicyForMobileDevice")]
     public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > UpdateStudentCourseSubCourse(UpdateStudentCourseSubCourse updateStudentCourseSubCourse)
     {
+        updateStudentCourseSubCourse.StudentId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         var result = await _userManagementDL
             .UpdateStudentCourseSubCourse(updateStudentCourseSubCourse)
             .ConfigureAwait(false);
@@ -124,6 +128,18 @@ public class UserManagementController : ControllerBase
     {
         var result = await _userManagementDL
             .GetStudentByStudentId(studentId, studentStatus)
+            .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    [Authorize(Policy = "PolicyForMobileDevice")]
+    public async Task<
+        Results<Ok<ResponseDTO<RegisterStudentResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetStudentByToken()
+    {
+        var result = await _userManagementDL
+            .GetStudentByStudentId(User.FindFirstValue(ClaimTypes.NameIdentifier)!, null)
             .ConfigureAwait(false);
         return result;
     }

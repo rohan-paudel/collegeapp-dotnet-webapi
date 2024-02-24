@@ -55,4 +55,13 @@ public class CollgeManagementController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<CollegeResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetCollegeById([FromHeader(Name = "sim")] string collegeId)
+    {
+        var result = await _collegeManagementDL.GetCollegeById(collegeId).ConfigureAwait(false);
+        return result;
+    }
 }

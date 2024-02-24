@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
@@ -16,5 +17,6 @@ public class CourseModel
     [Required]
     public string Name { get; set; } = "";
 
-    public ICollection<SubCourseModel>? SubCourses { get; set; }
+    public virtual ICollection<SubCourseModel> SubCourses { get; set; } =
+        new HashSet<SubCourseModel>();
 }

@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -251,7 +252,8 @@ public class CategoryManagementDL : ICategoryManagementDL
             }
 
             var courseModels = await queryCourse
-                .Select(p => _mapper.Map<CourseResponseDTO>(p))
+                .Include(x => x.SubCourses)
+                .ProjectTo<CourseResponseDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync()
                 .ConfigureAwait(false);
 

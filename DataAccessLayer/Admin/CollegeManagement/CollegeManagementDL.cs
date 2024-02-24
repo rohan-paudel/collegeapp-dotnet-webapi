@@ -122,6 +122,34 @@ public class CollegeManagementDL : ICollegeManagementDL
         }
     }
 
+    public async Task<
+        Results<Ok<ResponseDTO<CollegeResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetCollegeById(string collegeId)
+    {
+        try
+        {
+            IQueryable<TejiloCollege> queryCourse = _dataContext.TejiloCollege;
+
+            var collegeModels = await queryCourse
+                .Where(p => p.Id == Int32.Parse(collegeId))
+                .Select(p => _mapper.Map<CollegeResponseDTO>(p))
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<CollegeResponseDTO>>(new() { Data = collegeModels });
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetCollege(
         CollegeRequestDTO collegeRequestDTO
     )

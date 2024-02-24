@@ -3,6 +3,7 @@
 public class CourseResponseDTO
 {
     public int Id { get; set; }
+    public IEnumerable<SubCourseResponseOnlyIdDTO> SubCourses { get; set; } = [];
     public string Name { get; set; } = "";
     public bool Status { get; set; }
 }

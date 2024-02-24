@@ -55,6 +55,7 @@ public class WeatherForecastController : ControllerBase
         {
             hey.Add(claim.Type, claim.Value);
         }
+        hey.Add("normal", User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         return hey;
     }
