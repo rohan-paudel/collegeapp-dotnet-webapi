@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -74,13 +76,15 @@ public class SubjectManagementController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "PolicyForMobileDevice")]
     public async Task<
         Results<
             Ok<ResponseDTO<IEnumerable<SubjectResponseForUser>>>,
             BadRequest<ResponseDTO<string>>
         >
-    > GetSubjects([FromQuery] [Required] int subcourseId)
+    > GetSubjects()
     {
+        int subcourseId = Int32.Parse(User.FindFirstValue("SubCourseId")!);
         var result = await _subjectManagementDL.GetSubjects(subcourseId).ConfigureAwait(false);
         return result;
     }
