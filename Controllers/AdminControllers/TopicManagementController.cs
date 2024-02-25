@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeAppDotnetWebApi;
@@ -68,6 +69,18 @@ public class TopicManagementController : ControllerBase
         var result = await _topicManagementDL
             .GetTopics(courseId, subcourseId, subjectId, topicName, topicStatus)
             .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<TopicResponseForUserDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetChapters([FromQuery] [Required] int subjectId)
+    {
+        var result = await _topicManagementDL.GetChapters(subjectId).ConfigureAwait(false);
         return result;
     }
 }

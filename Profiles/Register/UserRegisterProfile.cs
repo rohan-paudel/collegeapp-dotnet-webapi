@@ -51,6 +51,7 @@ public class UserRegisterProfile : Profile
 
         CreateMap<TopicModel, TopicResponseOnlyNameDTO>();
 
+        CreateMap<TopicModel, TopicResponseForUserDTO>();
         CreateMap<TopicModel, TopicResponseWithSubCourseDTO>();
 
         CreateMap<TejiloUser, EditStudentRequestDTO>();

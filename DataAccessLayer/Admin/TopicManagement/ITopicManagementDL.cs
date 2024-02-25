@@ -29,4 +29,11 @@ public interface ITopicManagementDL
         string? topicName,
         bool? topicStatus
     );
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<TopicResponseForUserDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetChapters(int subjectId);
 }

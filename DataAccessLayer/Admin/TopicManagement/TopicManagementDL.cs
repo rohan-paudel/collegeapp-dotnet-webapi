@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -143,6 +144,42 @@ public class TopicManagementDL : ITopicManagementDL
     }
 
     public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<TopicResponseForUserDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetChapters(int subjectId)
+    {
+        try
+        {
+            IQueryable<TopicModel> queryTopic = _dataContext.TopicModel;
+
+            queryTopic = queryTopic.Where(x => x.SubjectId == subjectId);
+
+            queryTopic = queryTopic.Where(x => x.Status == true);
+
+            var topicModels = await queryTopic
+                .ProjectTo<TopicResponseForUserDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<TopicResponseForUserDTO>>>(
+                new() { Data = topicModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
         Results<Ok<ResponseDTO<IEnumerable<TopicResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetTopics(
         int? courseId,
@@ -172,7 +209,7 @@ public class TopicManagementDL : ITopicManagementDL
 
             if (subjectId != null)
             {
-                queryTopic = queryTopic.Where(x => x.Subject.Id == subjectId);
+                queryTopic = queryTopic.Where(x => x.SubjectId == subjectId);
             }
 
             if (!string.IsNullOrWhiteSpace(topicName))
