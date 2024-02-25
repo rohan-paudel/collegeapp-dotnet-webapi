@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollegeAppDotnetWebApi;
@@ -59,7 +60,7 @@ public class SubjectManagementController : ControllerBase
     [HttpGet]
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetSubjects(
+    > GetSubjectsForAdmin(
         [FromQuery] int? courseId,
         [FromQuery] int? subcourseId,
         [FromQuery] string? subjectName,
@@ -67,8 +68,20 @@ public class SubjectManagementController : ControllerBase
     )
     {
         var result = await _subjectManagementDL
-            .GetSubjects(courseId, subcourseId, subjectName, subjectStatus)
+            .GetSubjectsForAdmin(courseId, subcourseId, subjectName, subjectStatus)
             .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<SubjectResponseForUser>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetSubjects([FromQuery] [Required] int subcourseId)
+    {
+        var result = await _subjectManagementDL.GetSubjects(subcourseId).ConfigureAwait(false);
         return result;
     }
 }

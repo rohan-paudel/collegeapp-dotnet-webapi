@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -119,8 +120,44 @@ public class SubjectManagementDL : ISubjectManagementDL
     }
 
     public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<SubjectResponseForUser>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetSubjects(int subcourseId)
+    {
+        try
+        {
+            IQueryable<SubjectModel> querySubject = _dataContext.SubjectModel;
+
+            querySubject = querySubject.Where(x => x.SubCourses.Any(sc => sc.Id == subcourseId));
+
+            querySubject = querySubject.Where(x => x.Status == true);
+
+            var subjectModels = await querySubject
+                .ProjectTo<SubjectResponseForUser>(_mapper.ConfigurationProvider)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<SubjectResponseForUser>>>(
+                new() { Data = subjectModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
         Results<Ok<ResponseDTO<IEnumerable<SubjectResponseDTO>>>, BadRequest<ResponseDTO<string>>>
-    > GetSubjects(int? courseId, int? subcourseId, string? subjectName, bool? subjectStatus)
+    > GetSubjectsForAdmin(int? courseId, int? subcourseId, string? subjectName, bool? subjectStatus)
     {
         try
         {
