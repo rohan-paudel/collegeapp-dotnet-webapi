@@ -68,6 +68,7 @@ public class CategoryCountDL : ICategoryCountDL
                 SELECT COUNT(*)
                 FROM NoteModel
                 WHERE TopicId = {topicId}
+                AND Status = 1
             )
             WHERE TopicId = {topicId};
         "
@@ -127,6 +128,7 @@ public class CategoryCountDL : ICategoryCountDL
                 SELECT COUNT(*)
                 FROM VideoModel
                 WHERE TopicId = {topicId}
+                AND Status = 1
             )
             WHERE TopicId = {topicId};
         "

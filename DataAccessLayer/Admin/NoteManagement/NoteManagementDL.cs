@@ -11,11 +11,17 @@ public class NoteManagementDL : INoteManagementDL
 {
     private readonly AppDataContext _dataContext;
     private readonly IMapper _mapper;
+    private readonly ICategoryCountDL _categoryCountDL;
 
-    public NoteManagementDL(AppDataContext dataContext, IMapper mapper)
+    public NoteManagementDL(
+        AppDataContext dataContext,
+        IMapper mapper,
+        ICategoryCountDL categoryCountDL
+    )
     {
         _dataContext = dataContext;
         _mapper = mapper;
+        _categoryCountDL = categoryCountDL;
     }
 
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteNote(
@@ -38,6 +44,7 @@ public class NoteManagementDL : INoteManagementDL
                     {
                         File.Delete(Path.Combine("/data", "Notes", model.FileName));
                     }
+                    await _categoryCountDL.UpdateNoteCount(model.TopicId).ConfigureAwait(false);
                     return TypedResults.Ok<ResponseDTO<string>>(new());
                 }
                 else
@@ -244,6 +251,10 @@ public class NoteManagementDL : INoteManagementDL
 
             if (rowsAffected > 0)
             {
+                await _categoryCountDL
+                    .UpdateNoteCount(noteRequestDTO.TopicId)
+                    .ConfigureAwait(false);
+
                 return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
             }
             else
@@ -283,9 +294,11 @@ public class NoteManagementDL : INoteManagementDL
             if (model != null)
             {
                 model.Status = !model.Status;
+
                 int rowsAffected = await _dataContext.SaveChangesAsync().ConfigureAwait(false);
                 if (rowsAffected > 0)
                 {
+                    await _categoryCountDL.UpdateNoteCount(model.TopicId).ConfigureAwait(false);
                     return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
                 }
                 else
