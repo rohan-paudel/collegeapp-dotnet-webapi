@@ -87,6 +87,7 @@ var cookiePolicyOptions = new CookiePolicyOptions { MinimumSameSitePolicy = Same
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICategoryCountDL, CategoryCountDL>();
 builder.Services.AddScoped<IUserNoteManagementDL, UserNoteManagementDL>();
 builder.Services.AddScoped<IVideoCipherAdminDL, VideoCipherAdminDL>();
 builder.Services.AddScoped<INoticeBoardManagementDL, NoticeBoardManagementDL>();

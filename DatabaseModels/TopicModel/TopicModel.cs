@@ -27,6 +27,8 @@ public class TopicModel
 #pragma warning disable CS8618
     [ForeignKey("SubjectId")]
     public SubjectModel Subject { get; set; }
+
+    public CategoryCountModel CategoryCountModel { get; set; }
 #pragma warning restore CS8618
 
     public ICollection<DiscussionModel>? Discussions { get; set; }

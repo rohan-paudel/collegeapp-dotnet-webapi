@@ -45,4 +45,6 @@ public class AppDataContext : IdentityDbContext<TejiloUser>
     public DbSet<VideoModel> VideoModel { get; set; }
 
     public DbSet<UserNoteModel> UserNoteModel { get; set; }
+
+    public DbSet<CategoryCountModel> CategoryCountModel { get; set; }
 }

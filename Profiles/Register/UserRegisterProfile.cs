@@ -114,5 +114,8 @@ public class UserRegisterProfile : Profile
         CreateMap<UserNoteRequestDTO, UserNoteModel>();
         CreateMap<UserNoteModel, UserNoteResponseDTO>();
         CreateMap<UserNoteUpdateDTO, UserNoteModel>();
+
+        // For Category Count Model
+        CreateMap<CategoryCountModel, CategoryCountResponseDTO>();
     }
 }

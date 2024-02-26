@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    [Migration("20240224033214_NoticeBoardFileNameCanBeNull")]
-    partial class NoticeBoardFileNameCanBeNull
+    [Migration("20240226102540_UptoCategoryCountCompleted")]
+    partial class UptoCategoryCountCompleted
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,42 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.CategoryCountModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChapterTestCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CollegeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscussionCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoteCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollegeId");
+
+                    b.HasIndex("TopicId")
+                        .IsUnique();
+
+                    b.HasIndex("CollegeId", "TopicId");
+
+                    b.ToTable("CategoryCountModel");
+                });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestDetailedDataModel", b =>
                 {
@@ -770,7 +806,82 @@ namespace CollegeAppDotnetWebApi.Migrations
 
                     b.HasIndex("SubjectId");
 
+                    b.HasIndex("SubjectId", "Status");
+
                     b.ToTable("TopicModel");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.UserNoteModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("StudentId", "TopicId");
+
+                    b.ToTable("UserNoteModel");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.VideoModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalVideoDuration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VdoCipherId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("VideoModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -931,6 +1042,25 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("SubCourseModelSubjectModel");
                 });
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.CategoryCountModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.TejiloCollege", "TejiloCollege")
+                        .WithMany()
+                        .HasForeignKey("CollegeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.TopicModel", "TopicModel")
+                        .WithOne("CategoryCountModel")
+                        .HasForeignKey("CollegeAppDotnetWebApi.CategoryCountModel", "TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TejiloCollege");
+
+                    b.Navigation("TopicModel");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestDetailedDataModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestion")
@@ -959,7 +1089,7 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.TopicModel", "Topic")
-                        .WithMany()
+                        .WithMany("ChapterTests")
                         .HasForeignKey("TopicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1038,7 +1168,7 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder.Entity("CollegeAppDotnetWebApi.LiveTestModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.SubjectModel", "Subject")
-                        .WithMany()
+                        .WithMany("LiveTests")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1146,6 +1276,36 @@ namespace CollegeAppDotnetWebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.UserNoteModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.TejiloUser", "TejiloUser")
+                        .WithMany("UserNotes")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CollegeAppDotnetWebApi.TopicModel", "Topic")
+                        .WithMany("UserNotes")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TejiloUser");
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("CollegeAppDotnetWebApi.VideoModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.TopicModel", "Topic")
+                        .WithMany("Videos")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1266,6 +1426,8 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.SubjectModel", b =>
                 {
+                    b.Navigation("LiveTests");
+
                     b.Navigation("Topics");
                 });
 
@@ -1281,13 +1443,24 @@ namespace CollegeAppDotnetWebApi.Migrations
             modelBuilder.Entity("CollegeAppDotnetWebApi.TejiloUser", b =>
                 {
                     b.Navigation("Discussions");
+
+                    b.Navigation("UserNotes");
                 });
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.TopicModel", b =>
                 {
+                    b.Navigation("CategoryCountModel")
+                        .IsRequired();
+
+                    b.Navigation("ChapterTests");
+
                     b.Navigation("Discussions");
 
                     b.Navigation("Notes");
+
+                    b.Navigation("UserNotes");
+
+                    b.Navigation("Videos");
                 });
 #pragma warning restore 612, 618
         }

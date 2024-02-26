@@ -19,6 +19,32 @@ namespace CollegeAppDotnetWebApi.Migrations
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.CategoryCountModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChapterTestCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NoteCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId")
+                        .IsUnique();
+
+                    b.ToTable("CategoryCountModel");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestDetailedDataModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1003,6 +1029,17 @@ namespace CollegeAppDotnetWebApi.Migrations
                     b.ToTable("SubCourseModelSubjectModel");
                 });
 
+            modelBuilder.Entity("CollegeAppDotnetWebApi.CategoryCountModel", b =>
+                {
+                    b.HasOne("CollegeAppDotnetWebApi.TopicModel", "TopicModel")
+                        .WithOne("CategoryCountModel")
+                        .HasForeignKey("CollegeAppDotnetWebApi.CategoryCountModel", "TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TopicModel");
+                });
+
             modelBuilder.Entity("CollegeAppDotnetWebApi.ChapterTestDetailedDataModel", b =>
                 {
                     b.HasOne("CollegeAppDotnetWebApi.ChapterTestQuestionModel", "ChapterTestQuestion")
@@ -1391,6 +1428,9 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             modelBuilder.Entity("CollegeAppDotnetWebApi.TopicModel", b =>
                 {
+                    b.Navigation("CategoryCountModel")
+                        .IsRequired();
+
                     b.Navigation("ChapterTests");
 
                     b.Navigation("Discussions");

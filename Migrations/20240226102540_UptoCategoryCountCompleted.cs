@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CollegeAppDotnetWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class NoticeBoardModelCreated : Migration
+    public partial class UptoCategoryCountCompleted : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -242,7 +242,7 @@ namespace CollegeAppDotnetWebApi.Migrations
                     Notice = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    FileName = table.Column<string>(type: "longtext", nullable: false)
+                    FileName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CollegeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -372,6 +372,37 @@ namespace CollegeAppDotnetWebApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "CategoryCountModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    VideoCount = table.Column<int>(type: "int", nullable: false),
+                    NoteCount = table.Column<int>(type: "int", nullable: false),
+                    DiscussionCount = table.Column<int>(type: "int", nullable: false),
+                    ChapterTestCount = table.Column<int>(type: "int", nullable: false),
+                    TopicId = table.Column<int>(type: "int", nullable: false),
+                    CollegeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategoryCountModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategoryCountModel_TejiloCollege_CollegeId",
+                        column: x => x.CollegeId,
+                        principalTable: "TejiloCollege",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryCountModel_TopicModel_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "TopicModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ChapterTestModel",
                 columns: table => new
                 {
@@ -422,6 +453,34 @@ namespace CollegeAppDotnetWebApi.Migrations
                     table.PrimaryKey("PK_NoteModel", x => x.Id);
                     table.ForeignKey(
                         name: "FK_NoteModel_TopicModel_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "TopicModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "VideoModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    VdoCipherId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TotalVideoDuration = table.Column<int>(type: "int", nullable: false),
+                    TopicId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VideoModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_VideoModel_TopicModel_TopicId",
                         column: x => x.TopicId,
                         principalTable: "TopicModel",
                         principalColumn: "Id",
@@ -587,6 +646,39 @@ namespace CollegeAppDotnetWebApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DiscussionModel_TopicModel_TopicId",
+                        column: x => x.TopicId,
+                        principalTable: "TopicModel",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserNoteModel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TopicId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNoteModel", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserNoteModel_AspNetUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserNoteModel_TopicModel_TopicId",
                         column: x => x.TopicId,
                         principalTable: "TopicModel",
                         principalColumn: "Id",
@@ -830,6 +922,22 @@ namespace CollegeAppDotnetWebApi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategoryCountModel_CollegeId",
+                table: "CategoryCountModel",
+                column: "CollegeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryCountModel_CollegeId_TopicId",
+                table: "CategoryCountModel",
+                columns: new[] { "CollegeId", "TopicId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoryCountModel_TopicId",
+                table: "CategoryCountModel",
+                column: "TopicId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChapterTestDetailedDataModel_ChapterTestQuestionId",
                 table: "ChapterTestDetailedDataModel",
                 column: "ChapterTestQuestionId");
@@ -1053,6 +1161,41 @@ namespace CollegeAppDotnetWebApi.Migrations
                 name: "IX_TopicModel_SubjectId",
                 table: "TopicModel",
                 column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TopicModel_SubjectId_Status",
+                table: "TopicModel",
+                columns: new[] { "SubjectId", "Status" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNoteModel_Status",
+                table: "UserNoteModel",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNoteModel_StudentId",
+                table: "UserNoteModel",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNoteModel_StudentId_TopicId",
+                table: "UserNoteModel",
+                columns: new[] { "StudentId", "TopicId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNoteModel_TopicId",
+                table: "UserNoteModel",
+                column: "TopicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VideoModel_Status",
+                table: "VideoModel",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VideoModel_TopicId",
+                table: "VideoModel",
+                column: "TopicId");
         }
 
         /// <inheritdoc />
@@ -1074,6 +1217,9 @@ namespace CollegeAppDotnetWebApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CategoryCountModel");
+
+            migrationBuilder.DropTable(
                 name: "ChapterTestDetailedDataModel");
 
             migrationBuilder.DropTable(
@@ -1093,6 +1239,12 @@ namespace CollegeAppDotnetWebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "SubCourseModelSubjectModel");
+
+            migrationBuilder.DropTable(
+                name: "UserNoteModel");
+
+            migrationBuilder.DropTable(
+                name: "VideoModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
