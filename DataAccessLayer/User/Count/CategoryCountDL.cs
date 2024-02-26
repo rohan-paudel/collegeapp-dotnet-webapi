@@ -66,7 +66,7 @@ public class CategoryCountDL : ICategoryCountDL
             UPDATE CategoryCountModel
             SET NoteCount = (
                 SELECT COUNT(*)
-                FROM VideoModel
+                FROM NoteModel
                 WHERE TopicId = {topicId}
             )
             WHERE TopicId = {topicId};
@@ -123,7 +123,7 @@ public class CategoryCountDL : ICategoryCountDL
                     .ExecuteSqlAsync(
                         @$"
             UPDATE CategoryCountModel
-            SET NoteCount = (
+            SET VideoCount = (
                 SELECT COUNT(*)
                 FROM VideoModel
                 WHERE TopicId = {topicId}
