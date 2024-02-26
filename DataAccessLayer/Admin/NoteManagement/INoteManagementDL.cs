@@ -12,6 +12,10 @@ public interface INoteManagementDL
         Results<Ok<ResponseDTO<IEnumerable<NoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetNotes(int? topicId, string? noteName, int page, bool? noteStatus);
 
+    public Task<
+        Results<Ok<ResponseDTO<IEnumerable<NoteUResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetUNotes(int topicId);
+
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteNote(
         DeleteNoteRequestDTO deleteNoteRequestDTO
     );

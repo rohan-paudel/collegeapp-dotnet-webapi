@@ -7,6 +7,7 @@ namespace CollegeAppDotnetWebApi;
 [Index(nameof(Status))]
 [Index(nameof(Name))]
 [Index(nameof(TopicId))]
+[Index(nameof(TopicId), nameof(Status))]
 public class NoteModel
 {
     [Key]

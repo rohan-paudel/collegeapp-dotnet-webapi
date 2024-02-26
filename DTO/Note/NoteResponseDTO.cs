@@ -15,3 +15,13 @@ public class NoteResponseDTO
 
     public TopicResponseOnlyNameDTO Topic { get; set; } = new();
 }
+
+public class NoteUResponseDTO
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+
+    public string Description { get; set; } = "";
+
+    public string FileName { get; set; } = "";
+}

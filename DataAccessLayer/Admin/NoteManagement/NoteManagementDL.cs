@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -113,6 +114,44 @@ public class NoteManagementDL : INoteManagementDL
                     // TotalPageCount = pageCount,
                     CurrentPageCount = page
                 }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<NoteUResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetUNotes(int topicId)
+    {
+        try
+        {
+            var noteModels = await _dataContext
+                .NoteModel
+                .Where(x => x.TopicId == topicId && x.Status == true)
+                .Select(
+                    x =>
+                        new NoteUResponseDTO
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            Description = x.Description,
+                            FileName = x.FileName
+                        }
+                )
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<NoteUResponseDTO>>>(
+                new() { Data = noteModels }
             );
         }
         catch (Exception)

@@ -41,6 +41,15 @@ public class NoteManagementController : ControllerBase
         return result;
     }
 
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<NoteUResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetUNotes([FromQuery] int topicId)
+    {
+        var result = await _noteManagementDL.GetUNotes(topicId).ConfigureAwait(false);
+        return result;
+    }
+
     [HttpDelete]
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> DeleteNote(
         DeleteNoteRequestDTO deleteNoteRequestDTO
