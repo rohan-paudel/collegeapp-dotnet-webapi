@@ -68,6 +68,46 @@ public class VdoCipherDL : IVdoCipherDL
 
     public async Task<
         Results<Ok<ResponseDTO<IEnumerable<VideoResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetUVideos(int topicId)
+    {
+        try
+        {
+            var videoModels = await _dataContext
+                .VideoModel
+                .Where(x => x.TopicId == topicId && x.Status == true)
+                .Select(
+                    x =>
+                        new VideoResponseDTO
+                        {
+                            Id = x.Id,
+                            Status = x.Status,
+                            Title = x.Title,
+                            Description = x.Description,
+                            VdoCipherId = x.VdoCipherId,
+                            TotalVideoDuration = x.TotalVideoDuration
+                        }
+                )
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<VideoResponseDTO>>>(
+                new() { Data = videoModels }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something wend wrong."
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<VideoResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetVideos(int topicId, bool? statusCode)
     {
         try

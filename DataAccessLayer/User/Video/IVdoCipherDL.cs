@@ -11,4 +11,8 @@ public interface IVdoCipherDL
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<VideoResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetVideos(int topicId, bool? statusCode);
+
+    public Task<
+        Results<Ok<ResponseDTO<IEnumerable<VideoResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetUVideos(int topicId);
 }

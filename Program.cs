@@ -37,20 +37,20 @@ var builder = WebApplication.CreateBuilder(args);
 //         );
 //     });
 
-builder
-    .Services
-    .Configure<KestrelServerOptions>(options =>
-    {
-        options.ListenAnyIP(5272);
-    });
+// builder
+//     .Services
+//     .Configure<KestrelServerOptions>(options =>
+//     {
+//         options.ListenAnyIP(5272);
+//     });
 
 builder
     .Services
     .AddDbContextPool<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.ServerConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
+                SqlSetupConstants.DevConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.DevConnectionString)
             )
     );
 

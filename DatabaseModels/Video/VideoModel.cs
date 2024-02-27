@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
 [Index(nameof(Status))]
 [Index(nameof(TopicId))]
+[Index(nameof(TopicId), nameof(Status))]
 public class VideoModel
 {
     [Key]
