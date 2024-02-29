@@ -25,7 +25,11 @@ public class VdoCipherDL : IVdoCipherDL
             var response = await httpClient
                 .PostAsJsonAsync(
                     $"https://dev.vdocipher.com/api/videos/{videoPlayId}/otp",
-                    new { ttl = 300 }
+                    new
+                    {
+                        ttl = 300,
+                        licenseRules = new { canPersist = true, rentalDuration = 15 * 24 * 3600 }
+                    }
                 )
                 .ConfigureAwait(false);
 
