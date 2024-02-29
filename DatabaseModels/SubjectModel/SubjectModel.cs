@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
@@ -15,6 +16,7 @@ public class SubjectModel
     [Required]
     public string Name { get; set; } = "";
 
+    [AllowNull]
     public string? ImageUrl { get; set; }
 
     public ICollection<TopicModel>? Topics { get; set; }

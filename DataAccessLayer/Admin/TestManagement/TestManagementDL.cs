@@ -122,6 +122,59 @@ public class TestManagementDL : ITestManagementDL
     }
 
     public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetUChapterTest(int topicId)
+    {
+        try
+        {
+            var chapterTestModel = await _dataContext
+                .ChapterTestModel
+                .Where(x => x.TopicId == topicId && x.Status == true)
+                .Select(
+                    x =>
+                        new ChapterTestUResponseDTO
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            Description = x.Description,
+                            Instruction = x.Instruction,
+                            NumberOfQuestions = x.Count,
+                            CreatedAt = x.CreatedAt
+                        }
+                )
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>(
+                new() { Data = chapterTestModel }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetUChapterTestQuestions(int testId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > SetChapterTest(ChapterTestRequestDTO chapterTestRequestDTO)
     {

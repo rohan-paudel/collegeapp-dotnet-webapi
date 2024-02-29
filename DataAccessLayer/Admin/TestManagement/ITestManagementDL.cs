@@ -23,4 +23,18 @@ public interface ITestManagementDL
     public Task<
         Results<Ok<ResponseDTO<IEnumerable<TestResponseDTO>>>, BadRequest<ResponseDTO<string>>>
     > GetTest(int? testType, string? name, bool? testStatus);
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetUChapterTest(int topicId);
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetUChapterTestQuestions(int testId);
 }

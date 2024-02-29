@@ -64,6 +64,18 @@ public class TestManagementController : ControllerBase
         var result = await _testManagementDL
             .GetTest(testType, name, testStatus)
             .ConfigureAwait(false);
+
         return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetUChapterTest(int topicId)
+    {
+        return await _testManagementDL.GetUChapterTest(topicId).ConfigureAwait(false);
     }
 }

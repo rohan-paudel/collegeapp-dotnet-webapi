@@ -230,15 +230,20 @@ public class SubjectManagementDL : ISubjectManagementDL
                         subjectStrings.Add(substring);
                     }
                 }
+                foreach (var substring in subjectStrings)
+                {
+                    subjectModels.Add(new SubjectModel { Name = substring });
+                }
             }
             else
             {
-                subjectStrings.Add(subjectRequestDTO.Name);
-            }
-
-            foreach (var substring in subjectStrings)
-            {
-                subjectModels.Add(new SubjectModel { Name = substring });
+                subjectModels.Add(
+                    new SubjectModel
+                    {
+                        Name = subjectRequestDTO.Name,
+                        ImageUrl = subjectRequestDTO.ImageUrl
+                    }
+                );
             }
 
             await _dataContext.SubjectModel.AddRangeAsync(subjectModels).ConfigureAwait(false);
