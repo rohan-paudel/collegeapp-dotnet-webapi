@@ -196,6 +196,8 @@ public class TestManagementDL : ITestManagementDL
                             Question = x.Question,
                             QuestionImage = x.QuestionImage,
                             AnswerId = x.AnswerId,
+                            Solution = x.Solution,
+                            SolutionImage = x.SolutionImage,
                             Options = x.Options.Select(
                                 y =>
                                     new ChapterTestOptionUResponseDTO

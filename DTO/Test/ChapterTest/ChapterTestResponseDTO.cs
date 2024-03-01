@@ -21,6 +21,10 @@ public class ChapterTestQuestionsUResponseDTO
     public string QuestionImage { get; set; } = "";
     public int AnswerId { get; set; }
 
+    public string Solution { get; set; } = "";
+
+    public string SolutionImage { get; set; } = "";
+
     public IEnumerable<ChapterTestOptionUResponseDTO> Options { get; set; }
 }
 
