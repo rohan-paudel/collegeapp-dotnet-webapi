@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
+[Index(nameof(ChapterTestId))]
+[Index(nameof(Status))]
+[Index(nameof(ChapterTestId), nameof(Status))]
 public class ChapterTestQuestionModel
 {
     [Key]

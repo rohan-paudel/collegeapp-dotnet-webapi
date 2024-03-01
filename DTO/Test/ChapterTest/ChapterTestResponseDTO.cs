@@ -13,3 +13,24 @@ public class ChapterTestUResponseDTO
 
     public DateTime CreatedAt { get; set; }
 }
+
+public class ChapterTestQuestionsUResponseDTO
+{
+    public int Id { get; set; }
+    public string Question { get; set; } = "";
+    public string QuestionImage { get; set; } = "";
+    public int AnswerId { get; set; }
+
+    public IEnumerable<ChapterTestOptionUResponseDTO> Options { get; set; }
+}
+
+public class ChapterTestOptionUResponseDTO
+{
+    public int Id { get; set; }
+
+    public string Option { get; set; } = "";
+
+    public string OptionImage { get; set; } = "";
+
+    public bool IsCorrect { get; set; }
+}

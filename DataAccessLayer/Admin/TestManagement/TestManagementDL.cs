@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -169,9 +170,61 @@ public class TestManagementDL : ITestManagementDL
             Ok<ResponseDTO<IEnumerable<ChapterTestUResponseDTO>>>,
             BadRequest<ResponseDTO<string>>
         >
-    > GetUChapterTestQuestions(int testId)
+    > GetUChapterTestDescription(int testId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<ChapterTestQuestionsUResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetUChapterTestQuestions(int testId)
+    {
+        try
+        {
+            var chapterTestQuestionModel = await _dataContext
+                .ChapterTestQuestionModel
+                .Include(x => x.Options)
+                .Where(x => x.ChapterTestId == testId && x.Status == true)
+                .Select(
+                    x =>
+                        new ChapterTestQuestionsUResponseDTO
+                        {
+                            Id = x.Id,
+                            Question = x.Question,
+                            QuestionImage = x.QuestionImage,
+                            AnswerId = x.AnswerId,
+                            Options = x.Options.Select(
+                                y =>
+                                    new ChapterTestOptionUResponseDTO
+                                    {
+                                        Id = y.Id,
+                                        Option = y.Option,
+                                        IsCorrect = y.IsCorrect,
+                                        OptionImage = y.OptionImage
+                                    }
+                            )
+                        }
+                )
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<ChapterTestQuestionsUResponseDTO>>>(
+                new() { Data = chapterTestQuestionModel }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
     }
 
     public async Task<

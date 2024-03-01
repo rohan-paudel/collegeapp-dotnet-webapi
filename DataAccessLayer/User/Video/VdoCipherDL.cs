@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -18,7 +20,7 @@ public class VdoCipherDL : IVdoCipherDL
 
     public async Task<
         Results<Ok<ResponseDTO<GetOtpResponseDTO>>, BadRequest<ResponseDTO<string>>>
-    > GetOtpToPlayVideo(string videoPlayId, HttpClient httpClient)
+    > GetOtpDownloadVideo(string videoPlayId, HttpClient httpClient)
     {
         try
         {
@@ -27,9 +29,67 @@ public class VdoCipherDL : IVdoCipherDL
                     $"https://dev.vdocipher.com/api/videos/{videoPlayId}/otp",
                     new
                     {
+                        // 5 minutes until OTP is used
+                        // only used when setting up offline, not again
                         ttl = 300,
-                        licenseRules = new { canPersist = true, rentalDuration = 15 * 24 * 3600 }
+                        licenseRules = JsonSerializer.Serialize(
+                            new
+                            {
+                                rentalDuration = 15 * 24 * 3600, // 15 days
+                                canPersist = true,
+                            }
+                        ),
                     }
+                )
+                .ConfigureAwait(false);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Read response content
+                var responseData = await response
+                    .Content
+                    .ReadFromJsonAsync<GetOtpResponseDTO>()
+                    .ConfigureAwait(false);
+                ;
+
+                return TypedResults.Ok<ResponseDTO<GetOtpResponseDTO>>(
+                    new() { Data = responseData }
+                );
+            }
+            else
+            {
+                // Handle unsuccessful response
+                return TypedResults.BadRequest<ResponseDTO<string>>(
+                    new()
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Message = "Something went wrong"
+                    }
+                );
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<GetOtpResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetOtpToPlayVideo(string videoPlayId, HttpClient httpClient)
+    {
+        try
+        {
+            var response = await httpClient
+                .PostAsJsonAsync(
+                    $"https://dev.vdocipher.com/api/videos/{videoPlayId}/otp",
+                    new { ttl = 300 }
                 )
                 .ConfigureAwait(false);
 

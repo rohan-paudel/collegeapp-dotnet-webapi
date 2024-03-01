@@ -19,6 +19,17 @@ public class VdoCipherController : ControllerBase
     [HttpGet]
     public async Task<
         Results<Ok<ResponseDTO<GetOtpResponseDTO>>, BadRequest<ResponseDTO<string>>>
+    > GetOtpDownloadVideo([FromQuery] string videoPlayId)
+    {
+        var result = await _vdoCipherDL
+            .GetOtpDownloadVideo(videoPlayId, _httpClient)
+            .ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<GetOtpResponseDTO>>, BadRequest<ResponseDTO<string>>>
     > GetOtpToPlayVideo([FromQuery] string videoPlayId)
     {
         var result = await _vdoCipherDL
