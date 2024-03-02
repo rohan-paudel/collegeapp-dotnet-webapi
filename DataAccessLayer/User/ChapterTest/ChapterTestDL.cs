@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Runtime.CompilerServices;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,64 @@ public class ChapterTestDL : IChapterTestDL
         }
         catch (Exception)
         {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<UserSolutionListResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetTheSolutionList(int testUserDetailId)
+    {
+        try
+        {
+            var chapterTestQuestionModel = await _dataContext
+                .ChapterTestDetailedDataModel
+                .AsNoTracking()
+                .Where(x => x.ChapterTestUserDataId == testUserDetailId)
+                .Select(
+                    x =>
+                        new UserSolutionListResponseDTO
+                        {
+                            Id = x.Id,
+                            Question = x.ChapterTestQuestion.Question,
+                            QuestionImage = x.ChapterTestQuestion.QuestionImage,
+                            AnswerId = x.ChapterTestQuestion.AnswerId,
+                            Solution = x.ChapterTestQuestion.Solution,
+                            SolutionImage = x.ChapterTestQuestion.SolutionImage,
+                            UserAnswerId = x.UserAnswerId,
+                            Options = x.ChapterTestQuestion
+                                .Options
+                                .Select(
+                                    y =>
+                                        new ChapterTestOptionUResponseDTO
+                                        {
+                                            Id = y.Id,
+                                            Option = y.Option,
+                                            IsCorrect = y.IsCorrect,
+                                            OptionImage = y.OptionImage
+                                        }
+                                )
+                        }
+                )
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<UserSolutionListResponseDTO>>>(
+                new() { Data = chapterTestQuestionModel }
+            );
+        }
+        catch (Exception)
+        {
+            // Log exception details
             return TypedResults.BadRequest<ResponseDTO<string>>(
                 new()
                 {

@@ -74,4 +74,15 @@ public class ChapterTestController : ControllerBase
             )
             .ConfigureAwait(false);
     }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<UserSolutionListResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetTheSolutionList(int testUserDetailId)
+    {
+        return await _chapterTestDL.GetTheSolutionList(testUserDetailId).ConfigureAwait(false);
+    }
 }

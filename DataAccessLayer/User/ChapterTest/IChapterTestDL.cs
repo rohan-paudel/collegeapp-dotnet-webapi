@@ -25,4 +25,11 @@ public interface IChapterTestDL
     public Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > ResetTheGivenChapterTest(string studentId, int chapterTestId);
+
+    public Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<UserSolutionListResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetTheSolutionList(int testUserDetailId);
 }
