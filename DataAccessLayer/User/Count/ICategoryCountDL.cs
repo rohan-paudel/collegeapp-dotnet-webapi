@@ -15,4 +15,12 @@ public interface ICategoryCountDL
     public Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> UpdateNoteCount(
         int topicId
     );
+
+    public Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateChapterTestCount(int topicId);
+
+    public Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateChapterTestQuestionsCount(int chapterTestId);
 }

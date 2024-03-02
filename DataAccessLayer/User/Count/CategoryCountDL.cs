@@ -49,6 +49,91 @@ public class CategoryCountDL : ICategoryCountDL
 
     public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateChapterTestCount(int topicId)
+    {
+        try
+        {
+            CategoryCountModel? model = await _dataContext
+                .CategoryCountModel
+                .FirstOrDefaultAsync(x => x.TopicId == topicId)
+                .ConfigureAwait(false);
+            if (model != null)
+            {
+                await _dataContext
+                    .Database
+                    .ExecuteSqlAsync(
+                        @$"
+            UPDATE CategoryCountModel
+            SET ChapterTestCount = (
+                SELECT COUNT(*)
+                FROM ChapterTestModel
+                WHERE TopicId = {topicId}
+                AND Status = 1
+            )
+            WHERE TopicId = {topicId};
+        "
+                    )
+                    .ConfigureAwait(false);
+
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+            else
+            {
+                var newCategoryCount = new CategoryCountModel
+                {
+                    VideoCount = 0,
+                    NoteCount = 0,
+                    ChapterTestCount = 1,
+                    TopicId = topicId
+                };
+
+                await _dataContext
+                    .CategoryCountModel
+                    .AddAsync(newCategoryCount)
+                    .ConfigureAwait(false);
+                await _dataContext.SaveChangesAsync().ConfigureAwait(false);
+                return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+            }
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateChapterTestQuestionsCount(int chapterTestId)
+    {
+        try
+        {
+            var sql = "UPDATE ChapterTestModel SET Count = Count + 1 WHERE id = @p0";
+            var result = await _dataContext
+                .Database
+                .ExecuteSqlRawAsync(sql, chapterTestId)
+                .ConfigureAwait(false);
+            return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Something went wrong"
+                }
+            );
+        }
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
     > UpdateNoteCount(int topicId)
     {
         try

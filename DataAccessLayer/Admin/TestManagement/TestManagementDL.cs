@@ -9,11 +9,17 @@ public class TestManagementDL : ITestManagementDL
 {
     private readonly AppDataContext _dataContext;
     private readonly IMapper _mapper;
+    private readonly ICategoryCountDL _categoryCountDL;
 
-    public TestManagementDL(AppDataContext dataContext, IMapper mapper)
+    public TestManagementDL(
+        AppDataContext dataContext,
+        IMapper mapper,
+        ICategoryCountDL categoryCountDL
+    )
     {
         _dataContext = dataContext;
         _mapper = mapper;
+        _categoryCountDL = categoryCountDL;
     }
 
     public async Task<
@@ -249,6 +255,9 @@ public class TestManagementDL : ITestManagementDL
 
             if (rowsAffected > 0)
             {
+                await _categoryCountDL
+                    .UpdateChapterTestCount(chapterTestRequestDTO.TopicId)
+                    .ConfigureAwait(false);
                 return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
             }
             else
@@ -317,7 +326,7 @@ public class TestManagementDL : ITestManagementDL
             //     .FirstOrDefaultAsync()
             //     .ConfigureAwait(false);
 
-            await _dataContext
+            var data = await _dataContext
                 .ChapterTestQuestionModel
                 .AddAsync(_mapper.Map<ChapterTestQuestionModel>(chapterTestQuestionDTO))
                 .ConfigureAwait(false);
@@ -325,6 +334,26 @@ public class TestManagementDL : ITestManagementDL
 
             if (rowsAffected > 0)
             {
+                await _categoryCountDL
+                    .UpdateChapterTestQuestionsCount(chapterTestQuestionDTO.ChapterTestId)
+                    .ConfigureAwait(false);
+
+                var chapterTestQuestion = await _dataContext
+                    .ChapterTestQuestionModel
+                    .FirstOrDefaultAsync(x => x.Id == data.Entity.Id)
+                    .ConfigureAwait(false);
+
+                var id = await _dataContext
+                    .ChapterTestOptionModel
+                    .FirstOrDefaultAsync(
+                        x =>
+                            x.ChapterTestQuestionId == chapterTestQuestion.Id && x.IsCorrect == true
+                    )
+                    .ConfigureAwait(false);
+
+                chapterTestQuestion.AnswerId = id.Id;
+                await _dataContext.SaveChangesAsync().ConfigureAwait(false);
+
                 return TypedResults.Ok<ResponseDTO<string>>(new() { Data = "Successfull" });
             }
             else

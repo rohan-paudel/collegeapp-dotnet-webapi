@@ -40,4 +40,24 @@ public class CategoryCountController : ControllerBase
         var result = await _categoryCountDL.UpdateNoteCount(topicId).ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateChapterTestCount(int topicId)
+    {
+        var result = await _categoryCountDL.UpdateChapterTestCount(topicId).ConfigureAwait(false);
+        return result;
+    }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
+    > UpdateChapterTestQuestionsCount(int chapterTestId)
+    {
+        var result = await _categoryCountDL
+            .UpdateChapterTestQuestionsCount(chapterTestId)
+            .ConfigureAwait(false);
+        return result;
+    }
 }
