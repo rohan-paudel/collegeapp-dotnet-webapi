@@ -24,4 +24,16 @@ public class NoticeBoardManagementController : ControllerBase
             .ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<NoticeBoardResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetNoticeBoard()
+    {
+        var result = await _noticeBoardManagementDL.GetNoticeBoard().ConfigureAwait(false);
+        return result;
+    }
 }

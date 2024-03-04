@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -12,6 +13,45 @@ public class NoticeBoardManagementDL : INoticeBoardManagementDL
     {
         _dataContext = dataContext;
         _mapper = mapper;
+    }
+
+    public async Task<
+        Results<
+            Ok<ResponseDTO<IEnumerable<NoticeBoardResponseDTO>>>,
+            BadRequest<ResponseDTO<string>>
+        >
+    > GetNoticeBoard()
+    {
+        try
+        {
+            var quotes = await _dataContext
+                .NoticeBoardModel
+                .Select(
+                    x =>
+                        new NoticeBoardResponseDTO
+                        {
+                            Notice = x.Notice,
+                            Title = x.Title,
+                            FileName = x.FileName
+                        }
+                )
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<NoticeBoardResponseDTO>>>(
+                new() { Data = quotes }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Someting went wrong"
+                }
+            );
+        }
     }
 
     public async Task<
@@ -39,7 +79,7 @@ public class NoticeBoardManagementDL : INoticeBoardManagementDL
                         var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
 
                         // Save the file to a secure location with the unique filename
-                        var filePath = Path.Combine("/data", "NoticeBoard", uniqueFileName); // Adjust this path to your desired folder
+                        var filePath = Path.Combine("/data", "Notes", uniqueFileName); // Adjust this path to your desired folder
                         Directory.CreateDirectory(Path.GetDirectoryName(filePath)!); // Create directory if it doesn't exist
                         using (var stream = new FileStream(filePath, FileMode.CreateNew))
                         {

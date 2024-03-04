@@ -22,4 +22,13 @@ public class QuoteManagementController : ControllerBase
         var result = await _quoteManagementDL.SetQuote(quoteRequestDTO).ConfigureAwait(false);
         return result;
     }
+
+    [HttpGet]
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<QuoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetQuotes()
+    {
+        var result = await _quoteManagementDL.GetQuotes().ConfigureAwait(false);
+        return result;
+    }
 }

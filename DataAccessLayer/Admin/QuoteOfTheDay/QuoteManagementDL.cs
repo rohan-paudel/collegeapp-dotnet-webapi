@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace CollegeAppDotnetWebApi;
 
@@ -12,6 +13,34 @@ public class QuoteManagementDL : IQuoteManagementDL
     {
         _dataContext = dataContext;
         _mapper = mapper;
+    }
+
+    public async Task<
+        Results<Ok<ResponseDTO<IEnumerable<QuoteResponseDTO>>>, BadRequest<ResponseDTO<string>>>
+    > GetQuotes()
+    {
+        try
+        {
+            var quotes = await _dataContext
+                .QuoteModel
+                .Select(x => new QuoteResponseDTO { Quote = x.Description, Title = x.Title })
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return TypedResults.Ok<ResponseDTO<IEnumerable<QuoteResponseDTO>>>(
+                new() { Data = quotes }
+            );
+        }
+        catch (Exception)
+        {
+            return TypedResults.BadRequest<ResponseDTO<string>>(
+                new()
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Someting went wrong"
+                }
+            );
+        }
     }
 
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetQuote(

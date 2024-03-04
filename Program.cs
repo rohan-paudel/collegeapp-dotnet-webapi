@@ -37,20 +37,20 @@ var builder = WebApplication.CreateBuilder(args);
 //         );
 //     });
 
-// builder
-//     .Services
-//     .Configure<KestrelServerOptions>(options =>
-//     {
-//         options.ListenAnyIP(5272);
-//     });
+builder
+    .Services
+    .Configure<KestrelServerOptions>(options =>
+    {
+        options.ListenAnyIP(5272);
+    });
 
 builder
     .Services
     .AddDbContextPool<AppDataContext>(
         options =>
             options.UseMySql(
-                SqlSetupConstants.DevConnectionString,
-                ServerVersion.AutoDetect(SqlSetupConstants.DevConnectionString)
+                SqlSetupConstants.ServerConnectionString,
+                ServerVersion.AutoDetect(SqlSetupConstants.ServerConnectionString)
             )
     );
 
@@ -96,6 +96,7 @@ var cookiePolicyOptions = new CookiePolicyOptions { MinimumSameSitePolicy = Same
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IPerformanceOverviewDL, PerformanceOverviewDL>();
 builder.Services.AddScoped<ICategoryCountDL, CategoryCountDL>();
 builder.Services.AddScoped<IUserNoteManagementDL, UserNoteManagementDL>();
 builder.Services.AddScoped<IVideoCipherAdminDL, VideoCipherAdminDL>();
