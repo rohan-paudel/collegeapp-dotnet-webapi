@@ -18,12 +18,18 @@ public class DiscussionManagementController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "PolicyForMobileDevice")]
     public async Task<
         Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>
-    > SetDiscussion(DiscussionRequestDTO discussionRequestDTO)
+    > SetDiscussion(
+        [FromHeader(Name = "sim")] string collegeId,
+        [FromBody] DiscussionRequestDTO discussionRequestDTO
+    )
     {
         // discussionRequestDTO.StudentId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         // discussionRequestDTO.CollegeId = int.Parse(User.FindFirstValue(ClaimTypes.GroupSid)!);
+        discussionRequestDTO.CollegeId = int.Parse(collegeId);
+        discussionRequestDTO.StudentId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         var result = await _discussionManagementDL
             .SetDiscussion(discussionRequestDTO)
             .ConfigureAwait(false);
@@ -31,29 +37,32 @@ public class DiscussionManagementController : ControllerBase
     }
 
     [HttpGet]
+    // [Authorize(Policy = "PolicyForMobileDevice")]
     public async Task<
         Results<
             Ok<ResponseDTO<IEnumerable<DiscussionResponseDTO>>>,
             BadRequest<ResponseDTO<string>>
         >
     > GetDiscussion(
-        [FromQuery] [Required] int collegeId,
+        [FromHeader(Name = "sim")] string collegeId,
         [FromQuery] [Required] int topicId,
-        [FromQuery] [Required] int page,
+        [FromQuery] int? page,
         [FromQuery] bool? discussionStatus
     )
     {
         var result = await _discussionManagementDL
-            .GetDiscussion(collegeId, topicId, page, discussionStatus)
+            .GetDiscussion(int.Parse(collegeId), topicId, 1, discussionStatus)
             .ConfigureAwait(false);
         return result;
     }
 
     [HttpPost]
+    [Authorize(Policy = "PolicyForMobileDevice")]
     public async Task<Results<Ok<ResponseDTO<string>>, BadRequest<ResponseDTO<string>>>> SetQuery(
         QueryRequestDTO queryRequestDTO
     )
     {
+        queryRequestDTO.StudentId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         var result = await _discussionManagementDL.SetQuery(queryRequestDTO).ConfigureAwait(false);
         return result;
     }

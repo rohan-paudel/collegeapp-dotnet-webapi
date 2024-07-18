@@ -35,10 +35,11 @@ public class DiscussionManagementDL : IDiscussionManagementDL
                 queryDiscussion = queryDiscussion.Where(x => x.Status == discussionStatus);
             }
 
-            queryDiscussion = queryDiscussion.Skip((page - 1) * 10).Take(10);
+            queryDiscussion = queryDiscussion.Skip((page - 1) * 50).Take(50);
 
             var noteModels = await queryDiscussion
                 .Include(x => x.TejiloUser)
+                .Include(x => x.Queries)
                 .Select(p => _mapper.Map<DiscussionResponseDTO>(p))
                 .ToListAsync()
                 .ConfigureAwait(false);

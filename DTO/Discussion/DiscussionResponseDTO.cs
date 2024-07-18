@@ -6,6 +6,8 @@ public class DiscussionResponseDTO
     public string Discussion { get; set; } = "";
 
     public StudentResponseOnlyNameDTO? Student { get; set; }
+
+    public IEnumerable<QueryResponseDTO>? Queries { get; set; }
 }
 
 public class QueryResponseDTO

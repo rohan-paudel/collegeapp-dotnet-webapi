@@ -23,6 +23,5 @@ public class QueryRequestDTO
     [Required]
     public string Query { get; set; } = "";
 
-    [Required]
     public string StudentId { get; set; } = "";
 }
